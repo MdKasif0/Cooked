@@ -41,7 +41,7 @@ class DatesheetViewModel @Inject constructor(
     val uiState: StateFlow<DatesheetUiState> = _uiState.asStateFlow()
 
     init {
-        telemetry.scanStarted()
+        telemetry.logScanStarted()
         if (!imageUriString.isNullOrBlank()) {
             scanUri(Uri.parse(imageUriString))
         } else {
@@ -79,7 +79,7 @@ class DatesheetViewModel @Inject constructor(
                 )
                 itemRepository.create(item)
             }
-            telemetry.scanItemsAdded(selected.size)
+            telemetry.logScanItemsAdded(selected.size)
             onComplete()
         }
     }
