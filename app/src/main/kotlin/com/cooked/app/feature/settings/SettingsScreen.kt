@@ -102,6 +102,7 @@ fun SettingsScreen(
     onConfirmFirstDelete: () -> Unit,
     onConfirmFinalDelete: () -> Unit,
     onDismissDeleteDialogs: () -> Unit,
+    onTelemetryToggled: (Boolean) -> Unit = {},
     onSetPrivacyVisible: (Boolean) -> Unit,
     onClearSnackbar: () -> Unit,
     modifier: Modifier = Modifier
@@ -163,6 +164,83 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { Spacer(modifier = Modifier.height(4.dp)) }
+
+            // 0. BILLING ISSUE ALERT BANNER (Grace period / account hold)
+            if (uiState.billingIssue != null) {
+                item {
+                    CookedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(1.dp, CookedTheme.colors.primary, RoundedCornerShape(16.dp))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = "⚠️", fontSize = 24.sp)
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Payment Issue Detected",
+                                    style = CookedTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = CookedTheme.colors.primary
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = "Update your payment method in Google Play to keep Cooked Pro active.",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 0. COOKED PRO HERO CARD
+            item {
+                CookedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onNavigateToPaywall() }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(CookedTheme.colors.primaryContainer, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = if (uiState.isPro) "👑" else "🔥", fontSize = 20.sp)
+                        }
+
+                        Spacer(modifier = Modifier.width(14.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = if (uiState.isPro) "Cooked Pro Active" else "Unlock Cooked Pro",
+                                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                color = CookedTheme.colors.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = if (uiState.isPro) "All premium features unlocked." else "Critical alarms, deep insights, widgets & unhinged tone.",
+                                style = CookedTheme.typography.bodySmall,
+                                color = CookedTheme.colors.onSurfaceVariant
+                            )
+                        }
+
+                        Icon(
+                            imageVector = Icons.Rounded.ChevronRight,
+                            contentDescription = null,
+                            tint = CookedTheme.colors.onSurfaceVariant
+                        )
+                    }
+                }
+            }
 
             // 1. RELIABILITY HERO CARD ("Will Cooked actually yap?")
             item {
@@ -520,6 +598,33 @@ fun SettingsScreen(
                                     color = CookedTheme.colors.onSurfaceVariant
                                 )
                             }
+                        }
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
+                        // Anonymous Diagnostics (Telemetry)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Anonymous Diagnostics",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "Catch scheduler anomalies and crash bugs. Never includes reminder titles or notes.",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            CookedSwitch(
+                                checked = uiState.telemetryEnabled,
+                                onCheckedChange = onTelemetryToggled
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(2.dp))

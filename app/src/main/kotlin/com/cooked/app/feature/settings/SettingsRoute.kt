@@ -35,6 +35,7 @@ fun SettingsRoute(
         onConfirmFirstDelete = viewModel::confirmFirstDelete,
         onConfirmFinalDelete = viewModel::confirmFinalDelete,
         onDismissDeleteDialogs = viewModel::dismissDeleteDialogs,
+        onTelemetryToggled = viewModel::onTelemetryToggled,
         onSetPrivacyVisible = viewModel::setPrivacyDialogVisible,
         onClearSnackbar = viewModel::clearSnackbar,
         modifier = modifier

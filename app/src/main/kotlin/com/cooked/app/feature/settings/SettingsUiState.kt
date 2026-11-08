@@ -19,6 +19,8 @@ data class SettingsUiState(
     val preferredNudgeTime: LocalTime = LocalTime.of(18, 0),
     val weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
     val isPro: Boolean = false,
+    val billingIssue: com.cooked.app.domain.billing.BillingIssueState? = null,
+    val telemetryEnabled: Boolean = true,
     val appVersion: String = "1.0.0",
     val scheduledAlarms: List<ScheduledAlarmInfo> = emptyList(),
     val reliabilityReport: ReliabilityReport? = null,

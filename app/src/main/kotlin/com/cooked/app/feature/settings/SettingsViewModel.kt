@@ -3,10 +3,13 @@ package com.cooked.app.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.core.telemetry.Telemetry
 import com.cooked.app.core.util.SampleDataSeeder
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.backup.BackupManager
 import com.cooked.app.domain.backup.ImportPreview
+import com.cooked.app.domain.billing.BillingIssueState
+import com.cooked.app.domain.billing.EntitlementRepository
 import com.cooked.app.domain.model.Personality
 import com.cooked.app.scheduling.alarm.AlarmScheduler
 import com.cooked.app.scheduling.battery.ReliabilityChecker
@@ -28,7 +31,9 @@ class SettingsViewModel @Inject constructor(
     private val backupManager: BackupManager,
     private val alarmScheduler: AlarmScheduler,
     private val reliabilityChecker: ReliabilityChecker,
-    private val sampleDataSeeder: SampleDataSeeder
+    private val sampleDataSeeder: SampleDataSeeder,
+    private val entitlementRepository: EntitlementRepository,
+    private val telemetry: Telemetry
 ) : ViewModel() {
 
     private val _alarmsRefreshTrigger = MutableStateFlow(0)
@@ -40,6 +45,7 @@ class SettingsViewModel @Inject constructor(
 
     val uiState: StateFlow<SettingsUiState> = combine(
         preferencesRepository.userPrefs,
+        entitlementRepository.billingIssue,
         _importPreview,
         _showDeleteConfirm,
         _showDeleteDoubleConfirm,
@@ -48,11 +54,12 @@ class SettingsViewModel @Inject constructor(
         _alarmsRefreshTrigger
     ) { args ->
         val prefs = args[0] as com.cooked.app.data.datastore.UserPrefs
-        val preview = args[1] as ImportPreview?
-        val showDelete = args[2] as Boolean
-        val showDeleteDouble = args[3] as Boolean
-        val showPrivacy = args[4] as Boolean
-        val snackbar = args[5] as String?
+        val billingIssue = args[1] as BillingIssueState?
+        val preview = args[2] as ImportPreview?
+        val showDelete = args[3] as Boolean
+        val showDeleteDouble = args[4] as Boolean
+        val showPrivacy = args[5] as Boolean
+        val snackbar = args[6] as String?
 
         val alarms = alarmScheduler.getScheduledAlarms()
         val report = reliabilityChecker.check()
@@ -68,6 +75,8 @@ class SettingsViewModel @Inject constructor(
             preferredNudgeTime = prefs.preferredNudgeTime,
             weekStartsOn = prefs.weekStartsOn,
             isPro = prefs.isPro,
+            billingIssue = billingIssue,
+            telemetryEnabled = prefs.telemetryEnabled,
             appVersion = "1.0.0",
             scheduledAlarms = alarms,
             reliabilityReport = report,
@@ -183,6 +192,18 @@ class SettingsViewModel @Inject constructor(
 
     fun clearSnackbar() {
         _snackbarMessage.value = null
+    }
+
+    fun onTelemetryToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            telemetry.setOptIn(enabled)
+        }
+    }
+
+    fun onToggleProForTesting(enabled: Boolean) {
+        viewModelScope.launch {
+            entitlementRepository.setLocalProForTesting(enabled)
+        }
     }
 
     fun seedSampleData() {
