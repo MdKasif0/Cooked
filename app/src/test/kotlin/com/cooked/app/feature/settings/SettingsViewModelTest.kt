@@ -9,6 +9,7 @@ import com.cooked.app.core.telemetry.TelemetryImpl
 import com.cooked.app.core.util.SampleDataSeeder
 import com.cooked.app.data.billing.EntitlementRepositoryImpl
 import com.cooked.app.data.datastore.UserPreferencesRepository
+import com.cooked.app.testing.testUserPreferencesRepository
 import com.cooked.app.data.db.CookedDatabase
 import com.cooked.app.domain.backup.BackupManager
 import com.cooked.app.domain.backup.CookedBackupData
@@ -73,7 +74,7 @@ class SettingsViewModelTest {
         database = Room.inMemoryDatabaseBuilder(context, CookedDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-        userPrefsRepo = UserPreferencesRepository(context)
+        userPrefsRepo = testUserPreferencesRepository(testDispatcher)
         alarmScheduler = FakeAlarmScheduler()
         reliabilityChecker = ReliabilityChecker(context)
         backupManager = BackupManager(

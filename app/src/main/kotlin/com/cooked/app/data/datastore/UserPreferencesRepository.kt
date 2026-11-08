@@ -54,9 +54,14 @@ data class UserPrefs(
 )
 
 @Singleton
-class UserPreferencesRepository @Inject constructor(
-    @param:ApplicationContext private val context: Context
+class UserPreferencesRepository internal constructor(
+    private val dataStore: DataStore<Preferences>
 ) {
+
+    /** Production: the app-wide `cooked_user_prefs` DataStore. */
+    @Inject
+    constructor(@ApplicationContext context: Context) : this(context.dataStore)
+
     private object PreferencesKeys {
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
@@ -89,7 +94,7 @@ class UserPreferencesRepository @Inject constructor(
         val SELECTED_CALENDAR_IDS = stringSetPreferencesKey("selected_calendar_ids")
     }
 
-    val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
+    val userPrefs: Flow<UserPrefs> = dataStore.data.map { preferences ->
         UserPrefs(
             themeMode = parseEnum(preferences[PreferencesKeys.THEME_MODE], ThemeMode.SYSTEM),
             dynamicColor = preferences[PreferencesKeys.DYNAMIC_COLOR] ?: false,
@@ -128,7 +133,7 @@ class UserPreferencesRepository @Inject constructor(
     val defaultNagIntervalMinutes: Flow<Int> = defaultNagInterval
     val dailyCapacityMinutes: Flow<Int> = userPrefs.map { it.dailyCapacityMinutes }
     val preferredNudgeTime: Flow<LocalTime> = userPrefs.map { it.preferredNudgeTime }
-    val isOemWarningDismissed: Flow<Boolean> = context.dataStore.data.map {
+    val isOemWarningDismissed: Flow<Boolean> = dataStore.data.map {
         it[PreferencesKeys.OEM_WARNING_DISMISSED] ?: false
     }
     val personality: Flow<Personality> = userPrefs.map { it.personality }
@@ -136,15 +141,15 @@ class UserPreferencesRepository @Inject constructor(
     val hapticsOn: Flow<Boolean> = userPrefs.map { it.hapticsOn }
 
     suspend fun setThemeMode(mode: ThemeMode) {
-        context.dataStore.edit { it[PreferencesKeys.THEME_MODE] = mode.name }
+        dataStore.edit { it[PreferencesKeys.THEME_MODE] = mode.name }
     }
 
     suspend fun setDynamicColor(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.DYNAMIC_COLOR] = enabled }
+        dataStore.edit { it[PreferencesKeys.DYNAMIC_COLOR] = enabled }
     }
 
     suspend fun setDefaultNagInterval(minutes: Int) {
-        context.dataStore.edit { it[PreferencesKeys.DEFAULT_NAG_INTERVAL] = minutes }
+        dataStore.edit { it[PreferencesKeys.DEFAULT_NAG_INTERVAL] = minutes }
     }
 
     suspend fun setDefaultNagIntervalMinutes(minutes: Int) {
@@ -152,55 +157,55 @@ class UserPreferencesRepository @Inject constructor(
     }
 
     suspend fun setQuietHours(start: LocalTime, end: LocalTime) {
-        context.dataStore.edit {
+        dataStore.edit {
             it[PreferencesKeys.QUIET_HOURS_START] = start.toString()
             it[PreferencesKeys.QUIET_HOURS_END] = end.toString()
         }
     }
 
     suspend fun setWeekStartsOn(dayOfWeek: DayOfWeek) {
-        context.dataStore.edit { it[PreferencesKeys.WEEK_STARTS_ON] = dayOfWeek.name }
+        dataStore.edit { it[PreferencesKeys.WEEK_STARTS_ON] = dayOfWeek.name }
     }
 
     suspend fun setOnboardingDone(done: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.ONBOARDING_DONE] = done }
+        dataStore.edit { it[PreferencesKeys.ONBOARDING_DONE] = done }
     }
 
     suspend fun setPersonality(personality: Personality) {
-        context.dataStore.edit { it[PreferencesKeys.PERSONALITY] = personality.name }
+        dataStore.edit { it[PreferencesKeys.PERSONALITY] = personality.name }
     }
 
     suspend fun setHapticsOn(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.HAPTICS_ON] = enabled }
+        dataStore.edit { it[PreferencesKeys.HAPTICS_ON] = enabled }
     }
 
     suspend fun setFirstDayUsed(date: LocalDate) {
-        context.dataStore.edit { it[PreferencesKeys.FIRST_DAY_USED] = date.toString() }
+        dataStore.edit { it[PreferencesKeys.FIRST_DAY_USED] = date.toString() }
     }
 
     suspend fun setIsPro(isPro: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.IS_PRO] = isPro }
+        dataStore.edit { it[PreferencesKeys.IS_PRO] = isPro }
     }
 
     suspend fun setOemWarningDismissed(dismissed: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.OEM_WARNING_DISMISSED] = dismissed }
+        dataStore.edit { it[PreferencesKeys.OEM_WARNING_DISMISSED] = dismissed }
     }
 
     suspend fun setDailyCapacityMinutes(minutes: Int) {
-        context.dataStore.edit { it[PreferencesKeys.DAILY_CAPACITY_MINUTES] = minutes }
+        dataStore.edit { it[PreferencesKeys.DAILY_CAPACITY_MINUTES] = minutes }
     }
 
     suspend fun setPreferredNudgeTime(time: LocalTime) {
-        context.dataStore.edit { it[PreferencesKeys.PREFERRED_NUDGE_TIME] = time.toString() }
+        dataStore.edit { it[PreferencesKeys.PREFERRED_NUDGE_TIME] = time.toString() }
     }
 
     suspend fun setTelemetryEnabled(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.TELEMETRY_ENABLED] = enabled }
+        dataStore.edit { it[PreferencesKeys.TELEMETRY_ENABLED] = enabled }
     }
 
     suspend fun incrementToastyCompletions(): Int {
         var newCount = 0
-        context.dataStore.edit { prefs ->
+        dataStore.edit { prefs ->
             val current = prefs[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] ?: 0
             newCount = current + 1
             prefs[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] = newCount
@@ -209,59 +214,59 @@ class UserPreferencesRepository @Inject constructor(
     }
 
     suspend fun setLastReviewPromptEpochDay(epochDay: Long) {
-        context.dataStore.edit { it[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] = epochDay }
+        dataStore.edit { it[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] = epochDay }
     }
 
     suspend fun setHinglishVibes(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.HINGLISH_VIBES] = enabled }
+        dataStore.edit { it[PreferencesKeys.HINGLISH_VIBES] = enabled }
     }
 
     suspend fun setSoundNormalNag(sound: String) {
-        context.dataStore.edit { it[PreferencesKeys.SOUND_NORMAL_NAG] = sound }
+        dataStore.edit { it[PreferencesKeys.SOUND_NORMAL_NAG] = sound }
     }
 
     suspend fun setSoundEscalatedNag(sound: String) {
-        context.dataStore.edit { it[PreferencesKeys.SOUND_ESCALATED_NAG] = sound }
+        dataStore.edit { it[PreferencesKeys.SOUND_ESCALATED_NAG] = sound }
     }
 
     suspend fun setSoundCritical(sound: String) {
-        context.dataStore.edit { it[PreferencesKeys.SOUND_CRITICAL] = sound }
+        dataStore.edit { it[PreferencesKeys.SOUND_CRITICAL] = sound }
     }
 
     suspend fun setInAppSoundsEnabled(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.IN_APP_SOUNDS_ENABLED] = enabled }
+        dataStore.edit { it[PreferencesKeys.IN_APP_SOUNDS_ENABLED] = enabled }
     }
 
     suspend fun setAppIconChoice(choice: String) {
-        context.dataStore.edit { it[PreferencesKeys.APP_ICON_CHOICE] = choice }
+        dataStore.edit { it[PreferencesKeys.APP_ICON_CHOICE] = choice }
     }
 
     suspend fun setSnitchSnoozeThreshold(threshold: Int) {
-        context.dataStore.edit { it[PreferencesKeys.SNITCH_SNOOZE_THRESHOLD] = threshold }
+        dataStore.edit { it[PreferencesKeys.SNITCH_SNOOZE_THRESHOLD] = threshold }
     }
 
     suspend fun setSnitchContactName(name: String) {
-        context.dataStore.edit { it[PreferencesKeys.SNITCH_CONTACT_NAME] = name }
+        dataStore.edit { it[PreferencesKeys.SNITCH_CONTACT_NAME] = name }
     }
 
     suspend fun setSnitchPreferredApp(app: String) {
-        context.dataStore.edit { it[PreferencesKeys.SNITCH_PREFERRED_APP] = app }
+        dataStore.edit { it[PreferencesKeys.SNITCH_PREFERRED_APP] = app }
     }
 
     suspend fun setLiveCountdownEnabled(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.LIVE_COUNTDOWN_ENABLED] = enabled }
+        dataStore.edit { it[PreferencesKeys.LIVE_COUNTDOWN_ENABLED] = enabled }
     }
 
     suspend fun setCalendarCapacityEnabled(enabled: Boolean) {
-        context.dataStore.edit { it[PreferencesKeys.CALENDAR_CAPACITY_ENABLED] = enabled }
+        dataStore.edit { it[PreferencesKeys.CALENDAR_CAPACITY_ENABLED] = enabled }
     }
 
     suspend fun setSelectedCalendarIds(ids: Set<String>) {
-        context.dataStore.edit { it[PreferencesKeys.SELECTED_CALENDAR_IDS] = ids }
+        dataStore.edit { it[PreferencesKeys.SELECTED_CALENDAR_IDS] = ids }
     }
 
     suspend fun resetForTesting() {
-        context.dataStore.edit { it.clear() }
+        dataStore.edit { it.clear() }
     }
 
     private companion object {

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.cooked.app.core.time.CookedClock
 import com.cooked.app.data.datastore.UserPreferencesRepository
+import com.cooked.app.testing.testUserPreferencesRepository
 import com.cooked.app.data.db.CookedDatabase
 import com.cooked.app.data.repository.ItemRepositoryImpl
 import com.cooked.app.domain.model.Item
@@ -62,7 +63,7 @@ class AddEditReminderViewModelTest {
             itemEventDao = database.itemEventDao(),
             clock = FixedClock(now)
         )
-        prefs = UserPreferencesRepository(context)
+        prefs = testUserPreferencesRepository(testDispatcher)
     }
 
     @After
