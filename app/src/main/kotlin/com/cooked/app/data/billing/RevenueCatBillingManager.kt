@@ -8,7 +8,6 @@ import com.cooked.app.domain.billing.PurchaseResult
 import com.cooked.app.domain.billing.SubscriptionPlan
 import com.revenuecat.purchases.Package
 import com.revenuecat.purchases.Purchases
-import com.revenuecat.purchases.PurchasesConfiguration
 import com.revenuecat.purchases.PurchasesError
 import com.revenuecat.purchases.PurchasesErrorCode
 import com.revenuecat.purchases.interfaces.PurchaseCallback
@@ -35,9 +34,10 @@ class RevenueCatBillingManager @Inject constructor(
         const val PRODUCT_MONTHLY = "cooked_pro_monthly"
         const val PRODUCT_LIFETIME = "cooked_pro_lifetime"
 
-        // Production / Sandboxed RevenueCat Public Google API Key
-        // Can be overridden via BuildConfig or environment
-        private const val DEFAULT_REVENUECAT_API_KEY = "goog_placeholder_api_key"
+        const val ERROR_STORE_UNAVAILABLE =
+            "The store isn't available right now. Check your connection and try again."
+        const val ERROR_NOT_ENTITLED =
+            "Payment went through but Pro isn't active yet. Try Restore Purchases in a moment."
     }
 
     private val _availablePlans = MutableStateFlow<List<SubscriptionPlan>>(defaultFallbackPlans())
@@ -50,15 +50,7 @@ class RevenueCatBillingManager @Inject constructor(
     }
 
     private fun initializeRevenueCatIfConfigured() {
-        try {
-            if (!Purchases.isConfigured) {
-                Purchases.configure(
-                    PurchasesConfiguration.Builder(context, DEFAULT_REVENUECAT_API_KEY).build()
-                )
-            }
-        } catch (_: Exception) {
-            // RevenueCat initialization may fail in test environments without Play Services; safe fallback
-        }
+        RevenueCatSetup.ensureConfigured(context)
     }
 
     override suspend fun fetchOfferings(): List<SubscriptionPlan> {
@@ -143,14 +135,16 @@ class RevenueCatBillingManager @Inject constructor(
 
     override suspend fun purchase(activity: Activity, plan: SubscriptionPlan): PurchaseResult {
         if (!Purchases.isConfigured) {
-            return PurchaseResult.Success(plan.productId)
+            return PurchaseResult.Error(ERROR_STORE_UNAVAILABLE)
         }
 
-        val pkg = packageMap[plan.productId]
-        if (pkg == null) {
-            // If running without direct package reference (e.g. mock test environment)
-            return PurchaseResult.Success(plan.productId)
+        // Plans shown from the offline fallback list have no store package; retry loading
+        // offerings once, and never grant anything without a real package.
+        if (packageMap[plan.productId] == null) {
+            fetchOfferings()
         }
+        val pkg = packageMap[plan.productId]
+            ?: return PurchaseResult.Error(ERROR_STORE_UNAVAILABLE)
 
         return suspendCancellableCoroutine { continuation ->
             try {
@@ -166,7 +160,7 @@ class RevenueCatBillingManager @Inject constructor(
                             if (isEntitled) {
                                 continuation.resume(PurchaseResult.Success(plan.productId))
                             } else {
-                                continuation.resume(PurchaseResult.Success(plan.productId))
+                                continuation.resume(PurchaseResult.Error(ERROR_NOT_ENTITLED))
                             }
                         }
 
@@ -187,7 +181,7 @@ class RevenueCatBillingManager @Inject constructor(
 
     override suspend fun restorePurchases(): Result<Boolean> {
         if (!Purchases.isConfigured) {
-            return Result.success(true)
+            return Result.failure(IllegalStateException(ERROR_STORE_UNAVAILABLE))
         }
 
         return suspendCancellableCoroutine { continuation ->

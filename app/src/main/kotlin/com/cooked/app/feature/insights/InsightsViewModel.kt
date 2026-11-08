@@ -82,7 +82,8 @@ class InsightsViewModel @Inject constructor(
             summary = summary,
             selectedDayCompletion = selectedDay,
             showCookedReportDialog = showReport,
-            isProUser = false, // Free tier by default; ranges beyond 7d soft-lock
+            // Kept in sync with the store by EntitlementRepository; ranges beyond 7d soft-lock for free users
+            isProUser = prefs.isPro,
             isLoading = false
         )
     }.stateIn(

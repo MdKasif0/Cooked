@@ -34,4 +34,9 @@ abstract class CookedDatabase : RoomDatabase() {
     abstract fun analyticsDao(): AnalyticsDao
     abstract fun reminderDao(): ReminderDao
     abstract fun weeklySnapshotDao(): WeeklySnapshotDao
+
+    companion object {
+        /** On-disk file name. Auto Backup rules in res/xml must reference this exact name. */
+        const val DATABASE_NAME = "cooked_database.db"
+    }
 }

@@ -22,6 +22,13 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // RevenueCat public Google API key. Supply via -Pcooked.revenuecatApiKey=goog_... or the
+        // COOKED_REVENUECAT_API_KEY env var. Empty means billing is disabled (purchases fail cleanly).
+        val revenueCatApiKey = (project.findProperty("cooked.revenuecatApiKey")?.toString()
+            ?: System.getenv("COOKED_REVENUECAT_API_KEY")
+            ?: "").replace("\"", "")
+        buildConfigField("String", "REVENUECAT_API_KEY", "\"$revenueCatApiKey\"")
     }
 
     signingConfigs {

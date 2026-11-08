@@ -30,7 +30,20 @@ interface ItemEventDao {
     @Query("SELECT * FROM item_events WHERE itemId = :itemId AND type = :type ORDER BY at DESC LIMIT 1")
     suspend fun getLatestEventFor(itemId: String, type: ItemEventType): ItemEventEntity?
 
-    @Query("SELECT count(*) FROM item_events WHERE itemId = :itemId AND type = 'NAGGED'")
+    /**
+     * Number of times the alarm has fired for the item's *current* occurrence.
+     *
+     * Counts both the first fire (FIRED) and follow-up nags (NAGGED), but only those at or after
+     * the item's current dueAt. Pre-due nudges are excluded, and rolling a recurring item to its
+     * next occurrence (which moves dueAt forward) naturally resets the count.
+     */
+    @Query(
+        """
+        SELECT count(*) FROM item_events e
+        INNER JOIN items i ON e.itemId = i.id
+        WHERE e.itemId = :itemId AND e.type IN ('FIRED', 'NAGGED') AND e.at >= i.dueAt
+        """
+    )
     suspend fun getNagCountFor(itemId: String): Int
 
     @Query("SELECT * FROM item_events WHERE type = :type AND at >= :from AND at <= :to")

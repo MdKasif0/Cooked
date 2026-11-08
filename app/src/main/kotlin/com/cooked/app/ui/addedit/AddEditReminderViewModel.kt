@@ -3,27 +3,36 @@ package com.cooked.app.ui.addedit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cooked.app.core.time.TimeUtils
-import com.cooked.app.domain.model.Reminder
-import com.cooked.app.domain.repository.ReminderRepository
-import com.cooked.app.domain.usecase.DeleteReminderUseCase
-import com.cooked.app.domain.usecase.SaveReminderUseCase
+import com.cooked.app.core.time.CookedClock
+import com.cooked.app.data.datastore.UserPreferencesRepository
+import com.cooked.app.domain.model.Item
+import com.cooked.app.domain.model.ItemKind
+import com.cooked.app.domain.model.ItemStatus
+import com.cooked.app.domain.model.NagPolicy
+import com.cooked.app.domain.repository.ItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.Duration
+import java.time.Instant
 import java.time.LocalTime
 import java.util.UUID
 import javax.inject.Inject
 
+/**
+ * Add/edit form backed by the `items` table (the same store every other screen, alarm and
+ * widget reads from). Saving goes through [ItemRepository], whose itemChanged event
+ * reschedules alarms and refreshes widgets.
+ */
 @HiltViewModel
 class AddEditReminderViewModel @Inject constructor(
-    private val repository: ReminderRepository,
-    private val saveReminderUseCase: SaveReminderUseCase,
-    private val deleteReminderUseCase: DeleteReminderUseCase,
+    private val itemRepository: ItemRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val clock: CookedClock,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -32,41 +41,41 @@ class AddEditReminderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(
         AddEditUiState(
             reminderId = reminderIdArg,
-            dueInstantUtc = TimeUtils.nowUtcMillis() + (15 * 60 * 1000L), // Default to +15 min for instant quickness
+            dueInstantUtc = clock.now().plus(Duration.ofMinutes(15)).toEpochMilli(),
             canSave = false,
             isDeleteVisible = reminderIdArg != null
         )
     )
     val uiState: StateFlow<AddEditUiState> = _uiState.asStateFlow()
 
-    private var initialCreatedAt: Long = TimeUtils.nowUtcMillis()
-    private var initialIsCompleted: Boolean = false
-    private var initialCompletedAt: Long? = null
-    private var initialNagCount: Int = 0
+    /** The item as loaded from the database; null when creating a new one. */
+    private var existingItem: Item? = null
 
     init {
-        if (reminderIdArg != null) {
-            viewModelScope.launch {
-                val existing = repository.getReminderById(reminderIdArg)
-                if (existing != null) {
-                    initialCreatedAt = existing.createdAt
-                    initialIsCompleted = existing.isCompleted
-                    initialCompletedAt = existing.completedAt
-                    initialNagCount = existing.nagCount
-
+        viewModelScope.launch {
+            if (reminderIdArg != null) {
+                val existing = itemRepository.getItem(reminderIdArg)
+                if (existing != null && !existing.isDeleted) {
+                    existingItem = existing
                     _uiState.update { current ->
                         current.copy(
                             title = existing.title,
                             note = existing.note ?: "",
-                            dueInstantUtc = existing.dueInstant,
-                            nagIntervalMinutes = existing.nagIntervalMinutes,
-                            isDeadlineMode = existing.isDeadlineMode,
-                            deadlineStartInstantUtc = existing.deadlineStartInstant,
-                            estimatedEffortMinutes = existing.estimatedEffortMinutes,
+                            dueInstantUtc = existing.dueAt.toEpochMilli(),
+                            nagIntervalMinutes = existing.nag.intervalMinutes,
+                            isDeadlineMode = existing.kind == ItemKind.DEADLINE,
+                            deadlineStartInstantUtc = existing.startBy?.toEpochMilli(),
+                            estimatedEffortMinutes = existing.effortMinutes ?: current.estimatedEffortMinutes,
                             canSave = existing.title.isNotBlank()
                         )
                     }
+                } else {
+                    // Item no longer exists: treat as a new item instead of editing a ghost.
+                    _uiState.update { it.copy(reminderId = null, isDeleteVisible = false) }
                 }
+            } else {
+                val defaultNag = userPreferencesRepository.userPrefs.first().defaultNagInterval
+                _uiState.update { it.copy(nagIntervalMinutes = defaultNag) }
             }
         }
     }
@@ -80,21 +89,21 @@ class AddEditReminderViewModel @Inject constructor(
     }
 
     fun setQuickTimeInMinutes(minutes: Int) {
-        val target = TimeUtils.nowUtcMillis() + (minutes * 60 * 1000L)
+        val target = clock.now().plus(Duration.ofMinutes(minutes.toLong())).toEpochMilli()
         _uiState.update { it.copy(dueInstantUtc = target) }
     }
 
     fun setQuickTimeTonight() {
-        val today = LocalDate.now()
-        val tonightTime = LocalTime.of(20, 0)
-        val target = TimeUtils.localDateAndTimeToUtcMillis(today, tonightTime)
+        val zone = clock.zone()
+        val today = clock.now().atZone(zone).toLocalDate()
+        val target = today.atTime(LocalTime.of(20, 0)).atZone(zone).toInstant().toEpochMilli()
         _uiState.update { it.copy(dueInstantUtc = target) }
     }
 
     fun setQuickTimeTomorrowMorning() {
-        val tomorrow = LocalDate.now().plusDays(1)
-        val morningTime = LocalTime.of(9, 0)
-        val target = TimeUtils.localDateAndTimeToUtcMillis(tomorrow, morningTime)
+        val zone = clock.zone()
+        val tomorrow = clock.now().atZone(zone).toLocalDate().plusDays(1)
+        val target = tomorrow.atTime(LocalTime.of(9, 0)).atZone(zone).toInstant().toEpochMilli()
         _uiState.update { it.copy(dueInstantUtc = target) }
     }
 
@@ -107,12 +116,7 @@ class AddEditReminderViewModel @Inject constructor(
     }
 
     fun onDeadlineModeToggle(enabled: Boolean) {
-        _uiState.update { current ->
-            current.copy(
-                isDeadlineMode = enabled,
-                deadlineStartInstantUtc = if (enabled) TimeUtils.nowUtcMillis() else null
-            )
-        }
+        _uiState.update { it.copy(isDeadlineMode = enabled) }
     }
 
     fun onEffortMinutesChange(minutes: Int) {
@@ -123,37 +127,54 @@ class AddEditReminderViewModel @Inject constructor(
         val state = _uiState.value
         if (state.title.isBlank()) return
 
-        val now = TimeUtils.nowUtcMillis()
-        val reminder = Reminder(
-            id = state.reminderId ?: UUID.randomUUID().toString(),
-            title = state.title.trim(),
-            note = state.note.trim().ifEmpty { null },
-            dueInstant = state.dueInstantUtc,
-            nagIntervalMinutes = state.nagIntervalMinutes,
-            isCompleted = initialIsCompleted,
-            completedAt = initialCompletedAt,
-            isNaggingActive = false,
-            nagCount = initialNagCount,
-            snoozedUntil = null,
-            isDeadlineMode = state.isDeadlineMode,
-            deadlineStartInstant = state.deadlineStartInstantUtc ?: now,
-            estimatedEffortMinutes = state.estimatedEffortMinutes,
-            createdAt = if (state.reminderId != null) initialCreatedAt else now,
-            updatedAt = now
-        )
+        val now = clock.now()
+        val dueAt = state.dueInstantUtc?.let { Instant.ofEpochMilli(it) }
+            ?: now.plus(Duration.ofMinutes(15))
+        val kind = if (state.isDeadlineMode) ItemKind.DEADLINE else ItemKind.REMINDER
+        val effort = if (state.isDeadlineMode) state.estimatedEffortMinutes else null
+        val existing = existingItem
 
         viewModelScope.launch {
-            saveReminderUseCase(reminder)
+            if (existing != null) {
+                val dueChanged = existing.dueAt != dueAt
+                itemRepository.update(
+                    existing.copy(
+                        title = state.title.trim(),
+                        note = state.note.trim().ifEmpty { null },
+                        dueAt = dueAt,
+                        kind = kind,
+                        effortMinutes = effort,
+                        nag = existing.nag.copy(intervalMinutes = state.nagIntervalMinutes),
+                        // A new due time supersedes any snooze set for the old one.
+                        snoozedUntil = if (dueChanged) null else existing.snoozedUntil
+                    )
+                )
+            } else {
+                itemRepository.create(
+                    Item(
+                        id = UUID.randomUUID().toString(),
+                        kind = kind,
+                        title = state.title.trim(),
+                        note = state.note.trim().ifEmpty { null },
+                        dueAt = dueAt,
+                        timeZoneId = clock.zone().id,
+                        nag = NagPolicy(intervalMinutes = state.nagIntervalMinutes),
+                        status = ItemStatus.ACTIVE,
+                        effortMinutes = effort,
+                        createdAt = now,
+                        updatedAt = now
+                    )
+                )
+            }
             _uiState.update { it.copy(isSaved = true) }
         }
     }
 
     fun delete() {
-        val id = _uiState.value.reminderId ?: return
+        val id = existingItem?.id ?: return
         viewModelScope.launch {
-            deleteReminderUseCase(id)
+            itemRepository.delete(id)
             _uiState.update { it.copy(isSaved = true) }
         }
     }
 }
-

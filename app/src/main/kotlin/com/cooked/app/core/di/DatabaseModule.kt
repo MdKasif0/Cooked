@@ -8,6 +8,7 @@ import com.cooked.app.data.dao.ItemDao
 import com.cooked.app.data.dao.ItemEventDao
 import com.cooked.app.data.dao.ReminderDao
 import com.cooked.app.data.db.CookedDatabase
+import com.cooked.app.data.db.Migrations
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +28,10 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             CookedDatabase::class.java,
-            "cooked_database.db"
-        ).fallbackToDestructiveMigration(true)
+            CookedDatabase.DATABASE_NAME
+        ).addMigrations(*Migrations.ALL_MIGRATIONS)
+            // Only a downgrade (e.g. sideloading an older build) may reset the DB; upgrades must migrate.
+            .fallbackToDestructiveMigrationOnDowngrade(true)
             .build()
     }
 

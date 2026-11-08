@@ -3,7 +3,6 @@ package com.cooked.app
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,7 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -22,7 +23,11 @@ import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.ui.navigation.CookedAppShell
+import com.cooked.app.ui.navigation.DeepLink
+import com.cooked.app.ui.navigation.OnboardingNavRoute
+import com.cooked.app.ui.navigation.TodayTabRoute
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,21 +36,39 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var userPreferencesRepository: UserPreferencesRepository
 
+    /** Destination requested by the launching / latest intent, consumed by the nav shell. */
+    private val pendingDeepLink = MutableStateFlow<DeepLink?>(null)
+
+    @Volatile
+    private var prefsLoaded = false
+
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        // Keep the splash up until prefs load, so first launch never flashes Today before Onboarding.
+        installSplashScreen().setKeepOnScreenCondition { !prefsLoaded }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         checkNotificationPermission()
 
+        // On recreation (rotation etc.) the launching intent was already handled.
+        if (savedInstanceState == null) {
+            pendingDeepLink.value = DeepLink.fromIntent(intent)
+        }
+
         setContent {
             val userPrefs by userPreferencesRepository.userPrefs
                 .collectAsStateWithLifecycle(initialValue = null)
+            val deepLink by pendingDeepLink.collectAsStateWithLifecycle()
 
-            val themeMode = userPrefs?.themeMode ?: ThemeMode.SYSTEM
-            val darkTheme = when (themeMode) {
+            LaunchedEffect(userPrefs != null) {
+                if (userPrefs != null) prefsLoaded = true
+            }
+
+            val prefs = userPrefs ?: return@setContent
+
+            val darkTheme = when (prefs.themeMode) {
                 ThemeMode.SYSTEM -> isSystemInDarkTheme()
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
@@ -56,18 +79,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = CookedTheme.colors.background
                 ) {
-                    val isOnboarding = userPrefs != null && !userPrefs!!.onboardingDone
-                    val sharedImageUri = getSharedImageUri(intent)
-                    val startDestination: Any = if (isOnboarding) {
-                        com.cooked.app.ui.navigation.OnboardingNavRoute
-                    } else if (sharedImageUri != null) {
-                        com.cooked.app.ui.navigation.DatesheetReviewNavRoute(imageUri = sharedImageUri.toString())
-                    } else {
-                        com.cooked.app.ui.navigation.TodayTabRoute
+                    // Decided once per activity; changing a NavHost's start destination later
+                    // would rebuild the graph and wipe the back stack.
+                    val startDestination: Any = remember {
+                        if (!prefs.onboardingDone) OnboardingNavRoute else TodayTabRoute
                     }
 
                     CookedAppShell(
-                        startDestination = startDestination
+                        startDestination = startDestination,
+                        // Hold deep links until onboarding is finished.
+                        deepLink = if (prefs.onboardingDone) deepLink else null,
+                        onDeepLinkHandled = { pendingDeepLink.value = null }
                     )
                 }
             }
@@ -77,18 +99,7 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-    }
-
-    private fun getSharedImageUri(intent: Intent?): Uri? {
-        if (intent?.action == Intent.ACTION_SEND && intent.type?.startsWith("image/") == true) {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableExtra(Intent.EXTRA_STREAM)
-            }
-        }
-        return null
+        DeepLink.fromIntent(intent)?.let { pendingDeepLink.value = it }
     }
 
     private fun checkNotificationPermission() {

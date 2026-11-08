@@ -44,7 +44,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -84,6 +83,8 @@ data class BottomNavItem<T : Any>(
 fun CookedAppShell(
     modifier: Modifier = Modifier,
     startDestination: Any = TodayTabRoute,
+    deepLink: DeepLink? = null,
+    onDeepLinkHandled: () -> Unit = {},
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -104,6 +105,29 @@ fun CookedAppShell(
     val quickAddViewModel: QuickAddViewModel = hiltViewModel()
     val snackbarHostState = androidx.compose.runtime.remember { androidx.compose.material3.SnackbarHostState() }
     val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
+
+    // Route notification taps, shortcuts, the weekly report and shared images.
+    // Today is always the root of the back stack (start destination, or what onboarding
+    // navigates to), so tab switches pop back to it and Back from a deep link lands there.
+    androidx.compose.runtime.LaunchedEffect(deepLink) {
+        val link = deepLink ?: return@LaunchedEffect
+        when (link) {
+            is DeepLink.ItemDetail -> navController.navigate(ReminderDetailNavRoute(reminderId = link.itemId)) {
+                launchSingleTop = true
+            }
+            is DeepLink.SharedImage -> navController.navigate(DatesheetReviewNavRoute(imageUri = link.uri))
+            DeepLink.Insights -> navController.navigate(InsightsTabRoute) {
+                popUpTo<TodayTabRoute> { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+            DeepLink.Today -> navController.navigate(TodayTabRoute) {
+                popUpTo<TodayTabRoute> { inclusive = false }
+                launchSingleTop = true
+            }
+        }
+        onDeepLinkHandled()
+    }
 
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -166,7 +190,7 @@ fun CookedAppShell(
                             selected = selected,
                             onClick = {
                                 navController.navigate(item.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
+                                    popUpTo<TodayTabRoute> {
                                         saveState = true
                                     }
                                     launchSingleTop = true
@@ -238,7 +262,7 @@ fun CookedAppShell(
                         },
                         onCookedScoreClick = {
                             navController.navigate(DeadlinesTabRoute) {
-                                popUpTo(navController.graph.findStartDestination().id) {
+                                popUpTo<TodayTabRoute> {
                                     saveState = true
                                 }
                                 launchSingleTop = true
@@ -269,7 +293,7 @@ fun CookedAppShell(
                     InsightsRoute(
                         onCookedScoreClick = {
                             navController.navigate(DeadlinesTabRoute) {
-                                popUpTo(navController.graph.findStartDestination().id) {
+                                popUpTo<TodayTabRoute> {
                                     saveState = true
                                 }
                                 launchSingleTop = true

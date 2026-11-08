@@ -1,6 +1,8 @@
 package com.cooked.app
 
 import android.app.Application
+import com.cooked.app.data.billing.RevenueCatSetup
+import com.cooked.app.domain.billing.EntitlementRepository
 import com.cooked.app.domain.repository.ItemRepository
 import com.cooked.app.scheduling.alarm.AlarmScheduler
 import com.cooked.app.scheduling.notification.NotificationChannels
@@ -23,6 +25,9 @@ class CookedApplication : Application() {
     @Inject
     lateinit var itemRepository: ItemRepository
 
+    @Inject
+    lateinit var entitlementRepository: dagger.Lazy<EntitlementRepository>
+
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {
@@ -44,6 +49,14 @@ class CookedApplication : Application() {
                     .penaltyLog()
                     .build()
             )
+        }
+
+        // Configure billing before anything reads entitlements, then sync Pro status with the
+        // store so renewals, expiries and refunds are reflected without opening the paywall.
+        if (RevenueCatSetup.ensureConfigured(this)) {
+            applicationScope.launch {
+                runCatching { entitlementRepository.get().refresh() }
+            }
         }
 
         NotificationChannels.createChannels(this)

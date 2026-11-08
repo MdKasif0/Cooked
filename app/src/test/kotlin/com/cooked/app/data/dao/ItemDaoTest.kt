@@ -90,6 +90,53 @@ class ItemDaoTest {
         progress = 0
     )
 
+    private fun event(itemId: String, type: ItemEventType, at: Instant) = ItemEventEntity(
+        id = UUID.randomUUID().toString(),
+        itemId = itemId,
+        type = type,
+        at = at,
+        meta = emptyMap()
+    )
+
+    @Test
+    fun getNagCountFor_countsFiredAndNaggedSinceCurrentDueAt() = runTest {
+        val dueAt = now.minus(1, ChronoUnit.HOURS)
+        val item = createSampleItem(dueAt = dueAt)
+        itemDao.upsertItem(item)
+
+        itemEventDao.insertEvents(
+            listOf(
+                // Pre-due nudge must not count as a nag
+                event(item.id, ItemEventType.FIRED, dueAt.minus(3, ChronoUnit.HOURS)),
+                event(item.id, ItemEventType.FIRED, dueAt),
+                event(item.id, ItemEventType.NAGGED, dueAt.plus(10, ChronoUnit.MINUTES)),
+                event(item.id, ItemEventType.NAGGED, dueAt.plus(20, ChronoUnit.MINUTES)),
+                // Non-fire events are ignored
+                event(item.id, ItemEventType.SNOOZED, dueAt.plus(25, ChronoUnit.MINUTES))
+            )
+        )
+
+        assertThat(itemEventDao.getNagCountFor(item.id)).isEqualTo(3)
+    }
+
+    @Test
+    fun getNagCountFor_resetsWhenRecurringItemRollsForward() = runTest {
+        val dueAt = now.minus(1, ChronoUnit.HOURS)
+        val item = createSampleItem(dueAt = dueAt)
+        itemDao.upsertItem(item)
+        itemEventDao.insertEvents(
+            listOf(
+                event(item.id, ItemEventType.FIRED, dueAt),
+                event(item.id, ItemEventType.NAGGED, dueAt.plus(10, ChronoUnit.MINUTES))
+            )
+        )
+        assertThat(itemEventDao.getNagCountFor(item.id)).isEqualTo(2)
+
+        itemDao.rollRecurringOccurrence(item.id, dueAt.plus(1, ChronoUnit.DAYS), now)
+
+        assertThat(itemEventDao.getNagCountFor(item.id)).isEqualTo(0)
+    }
+
     @Test
     fun observeActiveItems_excludesSoftDeletedAndCompletedItems() = runTest {
         val activeItem = createSampleItem(title = "Active Reminder")
