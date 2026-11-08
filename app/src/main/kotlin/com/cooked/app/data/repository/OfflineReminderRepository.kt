@@ -1,8 +1,8 @@
 package com.cooked.app.data.repository
 
 import com.cooked.app.core.time.TimeUtils
-import com.cooked.app.data.local.dao.ReminderDao
-import com.cooked.app.data.local.entity.ReminderEntity
+import com.cooked.app.data.dao.ReminderDao
+import com.cooked.app.data.entity.ReminderEntity
 import com.cooked.app.domain.model.Reminder
 import com.cooked.app.domain.repository.ReminderRepository
 import kotlinx.coroutines.flow.Flow
@@ -70,4 +70,3 @@ class OfflineReminderRepository @Inject constructor(
         reminderDao.deleteById(id)
     }
 }
-

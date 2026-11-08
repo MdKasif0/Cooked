@@ -3,5 +3,10 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
-</resources>
 
+    <style name="Theme.Cooked.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#121214</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.Cooked</item>
+    </style>
+</resources>

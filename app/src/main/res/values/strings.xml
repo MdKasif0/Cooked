@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Cooked</string>
     <string name="app_tagline">so you\'re not cooked.</string>
 
     <!-- Navigation -->
