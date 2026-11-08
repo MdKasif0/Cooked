@@ -6,6 +6,8 @@ import com.cooked.app.data.billing.EntitlementRepositoryImpl
 import com.cooked.app.data.billing.RevenueCatBillingManager
 import com.cooked.app.data.repository.ItemRepositoryImpl
 import com.cooked.app.data.repository.OfflineReminderRepository
+import com.cooked.app.data.template.TemplateRepository
+import com.cooked.app.data.template.TemplateRepositoryImpl
 import com.cooked.app.domain.billing.BillingManager
 import com.cooked.app.domain.billing.EntitlementRepository
 import com.cooked.app.domain.repository.ItemRepository
@@ -49,4 +51,10 @@ abstract class RepositoryModule {
     abstract fun bindTelemetry(
         impl: TelemetryImpl
     ): Telemetry
+
+    @Binds
+    @Singleton
+    abstract fun bindTemplateRepository(
+        impl: TemplateRepositoryImpl
+    ): TemplateRepository
 }

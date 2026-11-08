@@ -3,6 +3,7 @@ package com.cooked.app.domain.deadline
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.ItemStatus
+import com.cooked.app.domain.rescue.TimeBlock
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
@@ -33,7 +34,8 @@ object HeatCalculator {
         now: Instant,
         dailyCapacityMinutes: Int = 120,
         quietHoursStart: LocalTime = LocalTime.of(22, 0),
-        quietHoursEnd: LocalTime = LocalTime.of(8, 0)
+        quietHoursEnd: LocalTime = LocalTime.of(8, 0),
+        calendarBusyBlocks: List<TimeBlock> = emptyList()
     ): HeatResult {
         val zone = try {
             ZoneId.of(item.timeZoneId)
@@ -47,7 +49,7 @@ object HeatCalculator {
                 heatLevel = HeatLevel.CHILL,
                 heatProgress = 0f,
                 remainingEffortMinutes = 0,
-                availableMinutes = calculateAvailableMinutes(now, item.dueAt, dailyCapacityMinutes, quietHoursStart, quietHoursEnd, zone),
+                availableMinutes = calculateAvailableMinutes(now, item.dueAt, dailyCapacityMinutes, quietHoursStart, quietHoursEnd, zone, calendarBusyBlocks),
                 slackMinutes = 0,
                 reason = "Done and dusted! 🧊"
             )
