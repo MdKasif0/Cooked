@@ -26,7 +26,8 @@ class ReminderNotificationBuilder @Inject constructor(
     fun buildReminderNotification(
         item: Item,
         nagCount: Int,
-        personality: Personality
+        personality: Personality,
+        isHinglish: Boolean = false
     ): Notification {
         val stage = when {
             nagCount == 0 -> NagStage.FIRST
@@ -41,7 +42,8 @@ class ReminderNotificationBuilder @Inject constructor(
             personality = effectivePersonality,
             stage = stage,
             title = item.title,
-            nagCount = nagCount
+            nagCount = nagCount,
+            isHinglish = isHinglish
         )
 
         val notificationId = getNotificationId(item.id)

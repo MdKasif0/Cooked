@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+import androidx.compose.ui.platform.LocalContext
+
 @Composable
 fun SettingsRoute(
     onNavigateBack: () -> Unit,
@@ -15,6 +17,7 @@ fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     SettingsScreen(
         uiState = uiState,
@@ -25,6 +28,10 @@ fun SettingsRoute(
         onDynamicColorToggled = viewModel::onDynamicColorToggled,
         onNagIntervalSelected = viewModel::onNagIntervalSelected,
         onPersonalitySelected = viewModel::onPersonalitySelected,
+        onHinglishVibesToggled = viewModel::onHinglishVibesToggled,
+        onInAppSoundsToggled = viewModel::onInAppSoundsToggled,
+        onAppIconSelected = { style -> viewModel.onAppIconSelected(context, style) },
+        onPreviewSound = viewModel::previewSound,
         onDailyCapacityChanged = viewModel::onDailyCapacityChanged,
         onWeekStartsOnChanged = viewModel::onWeekStartsOnChanged,
         onExportBackup = viewModel::exportBackup,

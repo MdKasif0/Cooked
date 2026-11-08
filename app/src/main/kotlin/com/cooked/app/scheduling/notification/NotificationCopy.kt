@@ -181,6 +181,35 @@ object NotificationCopy {
             "DO {title} OR I WILL PERSONALLY LEARN HOW TO WALK.",
             "MAXIMUM EMERGENCY: DO {title} IMMEDIATELY."
         )
+    private object HinglishVariants {
+        val first = listOf(
+            "bhai, {title} ka time ho gaya. nipta le! 🍳",
+            "sun bhai: {title} abhi due hai.",
+            "shuru kar de: {title}.",
+            "kal ka kaam aaj hi: {title}.",
+            "{title} start karne ka time aa gaya."
+        )
+        val early = listOf(
+            "abhi bhi pending? {title} khud nahi hone wala. 👀",
+            "swipe karne se {title} khatam nahi hoga bhai.",
+            "wapas aa gaya: {title}.",
+            "bhai {title} karle, warna panic hoga.",
+            "kya socha tha, bhool jaunga {title}?"
+        )
+        val persistent = listOf(
+            "kuch toh sharam kar, {title} kab karega? 💀",
+            "bohot procrastination ho gaya: {title} nipta.",
+            "skillet garam ho raha hai: {title}.",
+            "bhai phone rakh aur {title} khatam kar.",
+            "ab bohot ho gaya, complete {title}."
+        )
+        val finalCall = listOf(
+            "FULL COOKED! abhi ke abhi {title} khatam kar! 🔥",
+            "aakhri mauka bhai, {title} jal raha hai.",
+            "phone rakh aur {title} karle pehle. 🫡",
+            "ab seedha nuclear alert aayega: {title}!",
+            "deadline sir pe hai bhai: {title}!"
+        )
     }
 }
 

@@ -46,7 +46,9 @@ class ReminderAlarmReceiver : BroadcastReceiver() {
                 }
 
                 val nagCount = itemRepository.getNagCount(itemId)
-                val personality = userPreferencesRepository.personality.first()
+                val userPrefs = userPreferencesRepository.userPrefs.first()
+                val personality = userPrefs.personality
+                val isHinglish = userPrefs.hinglishVibes
 
                 val notificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -54,7 +56,8 @@ class ReminderAlarmReceiver : BroadcastReceiver() {
                 val notification = notificationBuilder.buildReminderNotification(
                     item = item,
                     nagCount = nagCount,
-                    personality = personality
+                    personality = personality,
+                    isHinglish = isHinglish
                 )
                 val notificationId = ReminderNotificationBuilder.getNotificationId(itemId)
                 notificationManager.notify(notificationId, notification)
