@@ -19,5 +19,8 @@ interface ChecklistStepDao {
 
     @Query("DELETE FROM checklist_steps WHERE id = :id")
     suspend fun deleteStep(id: String)
+
+    @Query("DELETE FROM checklist_steps")
+    suspend fun clearAll()
 }
 

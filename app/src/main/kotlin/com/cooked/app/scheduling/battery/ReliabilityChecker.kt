@@ -20,6 +20,7 @@ data class ReliabilityReport(
     val notificationPermissionGranted: Boolean,
     val areChannelsEnabled: Boolean,
     val channelsStatus: Map<String, Boolean>,
+    val dndOverrideGranted: Boolean = false,
     val manufacturer: String,
     val manufacturerWarning: String?,
     val isFullyReliable: Boolean
@@ -51,6 +52,9 @@ class ReliabilityChecker @Inject constructor(
         val manufacturer = Build.MANUFACTURER.lowercase()
         val warning = getOemInstructions(manufacturer)
 
+        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager
+        val dndGranted = nm?.isNotificationPolicyAccessGranted ?: false
+
         val isFullyReliable = canScheduleExact && isIgnoringBattery && notificationsEnabled && areChannelsEnabled
 
         return ReliabilityReport(
@@ -59,6 +63,7 @@ class ReliabilityChecker @Inject constructor(
             notificationPermissionGranted = notificationsEnabled,
             areChannelsEnabled = areChannelsEnabled,
             channelsStatus = channelsStatus,
+            dndOverrideGranted = dndGranted,
             manufacturer = Build.MANUFACTURER,
             manufacturerWarning = warning,
             isFullyReliable = isFullyReliable
@@ -83,6 +88,21 @@ class ReliabilityChecker @Inject constructor(
     fun getIgnoreBatteryOptimizationIntent(): Intent {
         return Intent(
             Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+            Uri.parse("package:${context.packageName}")
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
+    fun getDndSettingsIntent(): Intent {
+        return Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
+    fun getAppDetailsIntent(): Intent {
+        return Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.parse("package:${context.packageName}")
         ).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK

@@ -16,8 +16,13 @@ fun OnboardingRoute(
 
     OnboardingScreen(
         uiState = uiState,
-        onComplete = onComplete,
         onNext = viewModel::onNext,
+        onSkip = viewModel::onSkip,
+        onPersonalitySelected = viewModel::onPersonalitySelected,
+        onFirstWinInputChanged = viewModel::onFirstWinInputChanged,
+        onSaveFirstWin = viewModel::saveFirstWin,
+        onRefreshPermissions = viewModel::refreshPermissions,
+        onComplete = onComplete,
         modifier = modifier
     )
 }
