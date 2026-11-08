@@ -55,9 +55,9 @@ class ReliabilityViewModel @Inject constructor(
             val testItem = Item(
                 id = TEST_ITEM_ID,
                 kind = ItemKind.REMINDER,
-                title = "Reliability Test 🔥",
+                title = "Reliability Test",
                 note = "If you see this, your phone didn't kill Cooked in the background!",
-                emoji = "🚨",
+                emoji = "lightning",
                 dueAt = targetTime,
                 allDay = false,
                 critical = true,
@@ -88,9 +88,9 @@ class ReliabilityViewModel @Inject constructor(
             if (firedEvent != null && scheduledAt != null) {
                 val delaySeconds = (firedEvent.at.toEpochMilli() - scheduledAt) / 1000
                 val message = if (delaySeconds <= 5) {
-                    "✅ Test alarm fired on time (delay: ${delaySeconds}s). Cooked is safe on your device!"
+                    "Test alarm fired on time (delay: ${delaySeconds}s). Cooked is safe on your device!"
                 } else {
-                    "⚠️ Alarm fired, but was ${delaySeconds}s late. Background battery optimizations may delay reminders."
+                    "Alarm fired, but was ${delaySeconds}s late. Background battery optimizations may delay reminders."
                 }
                 _uiState.update {
                     it.copy(

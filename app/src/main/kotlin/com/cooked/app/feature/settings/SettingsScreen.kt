@@ -610,7 +610,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
-                                text = "e.g. \"bhai, {title} abhi bhi pending? 👀\" (UI labels remain in English)",
+                                text = "e.g. \"bhai, {title} abhi bhi pending?\" (UI labels remain in English)",
                                 style = CookedTheme.typography.bodySmall,
                                 color = CookedTheme.colors.onSurfaceVariant
                             )
@@ -1142,7 +1142,12 @@ fun SettingsScreen(
                                 style = CookedTheme.typography.bodyMedium,
                                 color = CookedTheme.colors.onSurface
                             )
-                            Text("⭐", fontSize = 16.sp)
+                            Icon(
+                                imageVector = Icons.Rounded.Star,
+                                contentDescription = null,
+                                tint = CookedTheme.colors.primary,
+                                modifier = Modifier.size(18.dp)
+                            )
                         }
 
                         Row(
@@ -1163,7 +1168,12 @@ fun SettingsScreen(
                                 style = CookedTheme.typography.bodyMedium,
                                 color = CookedTheme.colors.onSurface
                             )
-                            Text("💬", fontSize = 16.sp)
+                            Icon(
+                                imageVector = Icons.Rounded.Email,
+                                contentDescription = null,
+                                tint = CookedTheme.colors.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
                         }
 
                         Row(

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.domain.model.Personality
 import com.cooked.app.scheduling.notification.NagStage
 import com.cooked.app.scheduling.notification.NotificationCopy
@@ -95,7 +96,11 @@ fun PersonalityPreviewCard(
                                     .background(CookedTheme.colors.primaryContainer, CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("🔥", fontSize = 10.sp)
+                                CookedCategoryIcon(
+                                    keyOrEmoji = "flame",
+                                    size = 12.dp,
+                                    tint = CookedTheme.colors.primary
+                                )
                             }
                             Text(
                                 text = "Cooked · $stageLabel",

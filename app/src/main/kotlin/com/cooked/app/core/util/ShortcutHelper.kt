@@ -69,7 +69,7 @@ object ShortcutHelper {
 
             val pinShortcutInfo = ShortcutInfoCompat.Builder(context, "pinned_deadline_${item.id}")
                 .setShortLabel(item.title.take(16))
-                .setLongLabel("$emoji ${item.title}")
+                .setLongLabel(item.title)
                 .setIcon(icon)
                 .setIntent(intent)
                 .build()

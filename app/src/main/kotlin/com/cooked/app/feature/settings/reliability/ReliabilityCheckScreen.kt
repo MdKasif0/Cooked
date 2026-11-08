@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.components.CookedCard
 import com.cooked.app.core.designsystem.components.CookedTopBar
@@ -129,9 +131,11 @@ fun ReliabilityCheckScreen(
                         modifier = Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = if (isSafe) "🛡️" else "🚨",
-                            fontSize = 28.sp
+                        Icon(
+                            painter = painterResource(if (isSafe) R.drawable.ic_cat_bell else R.drawable.ic_emergency_siren),
+                            contentDescription = null,
+                            tint = CookedTheme.colors.primary,
+                            modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(modifier = Modifier.weight(1f)) {

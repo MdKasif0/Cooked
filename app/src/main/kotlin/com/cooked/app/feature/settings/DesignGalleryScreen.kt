@@ -433,22 +433,22 @@ fun DesignGalleryScreen(
                         title = "Linear Algebra Problem Set 3",
                         timeText = "Due in 42m",
                         heatLevel = HeatLevel.COOKED,
-                        onDone = { snackbarMessage = "Completed Problem Set 3! 🔥" },
-                        onSnooze = { snackbarMessage = "Snoozed for 10 minutes ⏰" }
+                        onDone = { snackbarMessage = "Completed Problem Set 3!" },
+                        onSnooze = { snackbarMessage = "Snoozed for 10 minutes" }
                     )
                     ReminderRow(
                         title = "Tax Filing Declaration",
                         timeText = "Due in 2d 6h",
                         heatLevel = HeatLevel.TOASTY,
                         onDone = { snackbarMessage = "Done with Taxes!" },
-                        onSnooze = { snackbarMessage = "Snoozed Taxes ⏰" }
+                        onSnooze = { snackbarMessage = "Snoozed Taxes" }
                     )
                     ReminderRow(
                         title = "Send draft to editor",
                         timeText = "Due Friday 5:00 PM",
                         heatLevel = HeatLevel.WARM,
                         onDone = { snackbarMessage = "Draft sent!" },
-                        onSnooze = { snackbarMessage = "Snoozed ⏰" }
+                        onSnooze = { snackbarMessage = "Snoozed" }
                     )
                 }
             }
@@ -506,7 +506,7 @@ fun DesignGalleryScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 PrimaryButton(
-                    text = "Seed 30 Realistic Items 🔥",
+                    text = "Seed 30 Realistic Items",
                     onClick = {
                         onSeedData?.invoke()
                         snackbarMessage = "Successfully seeded 30 items with events!"
