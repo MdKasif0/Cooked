@@ -93,8 +93,8 @@ fun CalmSkilletIllustration(
 
 /**
  * EmptyState:
- * - Bespoke minimal illustration
- * - Unhinged / funny warm tone
+ * - Mascot egg representation (calm/chill/done)
+ * - Restrained warm tone
  * - Optional action button
  */
 @Composable
@@ -102,6 +102,8 @@ fun EmptyState(
     title: String,
     message: String,
     modifier: Modifier = Modifier,
+    eggLevel: HeatLevel? = HeatLevel.CHILL,
+    isDone: Boolean = false,
     actionButtonText: String? = null,
     onActionClick: (() -> Unit)? = null
 ) {
@@ -112,9 +114,10 @@ fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        CalmSkilletIllustration(
-            accentColor = CookedTheme.colors.primary,
-            subtleColor = CookedTheme.colors.outline
+        EggMascot(
+            level = eggLevel,
+            isDone = isDone,
+            size = 88.dp
         )
 
         Spacer(modifier = Modifier.height(CookedTheme.spacing.l16))
