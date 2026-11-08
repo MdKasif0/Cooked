@@ -48,6 +48,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import com.cooked.app.core.designsystem.components.CookedAppLogo
 import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.designsystem.HeatLevel
 import androidx.compose.material3.TextButton
@@ -218,17 +219,15 @@ private fun HookStep(onNext: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Animated Mascot Egg illustration
+            // Animated Cooked App Logo Emblem
             Box(
                 modifier = Modifier
                     .offset { IntOffset(0, bounceY.value.roundToInt()) }
                     .size(96.dp),
                 contentAlignment = Alignment.Center
             ) {
-                EggMascot(
-                    level = HeatLevel.WARM,
-                    size = 96.dp,
-                    animated = true
+                CookedAppLogo(
+                    size = 96.dp
                 )
             }
 
