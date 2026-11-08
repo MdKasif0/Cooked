@@ -2,6 +2,7 @@ package com.cooked.app.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,10 +18,12 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiState: StateFlow<SettingsUiState> = combine(
+        preferencesRepository.themeMode,
         preferencesRepository.defaultNagIntervalMinutes,
         preferencesRepository.isOemWarningDismissed
-    ) { nagInterval, oemDismissed ->
+    ) { themeMode, nagInterval, oemDismissed ->
         SettingsUiState(
+            themeMode = themeMode,
             defaultNagIntervalMinutes = nagInterval,
             isOemWarningDismissed = oemDismissed,
             appVersion = "1.0.0"
@@ -31,10 +34,15 @@ class SettingsViewModel @Inject constructor(
         initialValue = SettingsUiState()
     )
 
+    fun onThemeModeSelected(mode: ThemeMode) {
+        viewModelScope.launch {
+            preferencesRepository.setThemeMode(mode)
+        }
+    }
+
     fun onNagIntervalSelected(minutes: Int) {
         viewModelScope.launch {
             preferencesRepository.setDefaultNagIntervalMinutes(minutes)
         }
     }
 }
-

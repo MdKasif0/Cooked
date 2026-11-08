@@ -15,6 +15,9 @@ object InsightsTabRoute
 object SettingsNavRoute
 
 @Serializable
+object DesignGalleryNavRoute
+
+@Serializable
 data class AddEditReminderRoute(
     val reminderId: String? = null
 )
