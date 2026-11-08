@@ -40,9 +40,10 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
 
         setContent {
-            val themeMode by userPreferencesRepository.themeMode
-                .collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
+            val userPrefs by userPreferencesRepository.userPrefs
+                .collectAsStateWithLifecycle(initialValue = null)
 
+            val themeMode = userPrefs?.themeMode ?: ThemeMode.SYSTEM
             val darkTheme = when (themeMode) {
                 ThemeMode.SYSTEM -> isSystemInDarkTheme()
                 ThemeMode.LIGHT -> false
@@ -54,7 +55,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = CookedTheme.colors.background
                 ) {
-                    CookedAppShell()
+                    val isOnboarding = userPrefs != null && !userPrefs!!.onboardingDone
+                    CookedAppShell(
+                        startDestination = if (isOnboarding) {
+                            com.cooked.app.ui.navigation.OnboardingNavRoute
+                        } else {
+                            com.cooked.app.ui.navigation.TodayTabRoute
+                        }
+                    )
                 }
             }
         }

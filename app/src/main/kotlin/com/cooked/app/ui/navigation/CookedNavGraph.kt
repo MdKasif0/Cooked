@@ -76,6 +76,7 @@ data class BottomNavItem<T : Any>(
 @Composable
 fun CookedAppShell(
     modifier: Modifier = Modifier,
+    startDestination: Any = TodayTabRoute,
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -207,7 +208,7 @@ fun CookedAppShell(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = TodayTabRoute,
+                startDestination = startDestination,
                 modifier = Modifier.fillMaxSize(),
                 enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
                 exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 4 }) + fadeOut() },
