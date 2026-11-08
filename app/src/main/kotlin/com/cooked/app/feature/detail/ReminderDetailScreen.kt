@@ -381,9 +381,9 @@ fun ReminderDetailScreen(
                                         OutlinedButton(
                                             onClick = onTriggerRescuePlan,
                                             colors = ButtonDefaults.outlinedButtonColors(
-                                                contentColor = CookedTheme.colors.error
+                                                contentColor = CookedTheme.colors.cooked.color
                                             ),
-                                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.error),
+                                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.cooked.color),
                                             shape = RoundedCornerShape(12.dp),
                                             modifier = Modifier.weight(1f)
                                         ) {
@@ -1059,6 +1059,12 @@ private fun TimelineEventRow(
         }
         ItemEventType.MISSED -> Triple("Alarm missed", Icons.Rounded.Close, CookedTheme.colors.heatFor(HeatLevel.COOKED).color)
         ItemEventType.STARTED -> Triple("Started working", Icons.Rounded.Whatshot, CookedTheme.colors.primary)
+        ItemEventType.PROGRESS -> {
+            val progress = event.meta["progress"] ?: ""
+            Triple("Work session ($progress% done)", Icons.Rounded.Whatshot, CookedTheme.colors.primary)
+        }
+        ItemEventType.SNITCH_OFFERED -> Triple("Snitch prompt shown", Icons.Rounded.NotificationsActive, CookedTheme.colors.heatFor(HeatLevel.WARM).color)
+        ItemEventType.SNITCH_SENT -> Triple("Snitched to accountability buddy 💬", Icons.Rounded.NotificationsActive, CookedTheme.colors.heatFor(HeatLevel.TOASTY).color)
     }
 
     CookedCard(modifier = modifier.fillMaxWidth()) {

@@ -52,8 +52,8 @@ object LiveCountdownNotificationManager {
         )
 
         val doneIntent = Intent(context, ReminderActionReceiver::class.java).apply {
-            action = ReminderActionReceiver.ACTION_MARK_DONE
-            putExtra(ReminderActionReceiver.EXTRA_ITEM_ID, item.id)
+            action = ReminderActionReceiver.ACTION_DONE
+            putExtra(ReminderNotificationBuilder.EXTRA_ITEM_ID, item.id)
         }
         val donePendingIntent = PendingIntent.getBroadcast(
             context,

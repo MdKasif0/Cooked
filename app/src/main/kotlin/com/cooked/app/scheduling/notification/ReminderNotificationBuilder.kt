@@ -155,7 +155,7 @@ class ReminderNotificationBuilder @Inject constructor(
             .addAction(snoozeTomorrowAction)
             .extend(wearableExtender)
 
-        if (FeatureFlags.isSnitchModeEnabled && item.snoozeCount >= 3) {
+        if (FeatureFlags.isSnitchModeEnabled && nagCount >= 3) {
             val snitchIntent = Intent(context, SnitchActivity::class.java).apply {
                 putExtra(SnitchActivity.EXTRA_ITEM_ID, item.id)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
