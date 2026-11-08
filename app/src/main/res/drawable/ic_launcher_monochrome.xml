@@ -4,22 +4,37 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Monochrome Themed Icon Layer (Egg Silhouette) -->
-    <!-- Egg White Silhouette -->
+    <!-- Monochrome Themed Icon Layer (Android 13+ Material You) -->
+    <!-- Crisp Stencil Egg Silhouette -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M37,33 C47,27 63,28 71,35 C79,42 81,56 76,66 C70,76 52,79 41,76 C30,73 22,62 25,49 C28,36 29,38 37,33 Z" />
+        android:pathData="M33,32 C43,25 65,27 73,35 C81,43 82,57 77,68 C71,79 51,82 39,79 C28,76 22,64 24,51 C26,39 27,36 33,32 Z" />
 
-    <!-- Cutout for Yolk and Face features -->
+    <!-- Yolk Cutout -->
     <path
         android:fillColor="#000000"
-        android:pathData="M41,54 A13,13 0 1 0 67,54 A13,13 0 1 0 41,54 Z" />
+        android:pathData="M40.5,54 A13.5,13.5 0 1 0 67.5,54 A13.5,13.5 0 1 0 40.5,54 Z" />
 
+    <!-- Eyes (Positive silhouette inside yolk) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M49,54 A2,2 0 1 0 53,54 A2,2 0 1 0 49,54 Z" />
+        android:pathData="M46.5,53.5 A2.2,2.2 0 1 0 50.9,53.5 A2.2,2.2 0 1 0 46.5,53.5 Z" />
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M56,54 A2,2 0 1 0 60,54 A2,2 0 1 0 56,54 Z" />
+        android:pathData="M57.1,53.5 A2.2,2.2 0 1 0 61.5,53.5 A2.2,2.2 0 1 0 57.1,53.5 Z" />
+
+    <!-- Smile (Positive silhouette inside yolk) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M50.5,59.5 C52.5,62.5 55.5,62.5 57.5,59.5" />
+
+    <!-- Sizzle Steam Silhouette -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M64,26 C63,22 67,19 65,15" />
 </vector>
 
