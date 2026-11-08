@@ -5,6 +5,8 @@ import com.cooked.app.domain.repository.ItemRepository
 import com.cooked.app.scheduling.alarm.AlarmScheduler
 import com.cooked.app.scheduling.notification.NotificationChannels
 import com.cooked.app.scheduling.work.SafetyNetWorker
+import com.cooked.app.scheduling.work.WeeklyReportWorker
+import com.cooked.app.scheduling.work.WeeklySnapshotWorker
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,8 @@ class CookedApplication : Application() {
         super.onCreate()
         NotificationChannels.createChannels(this)
         SafetyNetWorker.enqueueDaily(this)
+        WeeklySnapshotWorker.schedule(this)
+        WeeklyReportWorker.schedule(this)
 
         // Observe ItemChanged events to keep alarms strictly synchronized with DB
         applicationScope.launch {

@@ -1,18 +1,17 @@
 package com.cooked.app.feature.insights
 
-import com.cooked.app.domain.model.CookedLevel
-import com.cooked.app.domain.model.CookedScore
+import com.cooked.app.domain.insights.model.AnalyticsSummary
+import com.cooked.app.domain.insights.model.DayCompletion
+import com.cooked.app.domain.insights.model.InsightRange
 
 data class InsightsUiState(
-    val cookedScore: CookedScore = CookedScore(
-        score = 0,
-        level = CookedLevel.CHILLING,
-        totalRequiredHours = 0.0,
-        totalAvailableHours = 28.0,
-        headline = "Raw & Chilling 🧊",
-        advice = "No pending overload."
-    ),
-    val emptyMessage: String = "Cooked Index: 0%. You are thriving, no cap.",
+    val selectedRange: InsightRange = InsightRange.WEEK_7D,
+    val summary: AnalyticsSummary? = null,
+    val selectedDayCompletion: DayCompletion? = null,
+    val showCookedReportDialog: Boolean = false,
+    val isProUser: Boolean = false,
     val isLoading: Boolean = false
-)
-
+) {
+    val isSoftLocked: Boolean
+        get() = selectedRange.isPro && !isProUser
+}

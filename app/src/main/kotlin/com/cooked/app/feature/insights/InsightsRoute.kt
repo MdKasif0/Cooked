@@ -9,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun InsightsRoute(
     onCookedScoreClick: () -> Unit,
+    onNavigateToPaywall: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: InsightsViewModel = hiltViewModel()
 ) {
@@ -16,8 +17,10 @@ fun InsightsRoute(
 
     InsightsScreen(
         uiState = uiState,
-        onCookedScoreClick = onCookedScoreClick,
+        onRangeSelected = viewModel::onRangeSelected,
+        onSelectDayCompletion = viewModel::onSelectDayCompletion,
+        onShowCookedReport = viewModel::setShowCookedReport,
+        onNavigateToPaywall = onNavigateToPaywall,
         modifier = modifier
     )
 }
-

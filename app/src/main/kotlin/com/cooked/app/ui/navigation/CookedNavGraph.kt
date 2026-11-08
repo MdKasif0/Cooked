@@ -247,6 +247,9 @@ fun CookedAppShell(
                                 launchSingleTop = true
                                 restoreState = true
                             }
+                        },
+                        onNavigateToPaywall = {
+                            navController.navigate(PaywallNavRoute)
                         }
                     )
                 }

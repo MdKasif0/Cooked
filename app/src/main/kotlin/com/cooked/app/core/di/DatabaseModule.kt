@@ -56,4 +56,9 @@ object DatabaseModule {
     fun provideReminderDao(database: CookedDatabase): ReminderDao {
         return database.reminderDao()
     }
+
+    @Provides
+    fun provideWeeklySnapshotDao(database: CookedDatabase): com.cooked.app.data.dao.WeeklySnapshotDao {
+        return database.weeklySnapshotDao()
+    }
 }

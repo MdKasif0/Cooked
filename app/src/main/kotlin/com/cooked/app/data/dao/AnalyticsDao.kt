@@ -98,5 +98,26 @@ interface AnalyticsDao {
         WHERE status = 'DONE' AND completedAt IS NOT NULL AND completedAt >= :from AND completedAt <= :to AND deletedAt IS NULL
     """)
     suspend fun getCompletionTimestamps(from: Instant, to: Instant): List<Instant>
+
+    @Query("""
+        SELECT * FROM items
+        WHERE status = 'DONE' AND completedAt IS NOT NULL AND completedAt >= :from AND completedAt <= :to AND deletedAt IS NULL
+        ORDER BY completedAt DESC
+    """)
+    suspend fun getCompletedItemsInRange(from: Instant, to: Instant): List<com.cooked.app.data.entity.ItemEntity>
+
+    @Query("""
+        SELECT * FROM item_events
+        WHERE at >= :from AND at <= :to
+        ORDER BY at ASC
+    """)
+    suspend fun getEventsInRange(from: Instant, to: Instant): List<com.cooked.app.data.entity.ItemEventEntity>
+
+    @Query("""
+        SELECT * FROM items
+        WHERE status = 'DONE' AND completedAt IS NOT NULL AND completedAt >= :dayStart AND completedAt <= :dayEnd AND deletedAt IS NULL
+        ORDER BY completedAt DESC
+    """)
+    suspend fun getCompletedItemsForDay(dayStart: Instant, dayEnd: Instant): List<com.cooked.app.data.entity.ItemEntity>
 }
 
