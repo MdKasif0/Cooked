@@ -3,7 +3,16 @@ package com.cooked.app.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object HomeRoute
+object TodayTabRoute
+
+@Serializable
+object DeadlinesTabRoute
+
+@Serializable
+object InsightsTabRoute
+
+@Serializable
+object SettingsNavRoute
 
 @Serializable
 data class AddEditReminderRoute(
@@ -11,8 +20,12 @@ data class AddEditReminderRoute(
 )
 
 @Serializable
-object DeadlineDashboardRoute
+data class ReminderDetailNavRoute(
+    val reminderId: String
+)
 
 @Serializable
-object OemGuideRoute
+object OemGuideNavRoute
 
+@Serializable
+object PaywallNavRoute
