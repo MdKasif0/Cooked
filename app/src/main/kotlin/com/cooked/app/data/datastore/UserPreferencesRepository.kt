@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.domain.model.Personality
@@ -80,6 +81,12 @@ class UserPreferencesRepository @Inject constructor(
         val SOUND_CRITICAL = stringPreferencesKey("sound_critical")
         val IN_APP_SOUNDS_ENABLED = booleanPreferencesKey("in_app_sounds_enabled")
         val APP_ICON_CHOICE = stringPreferencesKey("app_icon_choice")
+        val SNITCH_SNOOZE_THRESHOLD = intPreferencesKey("snitch_snooze_threshold")
+        val SNITCH_CONTACT_NAME = stringPreferencesKey("snitch_contact_name")
+        val SNITCH_PREFERRED_APP = stringPreferencesKey("snitch_preferred_app")
+        val LIVE_COUNTDOWN_ENABLED = booleanPreferencesKey("live_countdown_enabled")
+        val CALENDAR_CAPACITY_ENABLED = booleanPreferencesKey("calendar_capacity_enabled")
+        val SELECTED_CALENDAR_IDS = stringSetPreferencesKey("selected_calendar_ids")
     }
 
     val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
@@ -105,7 +112,13 @@ class UserPreferencesRepository @Inject constructor(
             soundEscalatedNag = preferences[PreferencesKeys.SOUND_ESCALATED_NAG] ?: "sizzle_loud",
             soundCritical = preferences[PreferencesKeys.SOUND_CRITICAL] ?: "kettle",
             inAppSoundsEnabled = preferences[PreferencesKeys.IN_APP_SOUNDS_ENABLED] ?: true,
-            appIconChoice = preferences[PreferencesKeys.APP_ICON_CHOICE] ?: "DEFAULT"
+            appIconChoice = preferences[PreferencesKeys.APP_ICON_CHOICE] ?: "DEFAULT",
+            snitchSnoozeThreshold = preferences[PreferencesKeys.SNITCH_SNOOZE_THRESHOLD] ?: 3,
+            snitchContactName = preferences[PreferencesKeys.SNITCH_CONTACT_NAME] ?: "",
+            snitchPreferredApp = preferences[PreferencesKeys.SNITCH_PREFERRED_APP] ?: "whatsapp",
+            liveCountdownEnabled = preferences[PreferencesKeys.LIVE_COUNTDOWN_ENABLED] ?: true,
+            calendarCapacityEnabled = preferences[PreferencesKeys.CALENDAR_CAPACITY_ENABLED] ?: false,
+            selectedCalendarIds = preferences[PreferencesKeys.SELECTED_CALENDAR_IDS] ?: emptySet()
         )
     }
 
@@ -221,6 +234,30 @@ class UserPreferencesRepository @Inject constructor(
 
     suspend fun setAppIconChoice(choice: String) {
         context.dataStore.edit { it[PreferencesKeys.APP_ICON_CHOICE] = choice }
+    }
+
+    suspend fun setSnitchSnoozeThreshold(threshold: Int) {
+        context.dataStore.edit { it[PreferencesKeys.SNITCH_SNOOZE_THRESHOLD] = threshold }
+    }
+
+    suspend fun setSnitchContactName(name: String) {
+        context.dataStore.edit { it[PreferencesKeys.SNITCH_CONTACT_NAME] = name }
+    }
+
+    suspend fun setSnitchPreferredApp(app: String) {
+        context.dataStore.edit { it[PreferencesKeys.SNITCH_PREFERRED_APP] = app }
+    }
+
+    suspend fun setLiveCountdownEnabled(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.LIVE_COUNTDOWN_ENABLED] = enabled }
+    }
+
+    suspend fun setCalendarCapacityEnabled(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.CALENDAR_CAPACITY_ENABLED] = enabled }
+    }
+
+    suspend fun setSelectedCalendarIds(ids: Set<String>) {
+        context.dataStore.edit { it[PreferencesKeys.SELECTED_CALENDAR_IDS] = ids }
     }
 
     suspend fun resetForTesting() {

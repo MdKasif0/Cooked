@@ -107,6 +107,38 @@ class TelemetryImpl @Inject constructor(
         recordEventIfOptedIn("restore", mapOf("is_pro" to isPro.toString()))
     }
 
+    override fun logSnitchOffered() {
+        recordEventIfOptedIn("snitch_offered", emptyMap())
+    }
+
+    override fun logSnitchShared(app: String) {
+        recordEventIfOptedIn("snitch_shared", mapOf("app" to app))
+    }
+
+    override fun logScanStarted() {
+        recordEventIfOptedIn("scan_started", emptyMap())
+    }
+
+    override fun logScanItemsAdded(count: Int) {
+        recordEventIfOptedIn("scan_items_added", mapOf("count" to count.toString()))
+    }
+
+    override fun logTemplateUsed(type: String) {
+        recordEventIfOptedIn("template_used", mapOf("type" to type))
+    }
+
+    override fun logCookSessionCompleted(minutes: Int) {
+        recordEventIfOptedIn("cook_session_completed", mapOf("minutes" to minutes.toString()))
+    }
+
+    override fun logRescuePlanCreated(sessions: Int) {
+        recordEventIfOptedIn("rescue_plan_created", mapOf("sessions" to sessions.toString()))
+    }
+
+    override fun logCalendarCapacityEnabled() {
+        recordEventIfOptedIn("calendar_capacity_enabled", emptyMap())
+    }
+
     private fun recordEventIfOptedIn(eventName: String, params: Map<String, String>) {
         scope.launch {
             val enabled = preferencesRepository.userPrefs.first().telemetryEnabled

@@ -24,5 +24,15 @@ interface Telemetry {
     fun logPurchaseSuccess(planId: String)
     fun logPurchaseCancelled()
     fun logPurchaseRestored(isPro: Boolean)
+
+    // Growth v1.1 Analytics
+    fun logSnitchOffered()
+    fun logSnitchShared(app: String)
+    fun logScanStarted()
+    fun logScanItemsAdded(count: Int)
+    fun logTemplateUsed(type: String)
+    fun logCookSessionCompleted(minutes: Int)
+    fun logRescuePlanCreated(sessions: Int)
+    fun logCalendarCapacityEnabled()
 }
 
