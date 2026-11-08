@@ -48,7 +48,7 @@ class CookSessionViewModel @Inject constructor(
                         "progress" to newProgress.toString()
                     )
                 )
-                telemetry.cookSessionCompleted(sessionMinutes)
+                telemetry.logCookSessionCompleted(sessionMinutes)
             }
             onComplete()
         }

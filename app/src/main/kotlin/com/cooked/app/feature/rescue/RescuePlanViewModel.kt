@@ -85,7 +85,7 @@ class RescuePlanViewModel @Inject constructor(
         val currentState = _uiState.value
         if (currentState is RescuePlanUiState.Success) {
             viewModelScope.launch {
-                telemetry.rescuePlanCreated(currentState.plan.sessions.size)
+                telemetry.logRescuePlanCreated(currentState.plan.sessions.size)
                 itemRepository.logEvent(
                     itemId = targetItemId,
                     type = ItemEventType.STARTED,
