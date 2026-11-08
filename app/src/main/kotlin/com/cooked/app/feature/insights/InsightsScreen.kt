@@ -26,7 +26,7 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -67,11 +67,18 @@ fun InsightsScreen(
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         if (uiState.isLoading || uiState.summary == null) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = CookedTheme.spacing.screenHorizontal, vertical = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CircularProgressIndicator(color = CookedTheme.colors.primary)
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth(0.5f).height(32.dp))
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(48.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+                repeat(3) {
+                    ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(110.dp))
+                }
             }
             return
         }

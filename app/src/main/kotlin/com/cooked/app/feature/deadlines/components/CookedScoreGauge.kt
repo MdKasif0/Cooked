@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.core.designsystem.components.EggMascot
+import com.cooked.app.core.designsystem.components.RollingNumberText
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.FontFeatureSettingsTabular
 import com.cooked.app.core.designsystem.HeatLevel
@@ -64,69 +66,81 @@ fun CookedScoreGauge(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Gauge Canvas + Center readout
-        Box(
-            modifier = Modifier
-                .size(width = 240.dp, height = 135.dp),
-            contentAlignment = Alignment.BottomCenter
+        // Hero Gauge & Egg Mascot Row
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Canvas(modifier = Modifier.size(240.dp)) {
-                val strokeWidth = 18.dp.toPx()
-                val diameter = size.minDimension - strokeWidth
-                val topLeft = Offset(strokeWidth / 2f, strokeWidth / 2f)
-                val arcSize = Size(diameter, diameter)
+            Box(
+                modifier = Modifier
+                    .size(width = 200.dp, height = 120.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Canvas(modifier = Modifier.size(200.dp)) {
+                    val strokeWidth = 16.dp.toPx()
+                    val diameter = size.minDimension - strokeWidth
+                    val topLeft = Offset(strokeWidth / 2f, strokeWidth / 2f)
+                    val arcSize = Size(diameter, diameter)
 
-                // 1. Draw background track (180 degrees: from 180° to 360°)
-                drawArc(
-                    color = trackColor,
-                    startAngle = 180f,
-                    sweepAngle = 180f,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = arcSize,
-                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-                )
-
-                // 2. Draw active arc with heat gradient
-                if (animatedProgress > 0.01f) {
-                    val sweep = 180f * animatedProgress
-                    val gradient = Brush.horizontalGradient(
-                        colors = listOf(chillColor, warmColor, toastyColor, cookedColor)
-                    )
+                    // 1. Draw background track (180 degrees: from 180° to 360°)
                     drawArc(
-                        brush = gradient,
+                        color = trackColor,
                         startAngle = 180f,
-                        sweepAngle = sweep,
+                        sweepAngle = 180f,
                         useCenter = false,
                         topLeft = topLeft,
                         size = arcSize,
                         style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
                     )
+
+                    // 2. Draw active arc with heat gradient
+                    if (animatedProgress > 0.01f) {
+                        val sweep = 180f * animatedProgress
+                        val gradient = Brush.horizontalGradient(
+                            colors = listOf(chillColor, warmColor, toastyColor, cookedColor)
+                        )
+                        drawArc(
+                            brush = gradient,
+                            startAngle = 180f,
+                            sweepAngle = sweep,
+                            useCenter = false,
+                            topLeft = topLeft,
+                            size = arcSize,
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                        )
+                    }
+                }
+
+                // Center Rolling Text inside the semicircle
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                ) {
+                    RollingNumberText(
+                        number = scoreResult.score,
+                        style = CookedTheme.typography.displayLarge.copy(
+                            fontWeight = FontWeight.Black,
+                            lineHeight = 44.sp
+                        ),
+                        color = CookedTheme.colors.onSurface
+                    )
+                    Text(
+                        text = scoreResult.label.uppercase(),
+                        style = CookedTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = activeColor,
+                        letterSpacing = 1.2.sp
+                    )
                 }
             }
 
-            // Center Text inside the semicircle
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 6.dp)
-            ) {
-                Text(
-                    text = "${scoreResult.score}",
-                    style = CookedTheme.typography.displayLarge.copy(
-                        fontFeatureSettings = FontFeatureSettingsTabular
-                    ),
-                    color = CookedTheme.colors.onSurface,
-                    fontWeight = FontWeight.Black,
-                    lineHeight = 48.sp
-                )
-                Text(
-                    text = scoreResult.label.uppercase(),
-                    style = CookedTheme.typography.labelSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = activeColor,
-                    letterSpacing = 1.2.sp
-                )
-            }
+            Spacer(modifier = Modifier.width(14.dp))
+
+            EggMascot(
+                level = scoreResult.heatLevel,
+                size = 72.dp
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,11 +35,16 @@ fun DeadlinesScreen(
 ) {
     if (uiState.isLoading) {
         Column(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = CookedTheme.spacing.screenHorizontal, vertical = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            CircularProgressIndicator(color = CookedTheme.colors.primary)
+            ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(160.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            repeat(3) {
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(90.dp))
+            }
         }
         return
     }

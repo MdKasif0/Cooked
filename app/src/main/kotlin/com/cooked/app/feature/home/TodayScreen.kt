@@ -33,7 +33,8 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Snooze
-import androidx.compose.material3.CircularProgressIndicator
+import com.cooked.app.core.designsystem.components.EggMascot
+import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -83,11 +84,18 @@ fun TodayScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         if (uiState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = CookedTheme.spacing.screenHorizontal, vertical = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CircularProgressIndicator(color = CookedTheme.colors.primary)
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth(0.6f).height(32.dp))
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth(0.4f).height(18.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+                repeat(4) {
+                    ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(68.dp))
+                }
             }
         } else {
             LazyColumn(
@@ -97,25 +105,38 @@ fun TodayScreen(
                 verticalArrangement = Arrangement.spacedBy(14.dp),
                 contentPadding = PaddingValues(top = 12.dp, bottom = 100.dp)
             ) {
-                // Large Collapsing Title Header with Date & Voice Status
+                // Large Collapsing Title Header with Date, Voice Status & Egg Mascot
                 item(key = "today_header") {
-                    Column(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = uiState.dateTitle,
-                            style = CookedTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.Black
-                            ),
-                            color = CookedTheme.colors.onBackground
-                        )
-                        Text(
-                            text = uiState.voiceStatus,
-                            style = CookedTheme.typography.bodyLarge,
-                            color = CookedTheme.colors.onSurfaceVariant
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = uiState.dateTitle,
+                                style = CookedTheme.typography.headlineMedium.copy(
+                                    fontWeight = FontWeight.Black
+                                ),
+                                color = CookedTheme.colors.onBackground
+                            )
+                            Text(
+                                text = uiState.voiceStatus,
+                                style = CookedTheme.typography.bodyLarge,
+                                color = CookedTheme.colors.onSurfaceVariant
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        EggMascot(
+                            level = uiState.hottestDeadlines.firstOrNull()?.heatLevel ?: HeatLevel.CHILL,
+                            size = 52.dp
                         )
                     }
                 }
