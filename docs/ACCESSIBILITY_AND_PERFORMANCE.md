@@ -62,3 +62,4 @@ Cooked's release builds use aggressive R8 optimization with full shrinking and o
 - **Glance AppWidgets**: Classes extending `GlanceAppWidget` and `ActionCallback` are preserved so launcher widgets function without crashes.
 - **RevenueCat & Play Billing**: Google Play Billing API interfaces are explicitly preserved to prevent payment callbacks from failing in production.
 - **Kotlinx Serialization**: Serializer companion classes are preserved to guarantee JSON backup export/import integrity.
+

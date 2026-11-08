@@ -20,3 +20,4 @@ interface EntitlementRepository {
     suspend fun refresh()
     suspend fun setLocalProForTesting(enabled: Boolean)
 }
+

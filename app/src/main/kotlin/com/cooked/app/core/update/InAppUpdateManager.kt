@@ -79,3 +79,4 @@ class InAppUpdateManager @Inject constructor(
         } catch (_: Exception) {}
     }
 }
+

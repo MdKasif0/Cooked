@@ -192,3 +192,4 @@ class PaywallViewModelTest {
         assertThat(state.errorMessage).contains("No active subscription")
     }
 }
+

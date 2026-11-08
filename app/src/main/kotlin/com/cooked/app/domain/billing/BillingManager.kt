@@ -34,3 +34,4 @@ interface BillingManager {
     suspend fun purchase(activity: Activity, plan: SubscriptionPlan): PurchaseResult
     suspend fun restorePurchases(): Result<Boolean>
 }
+

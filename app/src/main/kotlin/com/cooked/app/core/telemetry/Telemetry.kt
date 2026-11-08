@@ -25,3 +25,4 @@ interface Telemetry {
     fun logPurchaseCancelled()
     fun logPurchaseRestored(isPro: Boolean)
 }
+

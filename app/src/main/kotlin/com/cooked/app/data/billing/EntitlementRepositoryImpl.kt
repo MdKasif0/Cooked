@@ -95,3 +95,4 @@ class EntitlementRepositoryImpl @Inject constructor(
         return isActive
     }
 }
+

@@ -93,3 +93,4 @@ No artificial streaks that reset when life happens. Cooked gives you Spotify Wra
 
 - **Global**: *"Persistent, heat-driven deadline countdowns built for ADHD minds and serial procrastinators. Reminders that refuse to be ignored."*
 - **India**: *"Beat last-minute college submissions, GATE/CAT prep, and freelance project deadlines. Persistent reminders that yap until you finish."*
+

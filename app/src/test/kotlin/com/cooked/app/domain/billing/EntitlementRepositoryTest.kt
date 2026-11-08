@@ -51,3 +51,4 @@ class EntitlementRepositoryTest {
         assertThat(issue).isNull()
     }
 }
+

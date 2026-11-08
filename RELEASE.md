@@ -185,3 +185,4 @@ Cooked Pro features are unlocked via RevenueCat integration (`com.cooked.app.dat
 | **06** | Data Safety and Privacy Policy docs ready | ✅ Completed |
 | **07** | Store listing copy and screenshot specs ready | ✅ Completed |
 | **08** | Ready for Play Console submission | 🚀 Ready |
+

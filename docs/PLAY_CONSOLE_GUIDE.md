@@ -88,3 +88,4 @@ For personal Google Play accounts, Google requires **12+ testers enrolled for at
 5. Share the opt-in link (`https://play.google.com/apps/testing/com.cooked.app`).
 6. Verify all 12 testers install the app and leave feedback.
 7. After 14 days, click **Apply for Production**.
+
