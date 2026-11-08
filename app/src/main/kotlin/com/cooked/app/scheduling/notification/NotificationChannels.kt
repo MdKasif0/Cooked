@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 
@@ -21,8 +22,9 @@ object NotificationChannels {
 
         val notificationManager = context.getSystemService(NotificationManager::class.java) ?: return
 
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val softSizzleSound = Uri.parse("android.resource://${context.packageName}/${com.cooked.app.R.raw.sizzle_soft}")
+        val loudSizzleSound = Uri.parse("android.resource://${context.packageName}/${com.cooked.app.R.raw.sizzle_loud}")
+        val kettleSound = Uri.parse("android.resource://${context.packageName}/${com.cooked.app.R.raw.kettle}")
 
         val alarmAudioAttributes = AudioAttributes.Builder()
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -34,7 +36,7 @@ object NotificationChannels {
             .setUsage(AudioAttributes.USAGE_NOTIFICATION)
             .build()
 
-        // 1. reminders_normal
+        // 1. reminders_normal -> sizzle_soft
         val normalChannel = NotificationChannel(
             CHANNEL_REMINDERS_NORMAL,
             "Reminders (Normal)",
@@ -43,10 +45,10 @@ object NotificationChannels {
             description = "Standard reminder notifications"
             enableVibration(true)
             vibrationPattern = longArrayOf(0, 300, 200, 300)
-            setSound(notificationSound, notificationAudioAttributes)
+            setSound(softSizzleSound, notificationAudioAttributes)
         }
 
-        // 2. reminders_loud
+        // 2. reminders_loud -> sizzle_loud
         val loudChannel = NotificationChannel(
             CHANNEL_REMINDERS_LOUD,
             "Reminders (Loud)",
@@ -55,10 +57,10 @@ object NotificationChannels {
             description = "Escalated persistent reminders for tasks you have ignored"
             enableVibration(true)
             vibrationPattern = longArrayOf(0, 600, 200, 600, 200, 1000)
-            setSound(alarmSound, alarmAudioAttributes)
+            setSound(loudSizzleSound, alarmAudioAttributes)
         }
 
-        // 3. critical_alarm
+        // 3. critical_alarm -> kettle
         val criticalChannel = NotificationChannel(
             CHANNEL_CRITICAL_ALARM,
             "Critical Alarms",
@@ -67,11 +69,11 @@ object NotificationChannels {
             description = "High urgency alarms for critical commitments and final call notifications"
             enableVibration(true)
             vibrationPattern = longArrayOf(0, 800, 200, 800, 200, 800, 200, 1200)
-            setSound(alarmSound, alarmAudioAttributes)
+            setSound(kettleSound, alarmAudioAttributes)
             setBypassDnd(true)
         }
 
-        // 4. deadline_pressure
+        // 4. deadline_pressure -> sizzle_soft
         val deadlineChannel = NotificationChannel(
             CHANNEL_DEADLINE_PRESSURE,
             "Deadline Pressure",
@@ -80,7 +82,7 @@ object NotificationChannels {
             description = "Upcoming deadline countdown warnings and effort ramp alerts"
             enableVibration(true)
             vibrationPattern = longArrayOf(0, 400, 200, 400)
-            setSound(notificationSound, notificationAudioAttributes)
+            setSound(softSizzleSound, notificationAudioAttributes)
         }
 
         // 5. system

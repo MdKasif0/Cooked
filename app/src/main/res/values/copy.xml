@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- =================================================================== -->
+    <!-- COOKED COPY BIBLE: res/values/copy.xml                              -->
+    <!-- Rule 1: Short. Lowercase allowed in notifications, sentence case in UI -->
+    <!-- Rule 2: Specific beats generic ({title}, {count}, {time})           -->
+    <!-- Rule 3: Max one emoji per line: 💀, 🔥, 🥚, 👀, 🥺, 🫡, 🍳           -->
+    <!-- Rule 4: Roast the task, never the person. No shame.                 -->
+    <!-- Rule 5: NO banned words (productivity, game-changer, seamless, etc.)-->
+    <!-- Every key has 3 deliberate options marked with TODO for user pick.  -->
+    <!-- =================================================================== -->
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: NOTIFICATIONS (STAGE 1: FIRST ALERT)                       -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "{title} is due now. 🍳" -->
+    <!-- Option 2: "time for {title}." -->
+    <!-- Option 3: "starting {title} now." -->
+    <string name="notif_mild_first">{title} is due now. 🍳</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Clock's ticking on {title}. 🔥" -->
+    <!-- Option 2: "alright, it's go time: {title}." -->
+    <!-- Option 3: "you said you'd do {title}." -->
+    <string name="notif_spicy_first">Clock\'s ticking on {title}. 🔥</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "THE EGG DEMANDS: {title}. 🥚" -->
+    <!-- Option 2: "wake up bestie, {title} is due. 💀" -->
+    <!-- Option 3: "drop everything, {title} is here." -->
+    <string name="notif_unhinged_first">THE EGG DEMANDS: {title}. 🥚</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: NOTIFICATIONS (STAGE 2: NAG EARLY - NAGS 1-2)              -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "still on your list: {title}." -->
+    <!-- Option 2: "friendly check-in on {title}. 🥚" -->
+    <!-- Option 3: "waiting on {title}." -->
+    <string name="notif_mild_early">still on your list: {title}.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "me again. {title} isn't doing itself. 👀" -->
+    <!-- Option 2: "swiping me away won't finish {title}." -->
+    <!-- Option 3: "still yapping about {title}." -->
+    <string name="notif_spicy_early">me again. {title} isn\'t doing itself. 👀</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "I LIVE IN YOUR NOTIFICATION SHADE: {title}. 💀" -->
+    <!-- Option 2: "swiping only makes me stronger: {title}. 🔥" -->
+    <!-- Option 3: "you cannot escape {title}. 🥚" -->
+    <string name="notif_unhinged_early">I LIVE IN YOUR NOTIFICATION SHADE: {title}. 💀</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: NOTIFICATIONS (STAGE 3: NAG PERSISTENT - NAGS 3-4)         -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "keeping {title} on your radar. 🍳" -->
+    <!-- Option 2: "please take a moment for {title}." -->
+    <!-- Option 3: "second follow-up for {title}." -->
+    <string name="notif_mild_persistent">keeping {title} on your radar. 🍳</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "bro, do {title} already. 🔥" -->
+    <!-- Option 2: "the skillet is getting hot: {title}." -->
+    <!-- Option 3: "just tap Done on {title} and I leave." -->
+    <string name="notif_spicy_persistent">bro, do {title} already. 🔥</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "ARE WE SPIRITUALLY ALLERGIC TO {title}? 💀" -->
+    <!-- Option 2: "I WILL VIBRATE YOUR POCKET TO ASHES: {title}. 🔥" -->
+    <!-- Option 3: "THE COOKED SCORE IS SIZZLING. DO {title}. 🥚" -->
+    <string name="notif_unhinged_persistent">ARE WE SPIRITUALLY ALLERGIC TO {title}? 💀</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: NOTIFICATIONS (STAGE 4: FINAL CALL / CRITICAL)             -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Important: {title} is now overdue." -->
+    <!-- Option 2: "Final call for {title}. 🫡" -->
+    <!-- Option 3: "Urgent commitment: {title}." -->
+    <string name="notif_mild_final">Important: {title} is now overdue.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "DEFCON 1: {title} is officially burning. 🔥" -->
+    <!-- Option 2: "You are getting cooked by {title}." -->
+    <!-- Option 3: "Lock in right now. {title}." -->
+    <string name="notif_spicy_final">DEFCON 1: {title} is officially burning. 🔥</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}. 💀" -->
+    <!-- Option 2: "FULL CODE RED CRISPY MELTDOWN: {title}. 🔥" -->
+    <!-- Option 3: "DO {title} OR I LEARN HOW TO WALK. 🥚" -->
+    <string name="notif_unhinged_final">ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}. 💀</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: EMPTY STATES                                               -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Nothing due. Suspiciously calm." -->
+    <!-- Option 2: "All clear. The pan is cool." -->
+    <!-- Option 3: "Zero fires right now." -->
+    <string name="empty_today_title">Nothing due. Suspiciously calm.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "No active reminders. Add one before life sneaks up on you." -->
+    <!-- Option 2: "Enjoy the chill before things start sizzling." -->
+    <!-- Option 3: "The schedule is empty. Add a task or touch grass." -->
+    <string name="empty_today_subtitle">No active reminders. Add one before life sneaks up on you.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "All clear!" -->
+    <!-- Option 2: "No deadlines looming." -->
+    <!-- Option 3: "Safe zone." -->
+    <string name="empty_deadlines_title">All clear!</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "No deadlines. Either you're on top of life or you haven't added them yet." -->
+    <!-- Option 2: "Nothing cooking. Drop big deadlines here to track heat." -->
+    <!-- Option 3: "Zero ticking clocks. Add exams, submissions, or projects." -->
+    <string name="empty_deadlines_subtitle">No deadlines. Either you\'re on top of life or you haven\'t added them yet.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Data skillet is warming up." -->
+    <!-- Option 2: "Waiting on first completions." -->
+    <!-- Option 3: "Insights need fuel." -->
+    <string name="empty_insights_title">Data skillet is warming up.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Complete a few tasks this week to unlock your completion tapestry and snooze patterns." -->
+    <!-- Option 2: "Check off your first 3 items to reveal your true productivity rhythm." -->
+    <!-- Option 3: "Finish tasks to see when you cave and what day you peak." -->
+    <string name="empty_insights_subtitle">Complete a few tasks this week to unlock your completion tapestry and snooze patterns.</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: TOASTS & SNACKBARS                                         -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Locked in. I'll yap at {time}." -->
+    <!-- Option 2: "Got it. Alert set for {time}. 🍳" -->
+    <!-- Option 3: "Saved. Timer begins for {time}." -->
+    <string name="toast_item_saved">Locked in. I\'ll yap at {time}.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Cooked another one. Nice." -->
+    <!-- Option 2: "Checked off. One less fire. 🫡" -->
+    <!-- Option 3: "Task finished. Respect." -->
+    <string name="toast_item_done">Cooked another one. Nice.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Snoozed for {duration}. I will be back. 👀" -->
+    <!-- Option 2: "Borrowed time. See you in {duration}." -->
+    <!-- Option 3: "Pushed by {duration}. Don't get comfortable." -->
+    <string name="toast_item_snoozed">Snoozed for {duration}. I will be back. 👀</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Restored {title}." -->
+    <!-- Option 2: "Put {title} back on the burner." -->
+    <!-- Option 3: "Undo successful for {title}." -->
+    <string name="toast_item_undone">Restored {title}.</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: ONBOARDING                                                 -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Reminders that won't shut up." -->
+    <!-- Option 2: "Persistent reminders that refuse to be ignored." -->
+    <!-- Option 3: "Stop procrastinating. Start finishing." -->
+    <string name="onboarding_hook_title">Reminders that won\'t shut up.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Cooked nag-alerts you until you actually tap Done. Swiping it away does nothing. So you're never cooked." -->
+    <!-- Option 2: "Standard reminder apps chime once and let you fail. Cooked keeps yapping until you conquer the task." -->
+    <!-- Option 3: "A persistent alarm system built for ADHD minds and serial procrastinators." -->
+    <string name="onboarding_hook_desc">Cooked nag-alerts you until you actually tap Done. Swiping it away does nothing. So you\'re never cooked.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Let's not be cooked →" -->
+    <!-- Option 2: "Set up Cooked →" -->
+    <!-- Option 3: "Get moving →" -->
+    <string name="onboarding_hook_cta">Let\'s not be cooked →</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: PAYWALL                                                    -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Never be cooked again." -->
+    <!-- Option 2: "Outrun every deadline." -->
+    <!-- Option 3: "The nuclear option for procrastination." -->
+    <string name="paywall_headline">Never be cooked again.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Everything in Free forever, plus full-screen alarm escalation, deep insights, and live countdown widgets." -->
+    <!-- Option 2: "Free handles daily tasks. Pro unlocks waking alarm escalation, 90-day analytics, and live home widgets." -->
+    <!-- Option 3: "Upgrade for custom nag cadences, full-screen takeover alarms, and unhinged voice packs." -->
+    <string name="paywall_subhead">Everything in Free forever, plus full-screen alarm escalation, deep insights, and live countdown widgets.</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: ERRORS & WARNINGS                                          -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "Cooked might stay silent. Tap to fix exact alarms & battery settings." -->
+    <!-- Option 2: "Alarms are blocked by Android battery savings. Tap to fix." -->
+    <!-- Option 3: "Reliability check needed: enable exact alarms so we don't miss alerts." -->
+    <string name="error_exact_alarm_warning">Cooked might stay silent. Tap to fix exact alarms &amp; battery settings.</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: INSIGHTS PHRASING                                          -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "You usually cave after {count} nags." -->
+    <!-- Option 2: "Resistance breaks down after {count} nudges." -->
+    <!-- Option 3: "Average surrender rate: {count} alerts before Done." -->
+    <string name="insights_nags_per_win">You usually cave after {count} nags.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "When late, you're ~{minutes}m late. Respectable." -->
+    <!-- Option 2: "Average tardiness: {minutes} minutes behind schedule." -->
+    <!-- Option 3: "Late by ~{minutes}m. Not catastrophic, but warm." -->
+    <string name="insights_lateness_median">When late, you\'re ~{minutes}m late. Respectable.</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "{weekday} is your power day ({rate}% on time)." -->
+    <!-- Option 2: "You lock in hardest on {weekday}s." -->
+    <!-- Option 3: "Peak discipline: {weekday}s with {rate}% on-time rate." -->
+    <string name="insights_best_weekday">{weekday} is your power day ({rate}% on time).</string>
+
+    <!-- =================================================================== -->
+    <!-- SURFACE: HINGLISH VIBES (values-hi-rLatn / In-app Toggle)           -->
+    <!-- =================================================================== -->
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "bhai, {title} ka time ho gaya. nipta le! 🍳" -->
+    <!-- Option 2: "sun bhai: {title} abhi baaki hai." -->
+    <!-- Option 3: "time aa gaya: {title}." -->
+    <string name="hinglish_notif_first">bhai, {title} ka time ho gaya. nipta le! 🍳</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "abhi bhi pending? {title} khud nahi hone wala. 👀" -->
+    <!-- Option 2: "swipe karne se {title} khatam nahi hoga bhai." -->
+    <!-- Option 3: "wapas aa gaya: {title}." -->
+    <string name="hinglish_notif_early">abhi bhi pending? {title} khud nahi hone wala. 👀</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "kuch toh sharam kar, {title} kab karega? 💀" -->
+    <!-- Option 2: "bohot procrastination ho gaya: {title} nipta." -->
+    <!-- Option 3: "skillet garam ho raha hai: {title}." -->
+    <string name="hinglish_notif_persistent">kuch toh sharam kar, {title} kab karega? 💀</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "FULL COOKED! abhi ke abhi {title} khatam kar! 🔥" -->
+    <!-- Option 2: "aakhri mauka bhai, {title} jal raha hai." -->
+    <!-- Option 3: "phone rakh aur {title} karle pehle." -->
+    <string name="hinglish_notif_final">FULL COOKED! abhi ke abhi {title} khatam kar! 🔥</string>
+
+    <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
+    <!-- Option 1: "kuch pending nahi hai. shaanti hi shaanti." -->
+    <!-- Option 2: "sab chill hai bro. aaraam kar." -->
+    <!-- Option 3: "zero tension. pan bilkul thanda hai." -->
+    <string name="hinglish_empty_today">kuch pending nahi hai. shaanti hi shaanti.</string>
+
+</resources>
