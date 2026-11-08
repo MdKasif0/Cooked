@@ -16,6 +16,7 @@ object NotificationChannels {
     const val CHANNEL_CRITICAL_ALARM = "critical_alarm"
     const val CHANNEL_DEADLINE_PRESSURE = "deadline_pressure"
     const val CHANNEL_SYSTEM = "system"
+    const val CHANNEL_LIVE_COUNTDOWN = "live_countdown"
 
     fun createChannels(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
@@ -96,8 +97,20 @@ object NotificationChannels {
             setSound(null, null)
         }
 
+        // 6. live_countdown
+        val liveCountdownChannel = NotificationChannel(
+            CHANNEL_LIVE_COUNTDOWN,
+            "Live Countdowns & Sessions",
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = "Ongoing countdowns for deadlines due soon and active Cook Sessions"
+            enableVibration(false)
+            setSound(null, null)
+            setShowBadge(false)
+        }
+
         notificationManager.createNotificationChannels(
-            listOf(normalChannel, loudChannel, criticalChannel, deadlineChannel, systemChannel)
+            listOf(normalChannel, loudChannel, criticalChannel, deadlineChannel, systemChannel, liveCountdownChannel)
         )
     }
 
