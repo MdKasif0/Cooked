@@ -100,6 +100,14 @@ class PaywallViewModelTest {
         override fun logPurchaseSuccess(planId: String) { purchaseSuccessLogged = planId }
         override fun logPurchaseCancelled() {}
         override fun logPurchaseRestored(isPro: Boolean) {}
+        override fun logSnitchOffered() {}
+        override fun logSnitchShared(app: String) {}
+        override fun logScanStarted() {}
+        override fun logScanItemsAdded(count: Int) {}
+        override fun logTemplateUsed(type: String) {}
+        override fun logCookSessionCompleted(minutes: Int) {}
+        override fun logRescuePlanCreated(sessions: Int) {}
+        override fun logCalendarCapacityEnabled() {}
     }
 
     @Before

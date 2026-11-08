@@ -30,20 +30,20 @@ class HeatCalculatorCalendarTest {
             title = "Machine Learning Assignment",
             dueAt = dueAt,
             allDay = false,
+            timeZoneId = zone.id,
             kind = ItemKind.DEADLINE,
             effortMinutes = 180,
             progress = 0
         )
 
         // Without calendar busy blocks:
-        val freeResult = HeatCalculator.calculateHeat(
+        val freeResult = HeatCalculator.calculate(
             item = item,
             now = now,
             dailyCapacityMinutes = 720,
             quietHoursStart = LocalTime.of(22, 0),
             quietHoursEnd = LocalTime.of(8, 0),
-            zone = zone,
-            calendarBusyBlocks = emptyList()
+            calendarBusyBlocks = emptyList<TimeBlock>()
         )
 
         // With calendar busy block: user has lectures from 10:00 to 18:00 (8 hours = 480 mins busy)
@@ -53,13 +53,12 @@ class HeatCalculatorCalendarTest {
             title = "University Lectures"
         )
 
-        val busyResult = HeatCalculator.calculateHeat(
+        val busyResult = HeatCalculator.calculate(
             item = item,
             now = now,
             dailyCapacityMinutes = 720,
             quietHoursStart = LocalTime.of(22, 0),
             quietHoursEnd = LocalTime.of(8, 0),
-            zone = zone,
             calendarBusyBlocks = listOf(busyBlock)
         )
 

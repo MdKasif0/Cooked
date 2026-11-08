@@ -45,15 +45,17 @@ class SnitchActivity : ComponentActivity() {
                 return@launch
             }
 
+            val nagCount = itemRepository.getNagCount(item.id)
             val prefs = userPreferencesRepository.userPrefs.first()
             telemetry.logSnitchOffered()
             itemRepository.logEvent(item.id, ItemEventType.SNITCH_OFFERED)
 
             setContent {
+                @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
                 CookedTheme(darkTheme = androidx.compose.foundation.isSystemInDarkTheme()) {
                     SnitchBottomSheet(
                         item = item,
-                        snoozeCount = item.snoozeCount.coerceAtLeast(prefs.snitchSnoozeThreshold),
+                        snoozeCount = nagCount.coerceAtLeast(prefs.snitchSnoozeThreshold),
                         personality = prefs.personality,
                         contactName = prefs.snitchContactName,
                         preferredApp = prefs.snitchPreferredApp,
