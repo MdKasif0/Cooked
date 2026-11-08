@@ -1,5 +1,6 @@
 package com.cooked.app.widget
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
@@ -55,6 +56,7 @@ class QuickAddTileService : TileService() {
         }
     }
 
+    @SuppressLint("StartActivityAndCollapseDeprecated")
     override fun onClick() {
         super.onClick()
         val intent = Intent(this, QuickAddActivity::class.java).apply {
