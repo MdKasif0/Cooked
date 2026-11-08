@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:43:48.542Z" hostname="MDs-MacBook-Air.local" time="0.001">
+<testsuite name="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:59:38.340Z" hostname="MDs-MacBook-Air.local" time="0.0">
   <properties/>
   <testcase name="when overdue, pressure is CRISPY" classname="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" time="0.0"/>
   <testcase name="when remaining time is less than estimated effort, pressure is CRISPY" classname="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" time="0.0"/>

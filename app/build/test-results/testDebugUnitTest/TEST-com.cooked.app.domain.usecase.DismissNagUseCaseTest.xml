@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.cooked.app.domain.usecase.DismissNagUseCaseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:43:48.544Z" hostname="MDs-MacBook-Air.local" time="0.809">
+<testsuite name="com.cooked.app.domain.usecase.DismissNagUseCaseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:59:38.342Z" hostname="MDs-MacBook-Air.local" time="0.751">
   <properties/>
-  <testcase name="dismissing notification re-arms nag alarm when not completed" classname="com.cooked.app.domain.usecase.DismissNagUseCaseTest" time="0.799"/>
-  <testcase name="dismissing completed reminder does not re-arm nag alarm" classname="com.cooked.app.domain.usecase.DismissNagUseCaseTest" time="0.01"/>
+  <testcase name="dismissing notification re-arms nag alarm when not completed" classname="com.cooked.app.domain.usecase.DismissNagUseCaseTest" time="0.738"/>
+  <testcase name="dismissing completed reminder does not re-arm nag alarm" classname="com.cooked.app.domain.usecase.DismissNagUseCaseTest" time="0.013"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/mdkasifuddin/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.17/e3c251a39dc90badaf71c83427ba46840f219d8d/byte-buddy-agent-1.14.17.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
-Nov 08, 2026 8:13:49 PM io.mockk.impl.log.JULLogger warn
+Nov 08, 2026 8:29:39 PM io.mockk.impl.log.JULLogger warn
 WARNING: Failed to transform class java/lang/Object
 java.lang.IllegalArgumentException: Java 25 (69) is not supported by the current version of Byte Buddy which officially supports Java 23 (67) - update Byte Buddy or set net.bytebuddy.experimental as a VM property
 	at net.bytebuddy.utility.OpenedClassReader.of(OpenedClassReader.java:100)
@@ -54,10 +54,10 @@ java.lang.IllegalArgumentException: Java 25 (69) is not supported by the current
 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
-	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
-	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
 	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
-	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
 	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
 	at io.mockk.InternalPlatformDsl.runCoroutine(InternalPlatformDsl.kt:22)
 	at io.mockk.impl.eval.RecordedBlockEvaluator$record$block$2.invoke(RecordedBlockEvaluator.kt:27)
@@ -79,10 +79,10 @@ java.lang.IllegalArgumentException: Java 25 (69) is not supported by the current
 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
-	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
-	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
 	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
-	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
 	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
 	at kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)
 	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)
