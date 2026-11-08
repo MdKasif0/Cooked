@@ -32,3 +32,4 @@ data class AnalyticsSummary(
     val totalSamples: Int
         get() = doneCount
 }
+

@@ -8,3 +8,4 @@ data class GeneratedInsight(
     val sparklinePoints: List<Float> = emptyList(),
     val numbers: Map<String, Any> = emptyMap()
 )
+

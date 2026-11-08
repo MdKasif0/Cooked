@@ -11,3 +11,4 @@ data class WeeklySnapshotEntity(
     val cookedScore: Int,
     val recordedAt: Instant
 )
+

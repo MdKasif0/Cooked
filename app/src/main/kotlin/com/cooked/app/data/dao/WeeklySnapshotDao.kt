@@ -21,3 +21,4 @@ interface WeeklySnapshotDao {
     @Query("SELECT * FROM weekly_snapshots WHERE weekStartEpochDay = :weekStart")
     suspend fun getSnapshot(weekStart: Long): WeeklySnapshotEntity?
 }
+

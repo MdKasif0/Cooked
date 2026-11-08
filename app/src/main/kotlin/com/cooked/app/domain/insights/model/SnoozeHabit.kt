@@ -7,3 +7,4 @@ data class SnoozeHabit(
     val mostSnoozedItemTitle: String? = null,
     val mostSnoozedCount: Int = 0
 )
+

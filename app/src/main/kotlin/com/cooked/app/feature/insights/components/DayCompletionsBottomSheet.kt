@@ -145,3 +145,4 @@ fun DayCompletionsBottomSheet(
         }
     }
 }
+

@@ -10,3 +10,4 @@ enum class InsightRange(
     MONTHS_90D("90d", 90, isPro = true),
     ALL("All", 365, isPro = true)
 }
+

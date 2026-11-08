@@ -542,3 +542,4 @@ private fun drawCard(
     }
     canvas.drawText(desc, left + 40f, top + 196f, descPaint)
 }
+

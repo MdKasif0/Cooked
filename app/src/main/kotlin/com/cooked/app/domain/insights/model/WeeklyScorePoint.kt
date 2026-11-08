@@ -8,3 +8,4 @@ data class WeeklyScorePoint(
     val score: Int,
     val isCurrentWeek: Boolean
 )
+

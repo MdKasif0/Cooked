@@ -247,3 +247,4 @@ class AnalyticsCalculatorTest {
         assertEquals(DayOfWeek.MONDAY, summary5.bestWeekday)
     }
 }
+
