@@ -36,7 +36,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.EditCalendar
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.Repeat
-import androidx.compose.material.icons.rounded.Send
+import androidx.compose.material.icons.automirrored.rounded.Send
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -240,20 +240,25 @@ fun QuickAddBottomSheet(
             }
 
             // Syntax Highlighting Visual Transformation
+            val primaryColor = CookedTheme.colors.primary
+            val chillColor = CookedTheme.colors.heatFor(HeatLevel.CHILL).color
+            val warmColor = CookedTheme.colors.heatFor(HeatLevel.WARM).color
+            val cookedColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
+
             val visualTransformation = remember(
                 uiState.parsedResult?.tokens,
-                CookedTheme.colors.primary,
-                CookedTheme.colors.heatFor(HeatLevel.CHILL).color,
-                CookedTheme.colors.heatFor(HeatLevel.WARM).color,
-                CookedTheme.colors.heatFor(HeatLevel.COOKED).color
+                primaryColor,
+                chillColor,
+                warmColor,
+                cookedColor
             ) {
                 QuickAddVisualTransformation(
                     tokens = uiState.parsedResult?.tokens ?: emptyList(),
-                    timeColor = CookedTheme.colors.primary,
-                    recurrenceColor = CookedTheme.colors.heatFor(HeatLevel.CHILL).color,
-                    effortColor = CookedTheme.colors.heatFor(HeatLevel.WARM).color,
-                    criticalColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color,
-                    deadlineColor = CookedTheme.colors.primary
+                    timeColor = primaryColor,
+                    recurrenceColor = chillColor,
+                    effortColor = warmColor,
+                    criticalColor = cookedColor,
+                    deadlineColor = primaryColor
                 )
             }
 
@@ -476,7 +481,7 @@ fun QuickAddBottomSheet(
                         )
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.Send,
+                        imageVector = Icons.AutoMirrored.Rounded.Send,
                         contentDescription = "Save",
                         tint = if (uiState.canSave) CookedTheme.colors.onPrimary else CookedTheme.colors.onSurfaceVariant.copy(alpha = 0.4f)
                     )
@@ -572,6 +577,8 @@ private fun buildPreviewText(uiState: QuickAddUiState): String {
         Recurrence.Weekdays -> parts.add("🔁 Weekdays")
         is Recurrence.Weekly -> parts.add("🔁 Weekly")
         is Recurrence.Monthly -> parts.add("🔁 Monthly")
+        is Recurrence.EveryNDays -> parts.add("🔁 Every ${rec.n}d")
+        Recurrence.Yearly -> parts.add("🔁 Yearly")
         null -> {}
     }
 

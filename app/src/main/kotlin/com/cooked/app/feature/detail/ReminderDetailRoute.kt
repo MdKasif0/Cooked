@@ -18,6 +18,14 @@ fun ReminderDetailRoute(
     ReminderDetailScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onTitleChanged = viewModel::onTitleChanged,
+        onEmojiSelected = viewModel::onEmojiSelected,
+        onDueAtChanged = viewModel::onDueAtChanged,
+        onRecurrenceChanged = viewModel::onRecurrenceChanged,
+        onNagIntervalChanged = viewModel::onNagIntervalChanged,
+        onEscalateToggle = viewModel::onEscalateToggle,
+        onCriticalToggle = viewModel::onCriticalToggle,
+        onNoteChanged = viewModel::onNoteChanged,
         onProgressChanged = viewModel::onProgressChanged,
         onEffortSelected = viewModel::onEffortSelected,
         onToggleChecklistStep = viewModel::onToggleChecklistStep,
@@ -25,6 +33,8 @@ fun ReminderDetailRoute(
         onDeleteChecklistStep = viewModel::onDeleteChecklistStep,
         onPushDeadline = viewModel::onPushDeadline,
         onShowRescheduleSheet = viewModel::setShowRescheduleSheet,
+        onShowEmojiPicker = viewModel::setShowEmojiPicker,
+        onShowDatePicker = viewModel::setShowDatePicker,
         onMarkDone = viewModel::onMarkDone,
         onDelete = viewModel::onDelete,
         modifier = modifier

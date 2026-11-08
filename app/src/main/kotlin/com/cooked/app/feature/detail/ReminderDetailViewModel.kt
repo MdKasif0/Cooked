@@ -8,7 +8,9 @@ import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.deadline.HeatCalculator
 import com.cooked.app.domain.model.ChecklistStep
 import com.cooked.app.domain.model.Item
+import com.cooked.app.domain.model.ItemEvent
 import com.cooked.app.domain.model.ItemEventType
+import com.cooked.app.domain.model.Recurrence
 import com.cooked.app.domain.repository.ItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,13 +35,27 @@ class ReminderDetailViewModel @Inject constructor(
     private val reminderId: String = checkNotNull(savedStateHandle["reminderId"])
     private val _isProgressManuallyOverridden = MutableStateFlow(false)
     private val _showRescheduleSheet = MutableStateFlow(false)
+    private val _showEmojiPicker = MutableStateFlow(false)
+    private val _showDatePicker = MutableStateFlow(false)
 
     val uiState: StateFlow<ReminderDetailUiState> = combine(
         itemRepository.observeItem(reminderId),
+        itemRepository.observeEvents(reminderId),
         userPreferencesRepository.userPrefs,
         _isProgressManuallyOverridden,
-        _showRescheduleSheet
-    ) { item, prefs, manuallyOverridden, showReschedule ->
+        _showRescheduleSheet,
+        _showEmojiPicker,
+        _showDatePicker
+    ) { args ->
+        val item = args[0] as Item?
+        @Suppress("UNCHECKED_CAST")
+        val events = args[1] as List<ItemEvent>
+        val prefs = args[2] as com.cooked.app.data.datastore.UserPrefs
+        val manuallyOverridden = args[3] as Boolean
+        val showReschedule = args[4] as Boolean
+        val showEmoji = args[5] as Boolean
+        val showDate = args[6] as Boolean
+
         if (item == null) {
             ReminderDetailUiState(isLoading = false, isDeleted = true)
         } else {
@@ -70,11 +86,14 @@ class ReminderDetailViewModel @Inject constructor(
             ReminderDetailUiState(
                 item = item,
                 heatResult = heatResult,
+                events = events.sortedByDescending { it.at },
                 suggestedStartBy = startBy,
                 isLoading = false,
                 isDeleted = false,
                 isProgressManuallyOverridden = manuallyOverridden,
-                showRescheduleSheet = showReschedule
+                showRescheduleSheet = showReschedule,
+                showEmojiPicker = showEmoji,
+                showDatePicker = showDate
             )
         }
     }.stateIn(
@@ -82,6 +101,44 @@ class ReminderDetailViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ReminderDetailUiState(isLoading = true)
     )
+
+    fun onTitleChanged(newTitle: String) {
+        if (newTitle.isNotBlank()) {
+            updateItem { it.copy(title = newTitle.trim()) }
+        }
+    }
+
+    fun onEmojiSelected(emoji: String?) {
+        _showEmojiPicker.value = false
+        updateItem { it.copy(emoji = emoji) }
+    }
+
+    fun onDueAtChanged(newDueAt: Instant) {
+        _showDatePicker.value = false
+        viewModelScope.launch {
+            itemRepository.reschedule(reminderId, newDueAt)
+        }
+    }
+
+    fun onRecurrenceChanged(recurrence: Recurrence?) {
+        updateItem { it.copy(recurrence = recurrence) }
+    }
+
+    fun onNagIntervalChanged(intervalMinutes: Int) {
+        updateItem { it.copy(nag = it.nag.copy(intervalMinutes = intervalMinutes)) }
+    }
+
+    fun onEscalateToggle(escalate: Boolean) {
+        updateItem { it.copy(nag = it.nag.copy(escalate = escalate)) }
+    }
+
+    fun onCriticalToggle(critical: Boolean) {
+        updateItem { it.copy(critical = critical) }
+    }
+
+    fun onNoteChanged(newNote: String) {
+        updateItem { it.copy(note = newNote.trim().ifEmpty { null }) }
+    }
 
     fun onProgressChanged(progressRaw: Float) {
         val snapped = (progressRaw / 10f).roundToInt() * 10
@@ -160,6 +217,14 @@ class ReminderDetailViewModel @Inject constructor(
         _showRescheduleSheet.value = show
     }
 
+    fun setShowEmojiPicker(show: Boolean) {
+        _showEmojiPicker.value = show
+    }
+
+    fun setShowDatePicker(show: Boolean) {
+        _showDatePicker.value = show
+    }
+
     fun onPushDeadline(newDueAt: Instant, reason: String) {
         viewModelScope.launch {
             itemRepository.reschedule(reminderId, newDueAt)
@@ -177,7 +242,7 @@ class ReminderDetailViewModel @Inject constructor(
 
     fun onMarkDone() {
         viewModelScope.launch {
-            itemRepository.markDone(reminderId)
+            itemRepository.markDone(reminderId, clock.now())
         }
     }
 
@@ -187,11 +252,21 @@ class ReminderDetailViewModel @Inject constructor(
         }
     }
 
+    fun undoDelete() {
+        viewModelScope.launch {
+            itemRepository.restore(reminderId)
+        }
+    }
+
     private fun updateItem(transform: (Item) -> Item) {
         val currentItem = uiState.value.item ?: return
         val updated = transform(currentItem)
         viewModelScope.launch {
             itemRepository.update(updated)
+            itemRepository.logEvent(
+                itemId = currentItem.id,
+                type = ItemEventType.EDITED
+            )
         }
     }
 }

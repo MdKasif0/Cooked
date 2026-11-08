@@ -29,6 +29,8 @@ fun CalmSkilletIllustration(
     val panColor = CookedTheme.colors.onSurfaceVariant.copy(alpha = 0.5f)
     val steamColor = CookedTheme.colors.outline.copy(alpha = 0.8f)
     val accentColor = CookedTheme.colors.primary.copy(alpha = 0.7f)
+    val surfaceContainerHigh = CookedTheme.colors.surfaceContainerHigh
+    val surfaceColor = CookedTheme.colors.surface
 
     Canvas(modifier = modifier.size(size)) {
         val w = this.size.width
@@ -54,7 +56,7 @@ fun CalmSkilletIllustration(
         }
         drawPath(
             path = panPath,
-            color = CookedTheme.colors.surfaceContainerHigh
+            color = surfaceContainerHigh
         )
         drawPath(
             path = panPath,
@@ -83,7 +85,7 @@ fun CalmSkilletIllustration(
 
         // Handle loop opening
         drawCircle(
-            color = CookedTheme.colors.surface,
+            color = surfaceColor,
             radius = 3.5.dp.toPx(),
             center = Offset(w * 0.88f, panTop - h * 0.05f)
         )

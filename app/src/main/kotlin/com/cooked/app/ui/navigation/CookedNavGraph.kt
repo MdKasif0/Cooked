@@ -48,6 +48,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cooked.app.R
+import kotlinx.coroutines.launch
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.components.AvatarBubble
 import com.cooked.app.feature.add.QuickAddBottomSheet
@@ -91,10 +92,15 @@ fun CookedAppShell(
     var showQuickAddSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val quickAddViewModel: QuickAddViewModel = hiltViewModel()
+    val snackbarHostState = androidx.compose.runtime.remember { androidx.compose.material3.SnackbarHostState() }
+    val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = CookedTheme.colors.background,
+        snackbarHost = {
+            androidx.compose.material3.SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             if (isTopLevelDestination) {
                 TopAppBar(
@@ -294,7 +300,19 @@ fun CookedAppShell(
         QuickAddBottomSheet(
             sheetState = sheetState,
             onDismissRequest = { showQuickAddSheet = false },
-            viewModel = quickAddViewModel
+            viewModel = quickAddViewModel,
+            onShowSnackbar = { message, onUndo ->
+                coroutineScope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = message,
+                        actionLabel = "Undo",
+                        duration = androidx.compose.material3.SnackbarDuration.Short
+                    )
+                    if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) {
+                        onUndo()
+                    }
+                }
+            }
         )
     }
 }

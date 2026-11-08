@@ -50,6 +50,11 @@ class QuickAddViewModel @Inject constructor(
         private var draftCache: String? = null
         private var draftCacheTimestamp: Long = 0L
         private const val DRAFT_TTL_MS = 10 * 60 * 1000L // 10 minutes
+
+        fun clearDraftCacheForTesting() {
+            draftCache = null
+            draftCacheTimestamp = 0L
+        }
     }
 
     private val _uiState = MutableStateFlow(QuickAddUiState())
@@ -71,23 +76,19 @@ class QuickAddViewModel @Inject constructor(
     }
 
     fun onTextChanged(newText: String) {
-        viewModelScope.launch {
-            val prefs = userPreferencesRepository.userPrefs.first()
-            val parsed = QuickParser.parse(
-                text = newText,
-                now = clock.now(),
-                zone = clock.zone(),
-                prefs = prefs
+        val parsed = QuickParser.parse(
+            text = newText,
+            now = clock.now(),
+            zone = clock.zone()
+        )
+        _uiState.update {
+            it.copy(
+                input = newText,
+                parsedResult = parsed
             )
-            _uiState.update {
-                it.copy(
-                    input = newText,
-                    parsedResult = parsed
-                )
-            }
-            draftCache = newText
-            draftCacheTimestamp = System.currentTimeMillis()
         }
+        draftCache = newText
+        draftCacheTimestamp = System.currentTimeMillis()
     }
 
     fun onQuickChipSelected(chip: QuickTimeChip) {
