@@ -42,7 +42,7 @@ val HeatChillLightContainer = Color(0xFFE0F5F2)
 val HeatChillLightOnContainer = Color(0xFF136B63)
 
 val HeatWarmLight = Color(0xFFC98A04)
-val HeatWarmLightText = Color(0xFFA16207) // Adjusted for 4.9:1 AA body contrast on light backgrounds
+val HeatWarmLightText = Color(0xFF854D0E) // High contrast for 6.15:1 AA body contrast on container/background
 val HeatWarmLightContainer = Color(0xFFFEF3C7)
 val HeatWarmLightOnContainer = Color(0xFF854D0E)
 
