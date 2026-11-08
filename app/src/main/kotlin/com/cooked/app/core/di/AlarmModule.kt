@@ -1,7 +1,7 @@
 package com.cooked.app.core.di
 
 import com.cooked.app.scheduling.alarm.AlarmScheduler
-import com.cooked.app.scheduling.alarm.AlarmSchedulerImpl
+import com.cooked.app.scheduling.alarm.AndroidAlarmScheduler
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,7 +15,6 @@ abstract class AlarmModule {
     @Binds
     @Singleton
     abstract fun bindAlarmScheduler(
-        impl: AlarmSchedulerImpl
+        impl: AndroidAlarmScheduler
     ): AlarmScheduler
 }
-

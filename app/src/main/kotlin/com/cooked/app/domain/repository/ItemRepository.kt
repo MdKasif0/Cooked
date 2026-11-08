@@ -15,6 +15,14 @@ interface ItemRepository {
     fun observeItem(id: String): Flow<Item?>
 
     suspend fun getItem(id: String): Item?
+    suspend fun getActiveItems(): List<Item>
+    suspend fun getNagCount(id: String): Int
+    suspend fun logEvent(
+        itemId: String,
+        type: com.cooked.app.domain.model.ItemEventType,
+        meta: Map<String, String> = emptyMap(),
+        at: Instant = Instant.now()
+    )
     suspend fun create(item: Item)
     suspend fun update(item: Item)
     suspend fun markDone(id: String, at: Instant = Instant.now())

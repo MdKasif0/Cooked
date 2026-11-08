@@ -23,6 +23,9 @@ fun SettingsRoute(
         onNavigateToDesignGallery = onNavigateToDesignGallery,
         onThemeModeSelected = viewModel::onThemeModeSelected,
         onNagIntervalSelected = viewModel::onNagIntervalSelected,
+        onPersonalitySelected = viewModel::onPersonalitySelected,
+        onFireAlarmNow = viewModel::fireAlarmNow,
+        onRefreshAlarms = viewModel::refreshAlarms,
         modifier = modifier
     )
 }

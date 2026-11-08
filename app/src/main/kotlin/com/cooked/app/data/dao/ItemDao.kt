@@ -19,6 +19,10 @@ interface ItemDao {
     fun observeActiveItems(): Flow<List<ItemWithChecklist>>
 
     @Transaction
+    @Query("SELECT * FROM items WHERE deletedAt IS NULL AND status = 'ACTIVE' ORDER BY dueAt ASC")
+    suspend fun getActiveItems(): List<ItemWithChecklist>
+
+    @Transaction
     @Query("SELECT * FROM items WHERE deletedAt IS NULL AND status = 'ACTIVE' AND dueAt >= :startOfDay AND dueAt <= :endOfDay ORDER BY dueAt ASC")
     fun observeToday(startOfDay: Instant, endOfDay: Instant): Flow<List<ItemWithChecklist>>
 

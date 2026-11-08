@@ -1,20 +1,19 @@
 package com.cooked.app.scheduling.notification
 
 import android.app.Notification
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.cooked.app.MainActivity
 import com.cooked.app.R
+import com.cooked.app.domain.model.Item
+import com.cooked.app.domain.model.Personality
+import com.cooked.app.scheduling.alarm.AlarmActivity
 import com.cooked.app.scheduling.receivers.NagDismissReceiver
 import com.cooked.app.scheduling.receivers.ReminderActionReceiver
-import com.cooked.app.scheduling.receivers.ReminderAlarmReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,42 +22,35 @@ import javax.inject.Singleton
 class ReminderNotificationBuilder @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
-    fun createNotification(
-        reminderId: String,
-        title: String,
-        note: String?,
-        nagInterval: Int
+
+    fun buildReminderNotification(
+        item: Item,
+        nagCount: Int,
+        personality: Personality
     ): Notification {
-        val channelId = CHANNEL_ID
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .build()
-
-            val channel = NotificationChannel(
-                channelId,
-                context.getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = context.getString(R.string.notification_channel_desc)
-                enableVibration(true)
-                vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 800)
-                setSound(soundUri, audioAttributes)
-                lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
-            }
-            notificationManager.createNotificationChannel(channel)
+        val stage = when {
+            nagCount == 0 -> NagStage.FIRST
+            nagCount in 1..2 -> NagStage.NAG_EARLY
+            nagCount in 3..4 -> NagStage.NAG_PERSISTENT
+            else -> NagStage.FINAL_CALL
         }
 
-        val notificationId = reminderId.hashCode()
+        val channelId = selectChannelId(item, nagCount)
+        val copyText = NotificationCopy.getCopy(
+            personality = personality,
+            stage = stage,
+            title = item.title,
+            nagCount = nagCount
+        )
 
+        val notificationId = getNotificationId(item.id)
+        val emojiPrefix = if (!item.emoji.isNullOrBlank()) "${item.emoji} " else "🔥 "
+        val displayTitle = "$emojiPrefix${item.title}"
+
+        // Tap to open app
         val openIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra(ReminderAlarmReceiver.EXTRA_REMINDER_ID, reminderId)
+            putExtra(EXTRA_ITEM_ID, item.id)
         }
         val openPendingIntent = PendingIntent.getActivity(
             context,
@@ -67,10 +59,11 @@ class ReminderNotificationBuilder @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Done Action
         val doneIntent = Intent(context, ReminderActionReceiver::class.java).apply {
             action = ReminderActionReceiver.ACTION_DONE
-            putExtra(ReminderAlarmReceiver.EXTRA_REMINDER_ID, reminderId)
-            putExtra(ReminderAlarmReceiver.EXTRA_NOTIFICATION_ID, notificationId)
+            putExtra(EXTRA_ITEM_ID, item.id)
+            putExtra(EXTRA_NOTIFICATION_ID, notificationId)
         }
         val donePendingIntent = PendingIntent.getBroadcast(
             context,
@@ -79,50 +72,144 @@ class ReminderNotificationBuilder @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val snoozeIntent = Intent(context, ReminderActionReceiver::class.java).apply {
-            action = ReminderActionReceiver.ACTION_SNOOZE
-            putExtra(ReminderAlarmReceiver.EXTRA_REMINDER_ID, reminderId)
-            putExtra(ReminderAlarmReceiver.EXTRA_NOTIFICATION_ID, notificationId)
-            putExtra(ReminderAlarmReceiver.EXTRA_NAG_INTERVAL, nagInterval)
+        // Snooze 10m Action
+        val snooze10Intent = Intent(context, ReminderActionReceiver::class.java).apply {
+            action = ReminderActionReceiver.ACTION_SNOOZE_10M
+            putExtra(EXTRA_ITEM_ID, item.id)
+            putExtra(EXTRA_NOTIFICATION_ID, notificationId)
         }
-        val snoozePendingIntent = PendingIntent.getBroadcast(
+        val snooze10PendingIntent = PendingIntent.getBroadcast(
             context,
             notificationId + 2,
-            snoozeIntent,
+            snooze10Intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Snooze 1h Action
+        val snooze1hIntent = Intent(context, ReminderActionReceiver::class.java).apply {
+            action = ReminderActionReceiver.ACTION_SNOOZE_1H
+            putExtra(EXTRA_ITEM_ID, item.id)
+            putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+        }
+        val snooze1hPendingIntent = PendingIntent.getBroadcast(
+            context,
+            notificationId + 3,
+            snooze1hIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Snooze Tomorrow 9am Action
+        val snoozeTomorrowIntent = Intent(context, ReminderActionReceiver::class.java).apply {
+            action = ReminderActionReceiver.ACTION_SNOOZE_TOMORROW
+            putExtra(EXTRA_ITEM_ID, item.id)
+            putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+        }
+        val snoozeTomorrowPendingIntent = PendingIntent.getBroadcast(
+            context,
+            notificationId + 4,
+            snoozeTomorrowIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Swipe Dismiss DeleteIntent (logs dismissal without canceling the nag schedule)
         val deleteIntent = Intent(context, NagDismissReceiver::class.java).apply {
-            putExtra(ReminderAlarmReceiver.EXTRA_REMINDER_ID, reminderId)
+            putExtra(EXTRA_ITEM_ID, item.id)
         }
         val deletePendingIntent = PendingIntent.getBroadcast(
             context,
-            notificationId + 3,
+            notificationId + 5,
             deleteIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-
-        return NotificationCompat.Builder(context, channelId)
+        val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("🔥 $title")
-            .setContentText(note ?: context.getString(R.string.notification_nag_tagline))
+            .setContentTitle(displayTitle)
+            .setContentText(copyText)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(
+                if (!item.note.isNullOrBlank()) "$copyText\n\n📝 ${item.note}" else copyText
+            ))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setAutoCancel(false)
             .setOngoing(false)
-            .setSound(alarmSound)
-            .setVibrate(longArrayOf(0, 500, 200, 500, 200, 800))
+            .setGroup(GROUP_COOKED_REMINDERS)
             .setContentIntent(openPendingIntent)
             .setDeleteIntent(deletePendingIntent)
-            .addAction(0, context.getString(R.string.notification_action_done), donePendingIntent)
-            .addAction(0, context.getString(R.string.notification_action_snooze), snoozePendingIntent)
+            .addAction(0, "Done", donePendingIntent)
+            .addAction(0, "+10m", snooze10PendingIntent)
+            .addAction(0, "+1h", snooze1hPendingIntent)
+            .addAction(0, "Tomorrow 9am", snoozeTomorrowPendingIntent)
+
+        // Full-screen alarm intent for critical items or high nags (5+)
+        if (shouldUseFullScreenIntent(item, nagCount)) {
+            val fullScreenIntent = Intent(context, AlarmActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                putExtra(EXTRA_ITEM_ID, item.id)
+                putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+                putExtra(EXTRA_NAG_COUNT, nagCount)
+            }
+            val fullScreenPendingIntent = PendingIntent.getActivity(
+                context,
+                notificationId + 6,
+                fullScreenIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            builder.setFullScreenIntent(fullScreenPendingIntent, true)
+        }
+
+        return builder.build()
+    }
+
+    fun buildSummaryNotification(count: Int): Notification {
+        val openIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val openPendingIntent = PendingIntent.getActivity(
+            context,
+            SUMMARY_NOTIFICATION_ID,
+            openIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        return NotificationCompat.Builder(context, NotificationChannels.CHANNEL_REMINDERS_LOUD)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("$count things are cooking 🔥")
+            .setContentText("You have multiple active reminders that need attention.")
+            .setGroup(GROUP_COOKED_REMINDERS)
+            .setGroupSummary(true)
+            .setAutoCancel(true)
+            .setContentIntent(openPendingIntent)
             .build()
     }
 
+    private fun selectChannelId(item: Item, nagCount: Int): String {
+        return when {
+            item.critical -> NotificationChannels.CHANNEL_CRITICAL_ALARM
+            !item.nag.escalate -> NotificationChannels.CHANNEL_REMINDERS_NORMAL
+            nagCount < 2 -> NotificationChannels.CHANNEL_REMINDERS_NORMAL
+            nagCount in 2..4 -> NotificationChannels.CHANNEL_REMINDERS_LOUD
+            else -> NotificationChannels.CHANNEL_CRITICAL_ALARM
+        }
+    }
+
+    private fun shouldUseFullScreenIntent(item: Item, nagCount: Int): Boolean {
+        if (!item.critical && nagCount < 5) return false
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            return notificationManager?.canUseFullScreenIntent() == true
+        }
+        return true
+    }
+
     companion object {
-        const val CHANNEL_ID = "cooked_urgent_alarms"
+        const val GROUP_COOKED_REMINDERS = "com.cooked.app.NOTIFICATIONS_GROUP"
+        const val SUMMARY_NOTIFICATION_ID = 999999
+        const val EXTRA_ITEM_ID = "extra_item_id"
+        const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
+        const val EXTRA_NAG_COUNT = "extra_nag_count"
+
+        fun getNotificationId(itemId: String): Int = (itemId.hashCode() and 0x7FFFFFFF)
     }
 }
-

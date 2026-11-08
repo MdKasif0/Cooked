@@ -4,11 +4,17 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.cooked.app.domain.repository.ReminderRepository
+import android.os.Build
+import com.cooked.app.data.datastore.UserPreferencesRepository
+import com.cooked.app.domain.model.ItemEventType
+import com.cooked.app.domain.model.ItemStatus
+import com.cooked.app.domain.repository.ItemRepository
+import com.cooked.app.scheduling.alarm.AlarmScheduler
 import com.cooked.app.scheduling.notification.ReminderNotificationBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,36 +22,67 @@ import javax.inject.Inject
 class ReminderAlarmReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var repository: ReminderRepository
+    lateinit var itemRepository: ItemRepository
+
+    @Inject
+    lateinit var alarmScheduler: AlarmScheduler
 
     @Inject
     lateinit var notificationBuilder: ReminderNotificationBuilder
 
-    override fun onReceive(context: Context, intent: Intent) {
-        val reminderId = intent.getStringExtra(EXTRA_REMINDER_ID) ?: return
-        val title = intent.getStringExtra(EXTRA_TITLE) ?: "Reminder"
-        val note = intent.getStringExtra(EXTRA_NOTE)
-        val nagInterval = intent.getIntExtra(EXTRA_NAG_INTERVAL, 10)
+    @Inject
+    lateinit var userPreferencesRepository: UserPreferencesRepository
 
+    override fun onReceive(context: Context, intent: Intent) {
+        val itemId = intent.getStringExtra(EXTRA_ITEM_ID) ?: return
         val pendingResult = goAsync()
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val reminder = repository.getReminderById(reminderId)
-                if (reminder == null || reminder.isCompleted) {
+                val item = itemRepository.getItem(itemId)
+                if (item == null || item.status != ItemStatus.ACTIVE || item.isDeleted) {
+                    alarmScheduler.cancel(itemId)
                     return@launch
                 }
 
-                repository.setNaggingActive(reminderId, isNagging = true, incrementNagCount = true)
+                val nagCount = itemRepository.getNagCount(itemId)
+                val personality = userPreferencesRepository.personality.first()
 
                 val notificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                val notification = notificationBuilder.createNotification(
-                    reminderId = reminderId,
-                    title = title,
-                    note = note,
-                    nagInterval = nagInterval
+
+                val notification = notificationBuilder.buildReminderNotification(
+                    item = item,
+                    nagCount = nagCount,
+                    personality = personality
                 )
-                notificationManager.notify(reminderId.hashCode(), notification)
+                val notificationId = ReminderNotificationBuilder.getNotificationId(itemId)
+                notificationManager.notify(notificationId, notification)
+
+                // Log FIRED or NAGGED event
+                val eventType = if (nagCount == 0) ItemEventType.FIRED else ItemEventType.NAGGED
+                itemRepository.logEvent(
+                    itemId = itemId,
+                    type = eventType,
+                    meta = mapOf("nagCount" to nagCount.toString())
+                )
+
+                // Multi-item grouping: collapse if > 3 active cooked reminders
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val activeRemindersCount = notificationManager.activeNotifications.count {
+                        it.id != ReminderNotificationBuilder.SUMMARY_NOTIFICATION_ID &&
+                            it.notification.group == ReminderNotificationBuilder.GROUP_COOKED_REMINDERS
+                    }
+                    if (activeRemindersCount > 3) {
+                        notificationManager.notify(
+                            ReminderNotificationBuilder.SUMMARY_NOTIFICATION_ID,
+                            notificationBuilder.buildSummaryNotification(activeRemindersCount)
+                        )
+                    }
+                }
+
+                // Schedule next nag
+                alarmScheduler.schedule(item, nagCount = nagCount + 1)
             } finally {
                 pendingResult.finish()
             }
@@ -53,11 +90,7 @@ class ReminderAlarmReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val EXTRA_REMINDER_ID = "extra_reminder_id"
-        const val EXTRA_TITLE = "extra_title"
-        const val EXTRA_NOTE = "extra_note"
-        const val EXTRA_NAG_INTERVAL = "extra_nag_interval"
-        const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
+        const val EXTRA_ITEM_ID = "extra_item_id"
+        const val EXTRA_ALARM_TYPE = "extra_alarm_type"
     }
 }
-

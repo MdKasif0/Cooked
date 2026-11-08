@@ -1,43 +1,38 @@
 package com.cooked.app
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.media.AudioAttributes
-import android.media.RingtoneManager
-import android.os.Build
-import com.cooked.app.scheduling.notification.ReminderNotificationBuilder
+import com.cooked.app.domain.repository.ItemRepository
+import com.cooked.app.scheduling.alarm.AlarmScheduler
+import com.cooked.app.scheduling.notification.NotificationChannels
+import com.cooked.app.scheduling.work.SafetyNetWorker
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltAndroidApp
 class CookedApplication : Application() {
 
+    @Inject
+    lateinit var alarmScheduler: AlarmScheduler
+
+    @Inject
+    lateinit var itemRepository: ItemRepository
+
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannels()
-    }
+        NotificationChannels.createChannels(this)
+        SafetyNetWorker.enqueueDaily(this)
 
-    private fun createNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .build()
-
-            val channel = NotificationChannel(
-                ReminderNotificationBuilder.CHANNEL_ID,
-                getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = getString(R.string.notification_channel_desc)
-                enableVibration(true)
-                vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 800)
-                setSound(soundUri, audioAttributes)
+        // Observe ItemChanged events to keep alarms strictly synchronized with DB
+        applicationScope.launch {
+            itemRepository.itemChanged.collect { itemId ->
+                alarmScheduler.schedule(itemId)
             }
-
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
         }
     }
 }

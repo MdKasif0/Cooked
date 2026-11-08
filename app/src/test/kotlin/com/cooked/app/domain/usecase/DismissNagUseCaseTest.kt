@@ -37,7 +37,7 @@ class DismissNagUseCaseTest {
         useCase("test-id-123")
 
         coVerify { repository.setNaggingActive("test-id-123", isNagging = true, incrementNagCount = true) }
-        verify { alarmScheduler.schedule(reminder) }
+        coVerify { alarmScheduler.schedule("test-id-123") }
     }
 
     @Test
@@ -55,6 +55,6 @@ class DismissNagUseCaseTest {
         useCase("test-completed-123")
 
         coVerify(exactly = 0) { repository.setNaggingActive(any(), any(), any()) }
-        verify(exactly = 0) { alarmScheduler.schedule(any()) }
+        coVerify(exactly = 0) { alarmScheduler.schedule(any<String>()) }
     }
 }

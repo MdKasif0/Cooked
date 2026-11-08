@@ -10,6 +10,6 @@ class SaveReminderUseCase(
 ) {
     suspend operator fun invoke(reminder: Reminder) {
         repository.insertOrUpdate(reminder)
-        alarmScheduler.schedule(reminder)
+        alarmScheduler.schedule(reminder.id)
     }
 }

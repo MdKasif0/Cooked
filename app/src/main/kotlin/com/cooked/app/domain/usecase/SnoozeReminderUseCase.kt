@@ -11,9 +11,6 @@ class SnoozeReminderUseCase(
     suspend operator fun invoke(reminderId: String, snoozeMinutes: Int = 10) {
         val snoozeInstant = TimeUtils.nowUtcMillis() + (snoozeMinutes * 60 * 1000L)
         repository.snoozeReminder(reminderId, snoozeInstant)
-        val updated = repository.getReminderById(reminderId)
-        if (updated != null) {
-            alarmScheduler.schedule(updated)
-        }
+        alarmScheduler.schedule(reminderId)
     }
 }

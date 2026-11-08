@@ -14,7 +14,7 @@ class DismissNagUseCase(
         repository.setNaggingActive(reminderId, isNagging = true, incrementNagCount = true)
         val updated = repository.getReminderById(reminderId)
         if (updated != null) {
-            alarmScheduler.schedule(updated)
+            alarmScheduler.schedule(updated.id)
         }
     }
 }

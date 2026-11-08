@@ -82,6 +82,33 @@ class ItemRepositoryImpl @Inject constructor(
         return itemDao.getItemWithChecklist(id)?.toDomain()
     }
 
+    override suspend fun getActiveItems(): List<Item> {
+        return itemDao.getActiveItems().map { it.toDomain() }
+    }
+
+    override suspend fun getNagCount(id: String): Int {
+        return itemEventDao.getNagCountFor(id)
+    }
+
+    override suspend fun logEvent(
+        itemId: String,
+        type: ItemEventType,
+        meta: Map<String, String>,
+        at: Instant
+    ) {
+        val now = clock.now()
+        val effectiveAt = if (at == Instant.EPOCH) now else at
+        itemEventDao.insertEvent(
+            ItemEventEntity(
+                id = UUID.randomUUID().toString(),
+                itemId = itemId,
+                type = type,
+                at = effectiveAt,
+                meta = meta
+            )
+        )
+    }
+
     override suspend fun create(item: Item) {
         val now = clock.now()
         val itemToSave = item.copy(
