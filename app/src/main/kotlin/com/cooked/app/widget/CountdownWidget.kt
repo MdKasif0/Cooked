@@ -8,6 +8,8 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -27,11 +29,13 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.layout.size
 import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.cooked.app.MainActivity
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.domain.deadline.HeatCalculator
 import com.cooked.app.domain.model.Item
@@ -107,12 +111,12 @@ class CountdownWidget : GlanceAppWidget() {
                 } else {
                     val now = Instant.now()
                     val heatResult = HeatCalculator.calculate(deadline, now)
-                    val heatColor = when (heatResult.heatLevel) {
-                        HeatLevel.CHILL -> CookedGlanceColors.Chill
-                        HeatLevel.WARM -> CookedGlanceColors.Warm
-                        HeatLevel.TOASTY -> CookedGlanceColors.Toasty
-                        HeatLevel.COOKED -> CookedGlanceColors.Cooked
-                        HeatLevel.DONE -> CookedGlanceColors.Chill
+                    val (heatColor, eggRes) = when (heatResult.heatLevel) {
+                        HeatLevel.CHILL -> CookedGlanceColors.Chill to R.drawable.egg_chill
+                        HeatLevel.WARM -> CookedGlanceColors.Warm to R.drawable.egg_warm
+                        HeatLevel.TOASTY -> CookedGlanceColors.Toasty to R.drawable.egg_toasty
+                        HeatLevel.COOKED -> CookedGlanceColors.Cooked to R.drawable.egg_cooked
+                        HeatLevel.DONE -> CookedGlanceColors.Chill to R.drawable.egg_done
                     }
 
                     // Format big tabular countdown
@@ -147,14 +151,15 @@ class CountdownWidget : GlanceAppWidget() {
                             .clickable(actionStartActivity<MainActivity>()),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Title + Emoji
+                        // Title + Mascot + Emoji
                         Row(
                             modifier = GlanceModifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = deadline.emoji ?: "🎯",
-                                style = TextStyle(fontSize = 16.sp)
+                            Image(
+                                provider = ImageProvider(eggRes),
+                                contentDescription = "Egg Mascot",
+                                modifier = GlanceModifier.size(22.dp)
                             )
                             Spacer(modifier = GlanceModifier.width(6.dp))
                             Text(
@@ -167,6 +172,13 @@ class CountdownWidget : GlanceAppWidget() {
                                 maxLines = 1,
                                 modifier = GlanceModifier.defaultWeight()
                             )
+                            if (!deadline.emoji.isNullOrBlank()) {
+                                Spacer(modifier = GlanceModifier.width(4.dp))
+                                Text(
+                                    text = deadline.emoji,
+                                    style = TextStyle(fontSize = 14.sp)
+                                )
+                            }
                         }
 
                         Spacer(modifier = GlanceModifier.height(8.dp))
