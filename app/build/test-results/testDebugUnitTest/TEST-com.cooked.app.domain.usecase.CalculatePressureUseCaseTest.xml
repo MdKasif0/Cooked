@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:43:48.542Z" hostname="MDs-MacBook-Air.local" time="0.001">
+  <properties/>
+  <testcase name="when overdue, pressure is CRISPY" classname="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" time="0.0"/>
+  <testcase name="when remaining time is less than estimated effort, pressure is CRISPY" classname="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" time="0.0"/>
+  <testcase name="when plenty of buffer exists, pressure is CHILL" classname="com.cooked.app.domain.usecase.CalculatePressureUseCaseTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

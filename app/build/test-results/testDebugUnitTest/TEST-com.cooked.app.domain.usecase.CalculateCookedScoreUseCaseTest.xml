@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.cooked.app.domain.usecase.CalculateCookedScoreUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-08T14:43:48.520Z" hostname="MDs-MacBook-Air.local" time="0.021">
+  <properties/>
+  <testcase name="overdue item adds urgency penalty" classname="com.cooked.app.domain.usecase.CalculateCookedScoreUseCaseTest" time="0.012"/>
+  <testcase name="empty reminders returns zero score and CHILLING level" classname="com.cooked.app.domain.usecase.CalculateCookedScoreUseCaseTest" time="0.001"/>
+  <testcase name="heavy overload results in high Cooked Score and DEEP_FRIED level" classname="com.cooked.app.domain.usecase.CalculateCookedScoreUseCaseTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
