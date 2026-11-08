@@ -36,7 +36,8 @@ class SettingsViewModel @Inject constructor(
     private val reliabilityChecker: ReliabilityChecker,
     private val sampleDataSeeder: SampleDataSeeder,
     private val entitlementRepository: EntitlementRepository,
-    private val telemetry: Telemetry
+    private val telemetry: Telemetry,
+    private val soundManager: SoundManager
 ) : ViewModel() {
 
     private val _alarmsRefreshTrigger = MutableStateFlow(0)
@@ -80,6 +81,12 @@ class SettingsViewModel @Inject constructor(
             isPro = prefs.isPro,
             billingIssue = billingIssue,
             telemetryEnabled = prefs.telemetryEnabled,
+            hinglishVibes = prefs.hinglishVibes,
+            soundNormalNag = prefs.soundNormalNag,
+            soundEscalatedNag = prefs.soundEscalatedNag,
+            soundCritical = prefs.soundCritical,
+            inAppSoundsEnabled = prefs.inAppSoundsEnabled,
+            appIconChoice = prefs.appIconChoice,
             appVersion = "1.0.0",
             scheduledAlarms = alarms,
             reliabilityReport = report,
@@ -125,6 +132,39 @@ class SettingsViewModel @Inject constructor(
 
     fun onWeekStartsOnChanged(dayOfWeek: DayOfWeek) {
         viewModelScope.launch { preferencesRepository.setWeekStartsOn(dayOfWeek) }
+    }
+
+    fun onHinglishVibesToggled(enabled: Boolean) {
+        viewModelScope.launch { preferencesRepository.setHinglishVibes(enabled) }
+    }
+
+    fun onSoundNormalNagSelected(sound: String) {
+        viewModelScope.launch { preferencesRepository.setSoundNormalNag(sound) }
+    }
+
+    fun onSoundEscalatedNagSelected(sound: String) {
+        viewModelScope.launch { preferencesRepository.setSoundEscalatedNag(sound) }
+    }
+
+    fun onSoundCriticalSelected(sound: String) {
+        viewModelScope.launch { preferencesRepository.setSoundCritical(sound) }
+    }
+
+    fun onInAppSoundsToggled(enabled: Boolean) {
+        viewModelScope.launch { preferencesRepository.setInAppSoundsEnabled(enabled) }
+    }
+
+    fun onAppIconSelected(context: android.content.Context, style: AppIconStyle) {
+        IconManager.setAppIcon(context, style)
+        viewModelScope.launch { preferencesRepository.setAppIconChoice(style.name) }
+    }
+
+    fun previewSound(resId: Int) {
+        soundManager.previewSound(resId)
+    }
+
+    fun stopSoundPreview() {
+        soundManager.stopPreview()
     }
 
     fun exportBackup(onReady: (String) -> Unit) {

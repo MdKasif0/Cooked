@@ -16,26 +16,36 @@ object NotificationCopy {
         personality: Personality,
         stage: NagStage,
         title: String,
-        nagCount: Int = 0
+        nagCount: Int = 0,
+        isHinglish: Boolean = false
     ): String {
-        val variants = when (personality) {
-            Personality.MILD -> when (stage) {
-                NagStage.FIRST -> MildVariants.first
-                NagStage.NAG_EARLY -> MildVariants.early
-                NagStage.NAG_PERSISTENT -> MildVariants.persistent
-                NagStage.FINAL_CALL -> MildVariants.finalCall
+        val variants = if (isHinglish) {
+            when (stage) {
+                NagStage.FIRST -> HinglishVariants.first
+                NagStage.NAG_EARLY -> HinglishVariants.early
+                NagStage.NAG_PERSISTENT -> HinglishVariants.persistent
+                NagStage.FINAL_CALL -> HinglishVariants.finalCall
             }
-            Personality.SPICY -> when (stage) {
-                NagStage.FIRST -> SpicyVariants.first
-                NagStage.NAG_EARLY -> SpicyVariants.early
-                NagStage.NAG_PERSISTENT -> SpicyVariants.persistent
-                NagStage.FINAL_CALL -> SpicyVariants.finalCall
-            }
-            Personality.UNHINGED -> when (stage) {
-                NagStage.FIRST -> UnhingedVariants.first
-                NagStage.NAG_EARLY -> UnhingedVariants.early
-                NagStage.NAG_PERSISTENT -> UnhingedVariants.persistent
-                NagStage.FINAL_CALL -> UnhingedVariants.finalCall
+        } else {
+            when (personality) {
+                Personality.MILD -> when (stage) {
+                    NagStage.FIRST -> MildVariants.first
+                    NagStage.NAG_EARLY -> MildVariants.early
+                    NagStage.NAG_PERSISTENT -> MildVariants.persistent
+                    NagStage.FINAL_CALL -> MildVariants.finalCall
+                }
+                Personality.SPICY -> when (stage) {
+                    NagStage.FIRST -> SpicyVariants.first
+                    NagStage.NAG_EARLY -> SpicyVariants.early
+                    NagStage.NAG_PERSISTENT -> SpicyVariants.persistent
+                    NagStage.FINAL_CALL -> SpicyVariants.finalCall
+                }
+                Personality.UNHINGED -> when (stage) {
+                    NagStage.FIRST -> UnhingedVariants.first
+                    NagStage.NAG_EARLY -> UnhingedVariants.early
+                    NagStage.NAG_PERSISTENT -> UnhingedVariants.persistent
+                    NagStage.FINAL_CALL -> UnhingedVariants.finalCall
+                }
             }
         }
 
