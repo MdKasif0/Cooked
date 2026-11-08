@@ -3,6 +3,7 @@ package com.cooked.app.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.core.util.SampleDataSeeder
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.backup.BackupManager
 import com.cooked.app.domain.backup.ImportPreview
@@ -26,7 +27,8 @@ class SettingsViewModel @Inject constructor(
     private val preferencesRepository: UserPreferencesRepository,
     private val backupManager: BackupManager,
     private val alarmScheduler: AlarmScheduler,
-    private val reliabilityChecker: ReliabilityChecker
+    private val reliabilityChecker: ReliabilityChecker,
+    private val sampleDataSeeder: SampleDataSeeder
 ) : ViewModel() {
 
     private val _alarmsRefreshTrigger = MutableStateFlow(0)
@@ -181,6 +183,13 @@ class SettingsViewModel @Inject constructor(
 
     fun clearSnackbar() {
         _snackbarMessage.value = null
+    }
+
+    fun seedSampleData() {
+        viewModelScope.launch {
+            sampleDataSeeder.seedSampleData()
+            refreshAlarms()
+        }
     }
 
     fun refreshAlarms() {

@@ -230,19 +230,15 @@ fun SettingsScreen(
                         )
 
                         SegmentedControl(
-                            items = listOf("System", "Light", "Dark"),
-                            selectedIndex = when (uiState.themeMode) {
-                                ThemeMode.SYSTEM -> 0
-                                ThemeMode.LIGHT -> 1
-                                ThemeMode.DARK -> 2
-                            },
-                            onItemSelected = { index ->
-                                val mode = when (index) {
-                                    1 -> ThemeMode.LIGHT
-                                    2 -> ThemeMode.DARK
-                                    else -> ThemeMode.SYSTEM
+                            items = listOf(ThemeMode.SYSTEM, ThemeMode.LIGHT, ThemeMode.DARK),
+                            selectedItem = uiState.themeMode,
+                            onItemSelected = onThemeModeSelected,
+                            labelProvider = { mode ->
+                                when (mode) {
+                                    ThemeMode.SYSTEM -> "System"
+                                    ThemeMode.LIGHT -> "Light"
+                                    ThemeMode.DARK -> "Dark"
                                 }
-                                onThemeModeSelected(mode)
                             }
                         )
 
@@ -373,11 +369,10 @@ fun SettingsScreen(
                             )
 
                             SegmentedControl(
-                                items = listOf("Mon", "Sun"),
-                                selectedIndex = if (uiState.weekStartsOn == DayOfWeek.MONDAY) 0 else 1,
-                                onItemSelected = { idx ->
-                                    onWeekStartsOnChanged(if (idx == 0) DayOfWeek.MONDAY else DayOfWeek.SUNDAY)
-                                },
+                                items = listOf(DayOfWeek.MONDAY, DayOfWeek.SUNDAY),
+                                selectedItem = uiState.weekStartsOn,
+                                onItemSelected = onWeekStartsOnChanged,
+                                labelProvider = { if (it == DayOfWeek.MONDAY) "Mon" else "Sun" },
                                 modifier = Modifier.width(130.dp)
                             )
                         }
