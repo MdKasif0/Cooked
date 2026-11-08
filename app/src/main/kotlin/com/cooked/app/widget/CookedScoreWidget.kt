@@ -68,16 +68,12 @@ class CookedScoreWidget : GlanceAppWidget() {
         )
 
         val score = scoreResult.score
-        val heatColor = when (scoreResult.level) {
+        val heatColor = when (scoreResult.heatLevel) {
             HeatLevel.CHILL -> CookedGlanceColors.Chill
             HeatLevel.WARM -> CookedGlanceColors.Warm
             HeatLevel.TOASTY -> CookedGlanceColors.Toasty
             HeatLevel.COOKED -> CookedGlanceColors.Cooked
-        }
-
-        val openIntent = Intent(context, MainActivity::class.java).apply {
-            action = Intent.ACTION_VIEW
-            putExtra("navigate_to", "insights")
+            HeatLevel.DONE -> CookedGlanceColors.Chill
         }
 
         provideContent {
@@ -89,7 +85,7 @@ class CookedScoreWidget : GlanceAppWidget() {
                         .background(CookedGlanceColors.Surface)
                         .cornerRadius(16.dp)
                         .padding(horizontal = 14.dp, vertical = 10.dp)
-                        .clickable(actionStartActivity(openIntent)),
+                        .clickable(actionStartActivity<MainActivity>()),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Mini Gauge: Rounded box with big score number
@@ -128,7 +124,7 @@ class CookedScoreWidget : GlanceAppWidget() {
                         Spacer(modifier = GlanceModifier.height(2.dp))
 
                         Text(
-                            text = "${scoreResult.level.label} · ${scoreResult.statusHeadline}",
+                            text = "${scoreResult.heatLevel.displayName} · ${scoreResult.label}",
                             style = TextStyle(
                                 color = CookedGlanceColors.OnSurfaceVariant,
                                 fontSize = 11.sp
