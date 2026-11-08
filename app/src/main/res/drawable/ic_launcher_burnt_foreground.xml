@@ -1,52 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Burnt Mascot Egg Foreground -->
-    <!-- Burnt Crust -->
+    <!-- Premium Burnt Mascot Egg Foreground (Pro Exclusive) -->
+
+    <!-- Scorched Cast Shadow -->
     <path
-        android:fillColor="#292524"
-        android:strokeColor="#0C0A09"
-        android:strokeWidth="2.5"
+        android:fillColor="#000000"
+        android:fillAlpha="0.45"
+        android:pathData="M34,35 C44,28 66,30 74,38 C82,46 83,60 78,71 C72,82 52,85 40,82 C29,79 23,67 25,54 C27,42 28,39 34,35 Z" />
+
+    <!-- Crispy Charred Rim -->
+    <path
+        android:strokeColor="#171412"
+        android:strokeWidth="3.2"
         android:strokeLineJoin="round"
-        android:pathData="M37,33 C47,27 63,28 71,35 C79,42 81,56 76,66 C70,76 52,79 41,76 C30,73 22,62 25,49 C28,36 29,38 37,33 Z" />
+        android:pathData="M33,32 C43,25 65,27 73,35 C81,43 82,57 77,68 C71,79 51,82 39,79 C28,76 22,64 24,51 C26,39 27,36 33,32 Z" />
 
-    <!-- Dark Ember Yolk -->
+    <!-- Charred Dark Roasted Crust Body -->
     <path
-        android:fillColor="#B91C1C"
+        android:fillColor="#282421"
         android:strokeColor="#0C0A09"
-        android:strokeWidth="2.5"
-        android:pathData="M41,54 A13,13 0 1 0 67,54 A13,13 0 1 0 41,54 Z" />
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:pathData="M33,32 C43,25 65,27 73,35 C81,43 82,57 77,68 C71,79 51,82 39,79 C28,76 22,64 24,51 C26,39 27,36 33,32 Z" />
 
-    <!-- Charred Smoke Wisps -->
+    <!-- Dark Ember Yolk with Molten Gradient -->
     <path
-        android:strokeColor="#78716C"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M52,22 C50,18 55,16 53,12" />
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2.2"
+        android:pathData="M40.5,54 A13.5,13.5 0 1 0 67.5,54 A13.5,13.5 0 1 0 40.5,54 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="44"
+                android:startY="44"
+                android:endX="64"
+                android:endY="64"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#EF4444" />
+                <item android:offset="0.6" android:color="#B91C1C" />
+                <item android:offset="1.0" android:color="#7F1D1D" />
+            </gradient>
+        </aapt:attr>
+    </path>
 
-    <!-- Dramatic X Eyes -->
+    <!-- Rising Charred Smoke Wisps -->
+    <path
+        android:strokeColor="#A8A29E"
+        android:strokeAlpha="0.65"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M52,24 C50,20 54,17 52,13" />
+    <path
+        android:strokeColor="#A8A29E"
+        android:strokeAlpha="0.45"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M64,25 C63,21 67,18 65,14" />
+
+    <!-- Incandescent Dramatic Glowing X Eyes -->
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M46,51.5 L51.5,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M51.5,51.5 L46,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M56.5,51.5 L62,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M62,51.5 L56.5,57" />
+
+    <!-- Distressed Smirk -->
     <path
         android:strokeColor="#FEF08A"
         android:strokeWidth="2"
         android:strokeLineCap="round"
-        android:pathData="M48,51 L54,57" />
-    <path
-        android:strokeColor="#FEF08A"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M54,51 L48,57" />
-    <path
-        android:strokeColor="#FEF08A"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M57,51 L63,57" />
-    <path
-        android:strokeColor="#FEF08A"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M63,51 L57,57" />
+        android:pathData="M51,62 C53,60 55,60 57,62" />
 </vector>
 
