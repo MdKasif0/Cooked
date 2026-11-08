@@ -77,6 +77,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.components.CookedAppLogo
 import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.EggMascot
@@ -1190,6 +1191,29 @@ fun SettingsScreen(
                             Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = CookedTheme.colors.onSurfaceVariant)
                         }
                     }
+                }
+            }
+
+            // 7. BRAND FOOTER WITH PREMIUM APP LOGO
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, bottom = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    CookedAppLogo(size = 52.dp)
+                    Text(
+                        text = "Cooked",
+                        style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Black),
+                        color = CookedTheme.colors.onSurface
+                    )
+                    Text(
+                        text = "v1.1.0 · Reminders that won't shut up.",
+                        style = CookedTheme.typography.bodySmall,
+                        color = CookedTheme.colors.onSurfaceVariant
+                    )
                 }
             }
 

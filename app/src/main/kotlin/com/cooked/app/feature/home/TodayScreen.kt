@@ -33,6 +33,7 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Snooze
+import com.cooked.app.core.designsystem.components.CookedAppLogo
 import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.Icon
@@ -116,22 +117,26 @@ fun TodayScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.weight(1f)
                         ) {
-                            Text(
-                                text = uiState.dateTitle,
-                                style = CookedTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Black
-                                ),
-                                color = CookedTheme.colors.onBackground
-                            )
-                            Text(
-                                text = uiState.voiceStatus,
-                                style = CookedTheme.typography.bodyLarge,
-                                color = CookedTheme.colors.onSurfaceVariant
-                            )
+                            CookedAppLogo(size = 46.dp)
+                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                Text(
+                                    text = uiState.dateTitle,
+                                    style = CookedTheme.typography.headlineMedium.copy(
+                                        fontWeight = FontWeight.Black
+                                    ),
+                                    color = CookedTheme.colors.onBackground
+                                )
+                                Text(
+                                    text = uiState.voiceStatus,
+                                    style = CookedTheme.typography.bodyLarge,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.width(12.dp))
