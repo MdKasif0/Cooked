@@ -89,4 +89,5 @@ int string widget_no_pending 0x0
 int string widget_quick_add 0x0
 int string widget_title 0x0
 int style Theme_Cooked 0x0
+int style Theme_Cooked_Splash 0x0
 int xml cooked_widget_info 0x0

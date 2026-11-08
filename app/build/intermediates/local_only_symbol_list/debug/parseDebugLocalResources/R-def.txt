@@ -91,4 +91,5 @@ string widget_no_pending
 string widget_quick_add
 string widget_title
 style Theme.Cooked
+style Theme.Cooked.Splash
 xml cooked_widget_info

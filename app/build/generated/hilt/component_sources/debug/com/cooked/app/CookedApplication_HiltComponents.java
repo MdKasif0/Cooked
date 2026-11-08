@@ -1,14 +1,24 @@
 package com.cooked.app;
 
 import androidx.hilt.work.HiltWrapper_WorkerFactoryModule;
-import com.cooked.app.alarm.BootReceiver_GeneratedInjector;
-import com.cooked.app.alarm.NagDismissReceiver_GeneratedInjector;
-import com.cooked.app.alarm.ReminderActionReceiver_GeneratedInjector;
-import com.cooked.app.alarm.ReminderAlarmReceiver_GeneratedInjector;
-import com.cooked.app.di.AlarmModule;
-import com.cooked.app.di.DatabaseModule;
-import com.cooked.app.di.RepositoryModule;
-import com.cooked.app.di.UseCaseModule;
+import com.cooked.app.core.di.AlarmModule;
+import com.cooked.app.core.di.CoroutineModule;
+import com.cooked.app.core.di.DatabaseModule;
+import com.cooked.app.core.di.RepositoryModule;
+import com.cooked.app.core.di.TimeModule;
+import com.cooked.app.core.di.UseCaseModule;
+import com.cooked.app.feature.add.QuickAddViewModel_HiltModules;
+import com.cooked.app.feature.deadlines.DeadlinesViewModel_HiltModules;
+import com.cooked.app.feature.detail.ReminderDetailViewModel_HiltModules;
+import com.cooked.app.feature.home.TodayViewModel_HiltModules;
+import com.cooked.app.feature.insights.InsightsViewModel_HiltModules;
+import com.cooked.app.feature.onboarding.OnboardingViewModel_HiltModules;
+import com.cooked.app.feature.paywall.PaywallViewModel_HiltModules;
+import com.cooked.app.feature.settings.SettingsViewModel_HiltModules;
+import com.cooked.app.scheduling.receivers.BootReceiver_GeneratedInjector;
+import com.cooked.app.scheduling.receivers.NagDismissReceiver_GeneratedInjector;
+import com.cooked.app.scheduling.receivers.ReminderActionReceiver_GeneratedInjector;
+import com.cooked.app.scheduling.receivers.ReminderAlarmReceiver_GeneratedInjector;
 import com.cooked.app.ui.addedit.AddEditReminderViewModel_HiltModules;
 import com.cooked.app.ui.deadline.DeadlineDashboardViewModel_HiltModules;
 import com.cooked.app.ui.home.HomeViewModel_HiltModules;
@@ -140,10 +150,12 @@ public final class CookedApplication_HiltComponents {
           ApplicationContextModule.class,
           ActivityRetainedCBuilderModule.class,
           ServiceCBuilderModule.class,
+          CoroutineModule.class,
           DatabaseModule.class,
           HiltWrapper_FragmentGetContextFix_FragmentGetContextFixModule.class,
           HiltWrapper_WorkerFactoryModule.class,
           RepositoryModule.class,
+          TimeModule.class,
           UseCaseModule.class
       }
   )
@@ -176,9 +188,17 @@ public final class CookedApplication_HiltComponents {
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
           DeadlineDashboardViewModel_HiltModules.KeyModule.class,
+          DeadlinesViewModel_HiltModules.KeyModule.class,
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HiltWrapper_ActivitySavedStateHandleModule.class,
-          HomeViewModel_HiltModules.KeyModule.class
+          HomeViewModel_HiltModules.KeyModule.class,
+          InsightsViewModel_HiltModules.KeyModule.class,
+          OnboardingViewModel_HiltModules.KeyModule.class,
+          PaywallViewModel_HiltModules.KeyModule.class,
+          QuickAddViewModel_HiltModules.KeyModule.class,
+          ReminderDetailViewModel_HiltModules.KeyModule.class,
+          SettingsViewModel_HiltModules.KeyModule.class,
+          TodayViewModel_HiltModules.KeyModule.class
       }
   )
   @ActivityRetainedScoped
@@ -216,8 +236,16 @@ public final class CookedApplication_HiltComponents {
       modules = {
           AddEditReminderViewModel_HiltModules.BindsModule.class,
           DeadlineDashboardViewModel_HiltModules.BindsModule.class,
+          DeadlinesViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
-          HomeViewModel_HiltModules.BindsModule.class
+          HomeViewModel_HiltModules.BindsModule.class,
+          InsightsViewModel_HiltModules.BindsModule.class,
+          OnboardingViewModel_HiltModules.BindsModule.class,
+          PaywallViewModel_HiltModules.BindsModule.class,
+          QuickAddViewModel_HiltModules.BindsModule.class,
+          ReminderDetailViewModel_HiltModules.BindsModule.class,
+          SettingsViewModel_HiltModules.BindsModule.class,
+          TodayViewModel_HiltModules.BindsModule.class
       }
   )
   @ViewModelScoped

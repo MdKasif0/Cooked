@@ -20,14 +20,32 @@ import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_compo
 import hilt_aggregated_deps._androidx_hilt_work_HiltWrapper_WorkerFactoryModule;
 import hilt_aggregated_deps._com_cooked_app_CookedApplication_GeneratedInjector;
 import hilt_aggregated_deps._com_cooked_app_MainActivity_GeneratedInjector;
-import hilt_aggregated_deps._com_cooked_app_alarm_BootReceiver_GeneratedInjector;
-import hilt_aggregated_deps._com_cooked_app_alarm_NagDismissReceiver_GeneratedInjector;
-import hilt_aggregated_deps._com_cooked_app_alarm_ReminderActionReceiver_GeneratedInjector;
-import hilt_aggregated_deps._com_cooked_app_alarm_ReminderAlarmReceiver_GeneratedInjector;
-import hilt_aggregated_deps._com_cooked_app_di_AlarmModule;
-import hilt_aggregated_deps._com_cooked_app_di_DatabaseModule;
-import hilt_aggregated_deps._com_cooked_app_di_RepositoryModule;
-import hilt_aggregated_deps._com_cooked_app_di_UseCaseModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_AlarmModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_CoroutineModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_DatabaseModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_RepositoryModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_TimeModule;
+import hilt_aggregated_deps._com_cooked_app_core_di_UseCaseModule;
+import hilt_aggregated_deps._com_cooked_app_feature_add_QuickAddViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_add_QuickAddViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_deadlines_DeadlinesViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_deadlines_DeadlinesViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_detail_ReminderDetailViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_detail_ReminderDetailViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_home_TodayViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_home_TodayViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_insights_InsightsViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_insights_InsightsViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_onboarding_OnboardingViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_onboarding_OnboardingViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_paywall_PaywallViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_paywall_PaywallViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_feature_settings_SettingsViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_cooked_app_feature_settings_SettingsViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_cooked_app_scheduling_receivers_BootReceiver_GeneratedInjector;
+import hilt_aggregated_deps._com_cooked_app_scheduling_receivers_NagDismissReceiver_GeneratedInjector;
+import hilt_aggregated_deps._com_cooked_app_scheduling_receivers_ReminderActionReceiver_GeneratedInjector;
+import hilt_aggregated_deps._com_cooked_app_scheduling_receivers_ReminderAlarmReceiver_GeneratedInjector;
 import hilt_aggregated_deps._com_cooked_app_ui_addedit_AddEditReminderViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_cooked_app_ui_addedit_AddEditReminderViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_cooked_app_ui_deadline_DeadlineDashboardViewModel_HiltModules_BindsModule;
@@ -77,14 +95,32 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_Ac
         _androidx_hilt_work_HiltWrapper_WorkerFactoryModule.class,
         _com_cooked_app_CookedApplication_GeneratedInjector.class,
         _com_cooked_app_MainActivity_GeneratedInjector.class,
-        _com_cooked_app_alarm_BootReceiver_GeneratedInjector.class,
-        _com_cooked_app_alarm_NagDismissReceiver_GeneratedInjector.class,
-        _com_cooked_app_alarm_ReminderActionReceiver_GeneratedInjector.class,
-        _com_cooked_app_alarm_ReminderAlarmReceiver_GeneratedInjector.class,
-        _com_cooked_app_di_AlarmModule.class,
-        _com_cooked_app_di_DatabaseModule.class,
-        _com_cooked_app_di_RepositoryModule.class,
-        _com_cooked_app_di_UseCaseModule.class,
+        _com_cooked_app_core_di_AlarmModule.class,
+        _com_cooked_app_core_di_CoroutineModule.class,
+        _com_cooked_app_core_di_DatabaseModule.class,
+        _com_cooked_app_core_di_RepositoryModule.class,
+        _com_cooked_app_core_di_TimeModule.class,
+        _com_cooked_app_core_di_UseCaseModule.class,
+        _com_cooked_app_feature_add_QuickAddViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_add_QuickAddViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_deadlines_DeadlinesViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_deadlines_DeadlinesViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_detail_ReminderDetailViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_detail_ReminderDetailViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_home_TodayViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_home_TodayViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_insights_InsightsViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_insights_InsightsViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_onboarding_OnboardingViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_onboarding_OnboardingViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_paywall_PaywallViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_paywall_PaywallViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_feature_settings_SettingsViewModel_HiltModules_BindsModule.class,
+        _com_cooked_app_feature_settings_SettingsViewModel_HiltModules_KeyModule.class,
+        _com_cooked_app_scheduling_receivers_BootReceiver_GeneratedInjector.class,
+        _com_cooked_app_scheduling_receivers_NagDismissReceiver_GeneratedInjector.class,
+        _com_cooked_app_scheduling_receivers_ReminderActionReceiver_GeneratedInjector.class,
+        _com_cooked_app_scheduling_receivers_ReminderAlarmReceiver_GeneratedInjector.class,
         _com_cooked_app_ui_addedit_AddEditReminderViewModel_HiltModules_BindsModule.class,
         _com_cooked_app_ui_addedit_AddEditReminderViewModel_HiltModules_KeyModule.class,
         _com_cooked_app_ui_deadline_DeadlineDashboardViewModel_HiltModules_BindsModule.class,

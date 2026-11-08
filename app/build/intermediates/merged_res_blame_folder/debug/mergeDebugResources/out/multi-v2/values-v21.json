@@ -1,10 +1,29 @@
 {
     "logs": [
         {
-            "outputFile": "com.cooked.app-mergeDebugResources-72:/values-v21/values-v21.xml",
+            "outputFile": "com.cooked.app-mergeDebugResources-71:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/32208ff29361f02c729c623c7df94262/transformed/core-1.15.0/res/values-v21/values-v21.xml",
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/0c93af23fb91c280bc09af791f09812b/transformed/purchases-8.12.2/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "7",
+                        "endColumns": "12",
+                        "endOffsets": "409"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "368",
+                        "endLines": "11",
+                        "endColumns": "12",
+                        "endOffsets": "722"
+                    }
+                },
+                {
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/700c88e382a8404b98b4005bceeb4faa/transformed/core-1.16.0/res/values-v21/values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -12,6 +31,14 @@
                         "endLines": "2,3,4,5,6,7,8,9,12,17",
                         "endColumns": "117,63,66,63,115,125,125,127,12,12",
                         "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,12,13,14,15,16,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,173,237,304,727,843,969,1095,1223,1395",
+                        "endLines": "2,3,4,5,12,13,14,15,18,23",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,232,299,363,838,964,1090,1218,1390,1742"
                     }
                 }
             ]

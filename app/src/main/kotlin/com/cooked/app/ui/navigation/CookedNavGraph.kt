@@ -164,7 +164,7 @@ fun CookedAppShell(
                                     style = MaterialTheme.typography.labelMedium.copy(
                                         fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
                                     )
-                                ),
+                                )
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = FlameOrange,

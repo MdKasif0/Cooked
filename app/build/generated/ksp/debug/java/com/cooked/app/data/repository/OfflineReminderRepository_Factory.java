@@ -1,6 +1,6 @@
 package com.cooked.app.data.repository;
 
-import com.cooked.app.data.local.dao.ReminderDao;
+import com.cooked.app.data.dao.ReminderDao;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.Provider;

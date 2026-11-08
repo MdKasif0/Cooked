@@ -6,28 +6,20 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
-import com.cooked.app.alarm.AlarmSchedulerImpl;
-import com.cooked.app.alarm.BootReceiver;
-import com.cooked.app.alarm.BootReceiver_MembersInjector;
-import com.cooked.app.alarm.NagDismissReceiver;
-import com.cooked.app.alarm.NagDismissReceiver_MembersInjector;
-import com.cooked.app.alarm.ReminderActionReceiver;
-import com.cooked.app.alarm.ReminderActionReceiver_MembersInjector;
-import com.cooked.app.alarm.ReminderAlarmReceiver;
-import com.cooked.app.alarm.ReminderAlarmReceiver_MembersInjector;
-import com.cooked.app.data.local.CookedDatabase;
-import com.cooked.app.data.local.dao.ReminderDao;
-import com.cooked.app.data.preferences.UserPreferencesRepository;
+import com.cooked.app.core.di.DatabaseModule_ProvideCookedDatabaseFactory;
+import com.cooked.app.core.di.DatabaseModule_ProvideReminderDaoFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideCalculateCookedScoreUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideCalculatePressureUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideCompleteReminderUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideDeleteReminderUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideDismissNagUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideSaveReminderUseCaseFactory;
+import com.cooked.app.core.di.UseCaseModule_ProvideSnoozeReminderUseCaseFactory;
+import com.cooked.app.core.time.SystemCookedClock;
+import com.cooked.app.data.dao.ReminderDao;
+import com.cooked.app.data.datastore.UserPreferencesRepository;
+import com.cooked.app.data.db.CookedDatabase;
 import com.cooked.app.data.repository.OfflineReminderRepository;
-import com.cooked.app.di.DatabaseModule_ProvideCookedDatabaseFactory;
-import com.cooked.app.di.DatabaseModule_ProvideReminderDaoFactory;
-import com.cooked.app.di.UseCaseModule_ProvideCalculateCookedScoreUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideCalculatePressureUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideCompleteReminderUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideDeleteReminderUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideDismissNagUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideSaveReminderUseCaseFactory;
-import com.cooked.app.di.UseCaseModule_ProvideSnoozeReminderUseCaseFactory;
 import com.cooked.app.domain.usecase.CalculateCookedScoreUseCase;
 import com.cooked.app.domain.usecase.CalculatePressureUseCase;
 import com.cooked.app.domain.usecase.CompleteReminderUseCase;
@@ -35,6 +27,48 @@ import com.cooked.app.domain.usecase.DeleteReminderUseCase;
 import com.cooked.app.domain.usecase.DismissNagUseCase;
 import com.cooked.app.domain.usecase.SaveReminderUseCase;
 import com.cooked.app.domain.usecase.SnoozeReminderUseCase;
+import com.cooked.app.feature.add.QuickAddViewModel;
+import com.cooked.app.feature.add.QuickAddViewModel_HiltModules;
+import com.cooked.app.feature.add.QuickAddViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.add.QuickAddViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.deadlines.DeadlinesViewModel;
+import com.cooked.app.feature.deadlines.DeadlinesViewModel_HiltModules;
+import com.cooked.app.feature.deadlines.DeadlinesViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.deadlines.DeadlinesViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.detail.ReminderDetailViewModel;
+import com.cooked.app.feature.detail.ReminderDetailViewModel_HiltModules;
+import com.cooked.app.feature.detail.ReminderDetailViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.detail.ReminderDetailViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.home.TodayViewModel;
+import com.cooked.app.feature.home.TodayViewModel_HiltModules;
+import com.cooked.app.feature.home.TodayViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.home.TodayViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.insights.InsightsViewModel;
+import com.cooked.app.feature.insights.InsightsViewModel_HiltModules;
+import com.cooked.app.feature.insights.InsightsViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.insights.InsightsViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.onboarding.OnboardingViewModel;
+import com.cooked.app.feature.onboarding.OnboardingViewModel_HiltModules;
+import com.cooked.app.feature.onboarding.OnboardingViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.onboarding.OnboardingViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.paywall.PaywallViewModel;
+import com.cooked.app.feature.paywall.PaywallViewModel_HiltModules;
+import com.cooked.app.feature.paywall.PaywallViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.paywall.PaywallViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.feature.settings.SettingsViewModel;
+import com.cooked.app.feature.settings.SettingsViewModel_HiltModules;
+import com.cooked.app.feature.settings.SettingsViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.cooked.app.feature.settings.SettingsViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
+import com.cooked.app.scheduling.alarm.AlarmSchedulerImpl;
+import com.cooked.app.scheduling.notification.ReminderNotificationBuilder;
+import com.cooked.app.scheduling.receivers.BootReceiver;
+import com.cooked.app.scheduling.receivers.BootReceiver_MembersInjector;
+import com.cooked.app.scheduling.receivers.NagDismissReceiver;
+import com.cooked.app.scheduling.receivers.NagDismissReceiver_MembersInjector;
+import com.cooked.app.scheduling.receivers.ReminderActionReceiver;
+import com.cooked.app.scheduling.receivers.ReminderActionReceiver_MembersInjector;
+import com.cooked.app.scheduling.receivers.ReminderAlarmReceiver;
+import com.cooked.app.scheduling.receivers.ReminderAlarmReceiver_MembersInjector;
 import com.cooked.app.ui.addedit.AddEditReminderViewModel;
 import com.cooked.app.ui.addedit.AddEditReminderViewModel_HiltModules;
 import com.cooked.app.ui.addedit.AddEditReminderViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
@@ -396,10 +430,18 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
     }
 
     Map keySetMapOfClassOfObjectAndBooleanBuilder() {
-      MapBuilder mapBuilder = MapBuilder.<String, Boolean>newMapBuilder(3);
+      MapBuilder mapBuilder = MapBuilder.<String, Boolean>newMapBuilder(11);
       mapBuilder.put(AddEditReminderViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, AddEditReminderViewModel_HiltModules.KeyModule.provide());
       mapBuilder.put(DeadlineDashboardViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, DeadlineDashboardViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(DeadlinesViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, DeadlinesViewModel_HiltModules.KeyModule.provide());
       mapBuilder.put(HomeViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, HomeViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(InsightsViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, InsightsViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(OnboardingViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, OnboardingViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(PaywallViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, PaywallViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(QuickAddViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, QuickAddViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(ReminderDetailViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, ReminderDetailViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(SettingsViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, SettingsViewModel_HiltModules.KeyModule.provide());
+      mapBuilder.put(TodayViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, TodayViewModel_HiltModules.KeyModule.provide());
       return mapBuilder.build();
     }
 
@@ -446,7 +488,23 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
 
     Provider<DeadlineDashboardViewModel> deadlineDashboardViewModelProvider;
 
+    Provider<DeadlinesViewModel> deadlinesViewModelProvider;
+
     Provider<HomeViewModel> homeViewModelProvider;
+
+    Provider<InsightsViewModel> insightsViewModelProvider;
+
+    Provider<OnboardingViewModel> onboardingViewModelProvider;
+
+    Provider<PaywallViewModel> paywallViewModelProvider;
+
+    Provider<QuickAddViewModel> quickAddViewModelProvider;
+
+    Provider<ReminderDetailViewModel> reminderDetailViewModelProvider;
+
+    Provider<SettingsViewModel> settingsViewModelProvider;
+
+    Provider<TodayViewModel> todayViewModelProvider;
 
     ViewModelCImpl(SingletonCImpl singletonCImpl, ActivityRetainedCImpl activityRetainedCImpl,
         SavedStateHandle savedStateHandleParam, ViewModelLifecycle viewModelLifecycleParam) {
@@ -458,10 +516,18 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
     }
 
     Map hiltViewModelMapMapOfClassOfObjectAndProviderOfViewModelBuilder() {
-      MapBuilder mapBuilder = MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(3);
+      MapBuilder mapBuilder = MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(11);
       mapBuilder.put(AddEditReminderViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (addEditReminderViewModelProvider)));
       mapBuilder.put(DeadlineDashboardViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (deadlineDashboardViewModelProvider)));
+      mapBuilder.put(DeadlinesViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (deadlinesViewModelProvider)));
       mapBuilder.put(HomeViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (homeViewModelProvider)));
+      mapBuilder.put(InsightsViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (insightsViewModelProvider)));
+      mapBuilder.put(OnboardingViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (onboardingViewModelProvider)));
+      mapBuilder.put(PaywallViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (paywallViewModelProvider)));
+      mapBuilder.put(QuickAddViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (quickAddViewModelProvider)));
+      mapBuilder.put(ReminderDetailViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (reminderDetailViewModelProvider)));
+      mapBuilder.put(SettingsViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (settingsViewModelProvider)));
+      mapBuilder.put(TodayViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) (todayViewModelProvider)));
       return mapBuilder.build();
     }
 
@@ -470,7 +536,15 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
         final ViewModelLifecycle viewModelLifecycleParam) {
       this.addEditReminderViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
       this.deadlineDashboardViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
-      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.deadlinesViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
+      this.insightsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
+      this.onboardingViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
+      this.paywallViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
+      this.quickAddViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 7);
+      this.reminderDetailViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 8);
+      this.settingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 9);
+      this.todayViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 10);
     }
 
     @Override
@@ -510,8 +584,32 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
           case 1: // com.cooked.app.ui.deadline.DeadlineDashboardViewModel
           return (T) new DeadlineDashboardViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculatePressureUseCaseProvider.get(), singletonCImpl.provideCalculateCookedScoreUseCaseProvider.get(), singletonCImpl.provideCompleteReminderUseCaseProvider.get(), singletonCImpl.provideSnoozeReminderUseCaseProvider.get());
 
-          case 2: // com.cooked.app.ui.home.HomeViewModel
+          case 2: // com.cooked.app.feature.deadlines.DeadlinesViewModel
+          return (T) new DeadlinesViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculatePressureUseCaseProvider.get(), singletonCImpl.provideCalculateCookedScoreUseCaseProvider.get(), singletonCImpl.provideCompleteReminderUseCaseProvider.get(), singletonCImpl.provideSnoozeReminderUseCaseProvider.get(), singletonCImpl.systemCookedClockProvider.get());
+
+          case 3: // com.cooked.app.ui.home.HomeViewModel
           return (T) new HomeViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculatePressureUseCaseProvider.get(), singletonCImpl.provideCalculateCookedScoreUseCaseProvider.get(), singletonCImpl.provideCompleteReminderUseCaseProvider.get(), singletonCImpl.provideSnoozeReminderUseCaseProvider.get(), singletonCImpl.userPreferencesRepositoryProvider.get());
+
+          case 4: // com.cooked.app.feature.insights.InsightsViewModel
+          return (T) new InsightsViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculateCookedScoreUseCaseProvider.get(), singletonCImpl.systemCookedClockProvider.get());
+
+          case 5: // com.cooked.app.feature.onboarding.OnboardingViewModel
+          return (T) new OnboardingViewModel();
+
+          case 6: // com.cooked.app.feature.paywall.PaywallViewModel
+          return (T) new PaywallViewModel();
+
+          case 7: // com.cooked.app.feature.add.QuickAddViewModel
+          return (T) new QuickAddViewModel(singletonCImpl.provideSaveReminderUseCaseProvider.get(), singletonCImpl.systemCookedClockProvider.get());
+
+          case 8: // com.cooked.app.feature.detail.ReminderDetailViewModel
+          return (T) new ReminderDetailViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculatePressureUseCaseProvider.get(), singletonCImpl.provideCompleteReminderUseCaseProvider.get(), singletonCImpl.provideSnoozeReminderUseCaseProvider.get(), singletonCImpl.provideDeleteReminderUseCaseProvider.get(), viewModelCImpl.savedStateHandle);
+
+          case 9: // com.cooked.app.feature.settings.SettingsViewModel
+          return (T) new SettingsViewModel(singletonCImpl.userPreferencesRepositoryProvider.get());
+
+          case 10: // com.cooked.app.feature.home.TodayViewModel
+          return (T) new TodayViewModel(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.provideCalculateCookedScoreUseCaseProvider.get(), singletonCImpl.provideCompleteReminderUseCaseProvider.get(), singletonCImpl.provideSnoozeReminderUseCaseProvider.get());
 
           default: throw new AssertionError(id);
         }
@@ -605,6 +703,8 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
 
     Provider<SnoozeReminderUseCase> provideSnoozeReminderUseCaseProvider;
 
+    Provider<ReminderNotificationBuilder> reminderNotificationBuilderProvider;
+
     Provider<SaveReminderUseCase> provideSaveReminderUseCaseProvider;
 
     Provider<DeleteReminderUseCase> provideDeleteReminderUseCaseProvider;
@@ -612,6 +712,8 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
     Provider<CalculatePressureUseCase> provideCalculatePressureUseCaseProvider;
 
     Provider<CalculateCookedScoreUseCase> provideCalculateCookedScoreUseCaseProvider;
+
+    Provider<SystemCookedClock> systemCookedClockProvider;
 
     Provider<UserPreferencesRepository> userPreferencesRepositoryProvider;
 
@@ -633,11 +735,13 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
       this.provideDismissNagUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<DismissNagUseCase>(singletonCImpl, 3));
       this.provideCompleteReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<CompleteReminderUseCase>(singletonCImpl, 4));
       this.provideSnoozeReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<SnoozeReminderUseCase>(singletonCImpl, 5));
-      this.provideSaveReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<SaveReminderUseCase>(singletonCImpl, 6));
-      this.provideDeleteReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<DeleteReminderUseCase>(singletonCImpl, 7));
-      this.provideCalculatePressureUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<CalculatePressureUseCase>(singletonCImpl, 8));
-      this.provideCalculateCookedScoreUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<CalculateCookedScoreUseCase>(singletonCImpl, 9));
-      this.userPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<UserPreferencesRepository>(singletonCImpl, 10));
+      this.reminderNotificationBuilderProvider = DoubleCheck.provider(new SwitchingProvider<ReminderNotificationBuilder>(singletonCImpl, 6));
+      this.provideSaveReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<SaveReminderUseCase>(singletonCImpl, 7));
+      this.provideDeleteReminderUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<DeleteReminderUseCase>(singletonCImpl, 8));
+      this.provideCalculatePressureUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<CalculatePressureUseCase>(singletonCImpl, 9));
+      this.provideCalculateCookedScoreUseCaseProvider = DoubleCheck.provider(new SwitchingProvider<CalculateCookedScoreUseCase>(singletonCImpl, 10));
+      this.systemCookedClockProvider = DoubleCheck.provider(new SwitchingProvider<SystemCookedClock>(singletonCImpl, 11));
+      this.userPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<UserPreferencesRepository>(singletonCImpl, 12));
     }
 
     @Override
@@ -698,7 +802,7 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
 
     private ReminderAlarmReceiver injectReminderAlarmReceiver2(ReminderAlarmReceiver instance4) {
       ReminderAlarmReceiver_MembersInjector.injectRepository(instance4, offlineReminderRepositoryProvider.get());
-      ReminderAlarmReceiver_MembersInjector.injectAlarmScheduler(instance4, alarmSchedulerImplProvider.get());
+      ReminderAlarmReceiver_MembersInjector.injectNotificationBuilder(instance4, reminderNotificationBuilderProvider.get());
       return instance4;
     }
 
@@ -719,10 +823,10 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
           case 0: // com.cooked.app.data.repository.OfflineReminderRepository
           return (T) new OfflineReminderRepository(singletonCImpl.reminderDao());
 
-          case 1: // com.cooked.app.data.local.CookedDatabase
+          case 1: // com.cooked.app.data.db.CookedDatabase
           return (T) DatabaseModule_ProvideCookedDatabaseFactory.provideCookedDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 2: // com.cooked.app.alarm.AlarmSchedulerImpl
+          case 2: // com.cooked.app.scheduling.alarm.AlarmSchedulerImpl
           return (T) new AlarmSchedulerImpl(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           case 3: // com.cooked.app.domain.usecase.DismissNagUseCase
@@ -734,19 +838,25 @@ public final class DaggerCookedApplication_HiltComponents_SingletonC {
           case 5: // com.cooked.app.domain.usecase.SnoozeReminderUseCase
           return (T) UseCaseModule_ProvideSnoozeReminderUseCaseFactory.provideSnoozeReminderUseCase(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.alarmSchedulerImplProvider.get());
 
-          case 6: // com.cooked.app.domain.usecase.SaveReminderUseCase
+          case 6: // com.cooked.app.scheduling.notification.ReminderNotificationBuilder
+          return (T) new ReminderNotificationBuilder(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+
+          case 7: // com.cooked.app.domain.usecase.SaveReminderUseCase
           return (T) UseCaseModule_ProvideSaveReminderUseCaseFactory.provideSaveReminderUseCase(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.alarmSchedulerImplProvider.get());
 
-          case 7: // com.cooked.app.domain.usecase.DeleteReminderUseCase
+          case 8: // com.cooked.app.domain.usecase.DeleteReminderUseCase
           return (T) UseCaseModule_ProvideDeleteReminderUseCaseFactory.provideDeleteReminderUseCase(singletonCImpl.offlineReminderRepositoryProvider.get(), singletonCImpl.alarmSchedulerImplProvider.get());
 
-          case 8: // com.cooked.app.domain.usecase.CalculatePressureUseCase
+          case 9: // com.cooked.app.domain.usecase.CalculatePressureUseCase
           return (T) UseCaseModule_ProvideCalculatePressureUseCaseFactory.provideCalculatePressureUseCase();
 
-          case 9: // com.cooked.app.domain.usecase.CalculateCookedScoreUseCase
+          case 10: // com.cooked.app.domain.usecase.CalculateCookedScoreUseCase
           return (T) UseCaseModule_ProvideCalculateCookedScoreUseCaseFactory.provideCalculateCookedScoreUseCase();
 
-          case 10: // com.cooked.app.data.preferences.UserPreferencesRepository
+          case 11: // com.cooked.app.core.time.SystemCookedClock
+          return (T) new SystemCookedClock();
+
+          case 12: // com.cooked.app.data.datastore.UserPreferencesRepository
           return (T) new UserPreferencesRepository(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           default: throw new AssertionError(id);

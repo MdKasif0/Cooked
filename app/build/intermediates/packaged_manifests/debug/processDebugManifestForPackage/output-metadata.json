@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.cooked.app",
+  "applicationId": "com.cooked.app.debug",
   "variantName": "debug",
   "elements": [
     {
