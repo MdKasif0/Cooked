@@ -78,6 +78,12 @@ class ItemRepositoryImpl @Inject constructor(
         return itemDao.observeItemWithChecklist(id).map { it?.toDomain() }
     }
 
+    override fun observeEvents(itemId: String): Flow<List<com.cooked.app.domain.model.ItemEvent>> {
+        return itemEventDao.observeEventsFor(itemId).map { list ->
+            list.map { it.toDomain() }
+        }
+    }
+
     override suspend fun getItem(id: String): Item? {
         return itemDao.getItemWithChecklist(id)?.toDomain()
     }

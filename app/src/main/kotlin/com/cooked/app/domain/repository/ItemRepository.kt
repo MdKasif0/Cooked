@@ -13,6 +13,7 @@ interface ItemRepository {
     fun observeOverdue(): Flow<List<Item>>
     fun observeDeadlines(): Flow<List<Item>>
     fun observeItem(id: String): Flow<Item?>
+    fun observeEvents(itemId: String): Flow<List<com.cooked.app.domain.model.ItemEvent>>
 
     suspend fun getItem(id: String): Item?
     suspend fun getActiveItems(): List<Item>

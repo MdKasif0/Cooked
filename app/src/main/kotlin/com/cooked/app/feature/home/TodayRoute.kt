@@ -18,10 +18,18 @@ fun TodayRoute(
     TodayScreen(
         uiState = uiState,
         onReminderClick = onReminderClick,
-        onDoneClick = viewModel::onDoneClick,
-        onSnoozeClick = viewModel::onSnoozeClick,
+        onDoneClick = viewModel::onDone,
+        onOpenSnoozeSheet = viewModel::openSnoozeSheet,
+        onSnoozeSelected = viewModel::onSnooze,
+        onDismissSnoozeSheet = viewModel::dismissSnoozeSheet,
+        onItemLongClick = viewModel::toggleSelection,
+        onBatchDone = viewModel::onBatchDone,
+        onOpenBatchSnooze = viewModel::openBatchSnoozeSheet,
+        onBatchSnoozeSelected = viewModel::onBatchSnooze,
+        onDismissBatchSnooze = viewModel::dismissBatchSnoozeSheet,
+        onBatchDelete = viewModel::onBatchDelete,
+        onClearSelection = viewModel::clearSelection,
         onCookedScoreClick = onCookedScoreClick,
         modifier = modifier
     )
 }
-
