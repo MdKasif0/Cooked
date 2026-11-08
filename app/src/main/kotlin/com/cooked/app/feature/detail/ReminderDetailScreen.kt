@@ -167,8 +167,6 @@ fun ReminderDetailScreen(
     var noteInput by remember(item.note) { mutableStateOf(item.note ?: "") }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
 
-    val emojis = listOf("🎯", "📚", "💻", "💼", "⚡", "🔔", "💊", "🛒", "🏋️", "🧹", "🎨", "📝", "🚗", "✈️", "🍳", "🔥")
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = CookedTheme.colors.background,

@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.FileUpload
 import androidx.compose.material.icons.rounded.Info
@@ -36,6 +37,7 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Security
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material.icons.rounded.Whatshot
 import androidx.compose.material3.AlertDialog
@@ -69,10 +71,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.EggMascot
@@ -208,7 +213,12 @@ fun SettingsScreen(
                             modifier = Modifier.padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "⚠️", fontSize = 24.sp)
+                            Icon(
+                                painter = painterResource(R.drawable.ic_emergency_siren),
+                                contentDescription = null,
+                                tint = CookedTheme.colors.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
                             Spacer(modifier = Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
@@ -245,7 +255,11 @@ fun SettingsScreen(
                                 .background(CookedTheme.colors.primaryContainer, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = if (uiState.isPro) "👑" else "🔥", fontSize = 20.sp)
+                            CookedCategoryIcon(
+                                keyOrEmoji = if (uiState.isPro) "crown" else "flame",
+                                size = 20.dp,
+                                tint = CookedTheme.colors.primary
+                            )
                         }
 
                         Spacer(modifier = Modifier.width(14.dp))
@@ -296,7 +310,12 @@ fun SettingsScreen(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = if (isSafe) "🛡️" else "🚨", fontSize = 20.sp)
+                            Icon(
+                                painter = painterResource(if (isSafe) R.drawable.ic_cat_bell else R.drawable.ic_emergency_siren),
+                                contentDescription = null,
+                                tint = CookedTheme.colors.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
                         }
 
                         Spacer(modifier = Modifier.width(14.dp))

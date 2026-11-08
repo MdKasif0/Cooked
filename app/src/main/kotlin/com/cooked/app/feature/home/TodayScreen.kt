@@ -47,9 +47,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.CountdownText
@@ -156,7 +158,12 @@ fun TodayScreen(
                                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("🚨", fontSize = 18.sp)
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_emergency_siren),
+                                    contentDescription = null,
+                                    tint = CookedTheme.colors.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Text(
                                     text = "Cooked might stay silent. Tap to fix exact alarms & battery settings.",
