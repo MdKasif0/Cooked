@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Cooked.Splash">
+        android:theme="@style/Theme.Cooked">
 
         <activity
             android:name=".MainActivity"
@@ -31,22 +31,22 @@
 
         <!-- Alarm Receiver -->
         <receiver
-            android:name=".alarm.ReminderAlarmReceiver"
+            android:name=".scheduling.receivers.ReminderAlarmReceiver"
             android:exported="false" />
 
         <!-- Notification Swipe Dismiss (Nag Re-Scheduler) Receiver -->
         <receiver
-            android:name=".alarm.NagDismissReceiver"
+            android:name=".scheduling.receivers.NagDismissReceiver"
             android:exported="false" />
 
         <!-- Notification Action (Done / Snooze) Receiver -->
         <receiver
-            android:name=".alarm.ReminderActionReceiver"
+            android:name=".scheduling.receivers.ReminderActionReceiver"
             android:exported="false" />
 
         <!-- Boot & Timezone Change Receiver -->
         <receiver
-            android:name=".alarm.BootReceiver"
+            android:name=".scheduling.receivers.BootReceiver"
             android:exported="true"
             android:enabled="true">
             <intent-filter>
@@ -68,6 +68,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/cooked_widget_info" />
         </receiver>
+
+        <!-- Quick Settings Tile Service -->
+        <service
+            android:name=".widget.QuickAddTileService"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:label="Quick Add"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
     </application>
 

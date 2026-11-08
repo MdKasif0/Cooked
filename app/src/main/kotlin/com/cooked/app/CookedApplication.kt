@@ -6,7 +6,7 @@ import android.app.NotificationManager
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
-import com.cooked.app.alarm.ReminderAlarmReceiver
+import com.cooked.app.scheduling.notification.ReminderNotificationBuilder
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -26,7 +26,7 @@ class CookedApplication : Application() {
                 .build()
 
             val channel = NotificationChannel(
-                ReminderAlarmReceiver.CHANNEL_ID,
+                ReminderNotificationBuilder.CHANNEL_ID,
                 getString(R.string.notification_channel_name),
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
@@ -41,4 +41,3 @@ class CookedApplication : Application() {
         }
     }
 }
-

@@ -1,8 +1,8 @@
 package com.cooked.app.domain.usecase
 
-import com.cooked.app.alarm.AlarmScheduler
 import com.cooked.app.domain.model.Reminder
 import com.cooked.app.domain.repository.ReminderRepository
+import com.cooked.app.scheduling.alarm.AlarmScheduler
 
 class SaveReminderUseCase(
     private val repository: ReminderRepository,
@@ -13,4 +13,3 @@ class SaveReminderUseCase(
         alarmScheduler.schedule(reminder)
     }
 }
-
