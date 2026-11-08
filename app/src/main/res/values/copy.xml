@@ -6,7 +6,7 @@
     <!-- Rule 2: Specific beats generic ({title}, {count}, {time})           -->
     <!-- Rule 3: Max one emoji per line: 💀, 🔥, 🥚, 👀, 🥺, 🫡, 🍳           -->
     <!-- Rule 4: Roast the task, never the person. No shame.                 -->
-    <!-- Rule 5: NO banned words (productivity, game-changer, seamless, etc.)-->
+    <!-- Rule 5: Zero corporate cliches, zero corporate buzzwords, zero guilt -->
     <!-- Every key has 3 deliberate options marked with TODO for user pick.  -->
     <!-- =================================================================== -->
 
@@ -260,3 +260,4 @@
     <string name="hinglish_empty_today">kuch pending nahi hai. shaanti hi shaanti.</string>
 
 </resources>
+

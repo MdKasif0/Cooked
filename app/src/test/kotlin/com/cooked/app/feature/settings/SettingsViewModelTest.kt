@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.core.sound.SoundManager
 import com.cooked.app.core.telemetry.TelemetryImpl
 import com.cooked.app.core.util.SampleDataSeeder
 import com.cooked.app.data.billing.EntitlementRepositoryImpl
@@ -19,6 +20,7 @@ import com.cooked.app.scheduling.alarm.AlarmScheduler
 import com.cooked.app.scheduling.alarm.ScheduledAlarmInfo
 import com.cooked.app.scheduling.battery.ReliabilityChecker
 import com.google.common.truth.Truth.assertThat
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -89,6 +91,7 @@ class SettingsViewModelTest {
 
         val entitlementRepo = EntitlementRepositoryImpl(userPrefsRepo)
         val telemetry = TelemetryImpl(userPrefsRepo, database.itemEventDao())
+        val soundManager = mockk<SoundManager>(relaxed = true)
 
         viewModel = SettingsViewModel(
             preferencesRepository = userPrefsRepo,
@@ -97,7 +100,8 @@ class SettingsViewModelTest {
             reliabilityChecker = reliabilityChecker,
             sampleDataSeeder = sampleDataSeeder,
             entitlementRepository = entitlementRepo,
-            telemetry = telemetry
+            telemetry = telemetry,
+            soundManager = soundManager
         )
     }
 

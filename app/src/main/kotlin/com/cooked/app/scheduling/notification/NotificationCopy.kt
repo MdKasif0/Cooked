@@ -181,6 +181,8 @@ object NotificationCopy {
             "DO {title} OR I WILL PERSONALLY LEARN HOW TO WALK.",
             "MAXIMUM EMERGENCY: DO {title} IMMEDIATELY."
         )
+    }
+
     private object HinglishVariants {
         val first = listOf(
             "bhai, {title} ka time ho gaya. nipta le! 🍳",

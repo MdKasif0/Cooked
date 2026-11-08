@@ -35,7 +35,9 @@ class CopyBibleTest {
         val altFile = if (copyXml.exists()) copyXml else File("app/src/main/res/values/copy.xml")
         assertThat(altFile.exists()).isTrue()
 
-        val content = altFile.readText().lowercase()
+        val content = altFile.readText()
+            .replace(Regex("<!--.*?-->", RegexOption.DOT_MATCHES_ALL), "")
+            .lowercase()
 
         for (banned in bannedPhrases) {
             assertThat(content).doesNotContain(banned.lowercase())
@@ -90,3 +92,4 @@ class CopyBibleTest {
         }
     }
 }
+

@@ -135,7 +135,7 @@ fun TodayScreen(
                         Spacer(modifier = Modifier.width(12.dp))
 
                         EggMascot(
-                            level = uiState.hottestDeadlines.firstOrNull()?.heatLevel ?: HeatLevel.CHILL,
+                            level = uiState.hottestDeadlines.firstOrNull()?.second ?: HeatLevel.CHILL,
                             size = 52.dp
                         )
                     }

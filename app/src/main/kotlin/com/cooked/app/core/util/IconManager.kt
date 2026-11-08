@@ -49,3 +49,4 @@ object IconManager {
         } catch (_: Exception) {}
     }
 }
+

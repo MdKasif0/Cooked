@@ -184,6 +184,32 @@ fun DesignGalleryScreen(
                 }
             }
 
+            // Egg Mascot Showcase (5 States)
+            item {
+                SectionHeader(title = "Egg Mascot (5 States)")
+                Text(
+                    text = "Chill (raw) -> Warm (sunny) -> Toasty (crispy) -> Cooked (burnt) + Done (chef's kiss)",
+                    style = CookedTheme.typography.bodyMedium,
+                    color = CookedTheme.colors.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(CookedTheme.spacing.s8))
+                CookedCard(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        EggMascot(level = HeatLevel.CHILL, size = 52.dp, animated = true)
+                        EggMascot(level = HeatLevel.WARM, size = 52.dp, animated = true)
+                        EggMascot(level = HeatLevel.TOASTY, size = 52.dp, animated = true)
+                        EggMascot(level = HeatLevel.COOKED, size = 52.dp, animated = true)
+                        EggMascot(level = HeatLevel.CHILL, isDone = true, size = 52.dp, animated = true)
+                    }
+                }
+            }
+
             // Core Color Palette Tokens
             item {
                 SectionHeader(title = "Warm-Neutral Tokens")
@@ -490,6 +516,7 @@ fun DesignGalleryScreen(
             }
         }
     }
+}
 
     // Floating Snackbar
     if (snackbarMessage != null) {

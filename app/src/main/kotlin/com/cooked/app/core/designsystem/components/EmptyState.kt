@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.HeatLevel
 
 /**
  * Custom vector graphic representing a peaceful skillet with tiny resting bubbles/steam.

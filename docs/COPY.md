@@ -84,3 +84,4 @@ Every key in `app/src/main/res/values/copy.xml` is drafted with **three delibera
 | **Insights Cave Rate** | `insights_nags_per_win` | `You usually cave after {count} nags.` |
 | **Insights Lateness** | `insights_lateness_median` | `When late, you're ~{minutes}m late. Respectable.` |
 | **Insights Best Day** | `insights_best_weekday` | `{weekday} is your power day ({rate}% on time).` |
+

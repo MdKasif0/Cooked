@@ -265,7 +265,8 @@ fun CookedAppShell(
                     SettingsRoute(
                         onNavigateBack = { navController.popBackStack() },
                         onNavigateToReliability = { navController.navigate(ReliabilityNavRoute) },
-                        onNavigateToPaywall = { navController.navigate(PaywallNavRoute()) }
+                        onNavigateToPaywall = { navController.navigate(PaywallNavRoute()) },
+                        onNavigateToDesignGallery = { navController.navigate(DesignGalleryNavRoute) }
                     )
                 }
 

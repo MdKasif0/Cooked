@@ -157,8 +157,8 @@ fun CompareScreen(
                                     color = CookedTheme.colors.onSurface
                                 )
                                 RollingNumberText(
-                                    targetNumber = 78,
-                                    textStyle = CookedTheme.typography.headlineMedium.copy(
+                                    number = 78,
+                                    style = CookedTheme.typography.headlineMedium.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = CookedTheme.colors.primary
                                     )

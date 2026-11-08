@@ -112,3 +112,4 @@ This document details the deliberate design choices, layout rhythm, color contra
   - Shimmer placeholders mirror exact content geometry while loading.
 - [x] **Predictive Back Navigation**:
   - Enabled via `android:enableOnBackInvokedCallback="true"` in `AndroidManifest.xml`.
+

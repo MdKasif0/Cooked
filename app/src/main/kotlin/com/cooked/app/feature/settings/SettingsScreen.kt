@@ -45,6 +45,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -63,6 +64,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -117,6 +119,7 @@ fun SettingsScreen(
     onTelemetryToggled: (Boolean) -> Unit = {},
     onSetPrivacyVisible: (Boolean) -> Unit,
     onClearSnackbar: () -> Unit,
+    onNavigateToDesignGallery: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -981,6 +984,21 @@ fun SettingsScreen(
                                 color = CookedTheme.colors.onSurface
                             )
                             Text("💬", fontSize = 16.sp)
+                        }
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable(onClick = onNavigateToDesignGallery),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Design Gallery & Spatial Grid Audit",
+                                style = CookedTheme.typography.bodyMedium,
+                                color = CookedTheme.colors.onSurface
+                            )
+                            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = CookedTheme.colors.onSurfaceVariant)
                         }
                     }
                 }

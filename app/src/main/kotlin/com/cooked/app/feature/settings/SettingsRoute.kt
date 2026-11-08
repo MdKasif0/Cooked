@@ -13,6 +13,7 @@ fun SettingsRoute(
     onNavigateBack: () -> Unit,
     onNavigateToReliability: () -> Unit,
     onNavigateToPaywall: () -> Unit,
+    onNavigateToDesignGallery: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -24,6 +25,7 @@ fun SettingsRoute(
         onNavigateBack = onNavigateBack,
         onNavigateToReliability = onNavigateToReliability,
         onNavigateToPaywall = onNavigateToPaywall,
+        onNavigateToDesignGallery = onNavigateToDesignGallery,
         onThemeModeSelected = viewModel::onThemeModeSelected,
         onDynamicColorToggled = viewModel::onDynamicColorToggled,
         onNagIntervalSelected = viewModel::onNagIntervalSelected,
