@@ -68,6 +68,12 @@ class UserPreferencesRepository @Inject constructor(
         val TELEMETRY_ENABLED = booleanPreferencesKey("telemetry_enabled")
         val TOASTY_COMPLETIONS_COUNT = intPreferencesKey("toasty_completions_count")
         val LAST_REVIEW_PROMPT_EPOCH_DAY = androidx.datastore.preferences.core.longPreferencesKey("last_review_prompt_epoch_day")
+        val HINGLISH_VIBES = booleanPreferencesKey("hinglish_vibes")
+        val SOUND_NORMAL_NAG = stringPreferencesKey("sound_normal_nag")
+        val SOUND_ESCALATED_NAG = stringPreferencesKey("sound_escalated_nag")
+        val SOUND_CRITICAL = stringPreferencesKey("sound_critical")
+        val IN_APP_SOUNDS_ENABLED = booleanPreferencesKey("in_app_sounds_enabled")
+        val APP_ICON_CHOICE = stringPreferencesKey("app_icon_choice")
     }
 
     val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
@@ -87,7 +93,13 @@ class UserPreferencesRepository @Inject constructor(
             preferredNudgeTime = parseTime(preferences[PreferencesKeys.PREFERRED_NUDGE_TIME], LocalTime.of(18, 0)),
             telemetryEnabled = preferences[PreferencesKeys.TELEMETRY_ENABLED] ?: true,
             toastyCompletionsCount = preferences[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] ?: 0,
-            lastReviewPromptEpochDay = preferences[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] ?: 0L
+            lastReviewPromptEpochDay = preferences[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] ?: 0L,
+            hinglishVibes = preferences[PreferencesKeys.HINGLISH_VIBES] ?: false,
+            soundNormalNag = preferences[PreferencesKeys.SOUND_NORMAL_NAG] ?: "sizzle_soft",
+            soundEscalatedNag = preferences[PreferencesKeys.SOUND_ESCALATED_NAG] ?: "sizzle_loud",
+            soundCritical = preferences[PreferencesKeys.SOUND_CRITICAL] ?: "kettle",
+            inAppSoundsEnabled = preferences[PreferencesKeys.IN_APP_SOUNDS_ENABLED] ?: true,
+            appIconChoice = preferences[PreferencesKeys.APP_ICON_CHOICE] ?: "DEFAULT"
         )
     }
 
@@ -179,6 +191,30 @@ class UserPreferencesRepository @Inject constructor(
 
     suspend fun setLastReviewPromptEpochDay(epochDay: Long) {
         context.dataStore.edit { it[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] = epochDay }
+    }
+
+    suspend fun setHinglishVibes(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.HINGLISH_VIBES] = enabled }
+    }
+
+    suspend fun setSoundNormalNag(sound: String) {
+        context.dataStore.edit { it[PreferencesKeys.SOUND_NORMAL_NAG] = sound }
+    }
+
+    suspend fun setSoundEscalatedNag(sound: String) {
+        context.dataStore.edit { it[PreferencesKeys.SOUND_ESCALATED_NAG] = sound }
+    }
+
+    suspend fun setSoundCritical(sound: String) {
+        context.dataStore.edit { it[PreferencesKeys.SOUND_CRITICAL] = sound }
+    }
+
+    suspend fun setInAppSoundsEnabled(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.IN_APP_SOUNDS_ENABLED] = enabled }
+    }
+
+    suspend fun setAppIconChoice(choice: String) {
+        context.dataStore.edit { it[PreferencesKeys.APP_ICON_CHOICE] = choice }
     }
 
     suspend fun resetForTesting() {

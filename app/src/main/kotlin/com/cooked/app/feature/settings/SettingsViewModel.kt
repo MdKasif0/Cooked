@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.core.telemetry.Telemetry
+import com.cooked.app.core.sound.SoundManager
+import com.cooked.app.core.util.AppIconStyle
+import com.cooked.app.core.util.IconManager
 import com.cooked.app.core.util.SampleDataSeeder
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.backup.BackupManager
