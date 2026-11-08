@@ -15,7 +15,10 @@ enum class ItemEventType {
     UNDONE,
     RESCHEDULED,
     MISSED,
-    STARTED
+    STARTED,
+    PROGRESS,
+    SNITCH_OFFERED,
+    SNITCH_SENT
 }
 
 @Serializable
