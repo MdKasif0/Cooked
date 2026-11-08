@@ -21,6 +21,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.GridOff
+import androidx.compose.material.icons.rounded.GridOn
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,6 +59,7 @@ import com.cooked.app.core.designsystem.components.CookedSnackbar
 import com.cooked.app.core.designsystem.components.CookedSwitch
 import com.cooked.app.core.designsystem.components.CookedTopBar
 import com.cooked.app.core.designsystem.components.CountdownText
+import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.designsystem.components.EmptyState
 import com.cooked.app.core.designsystem.components.GhostButton
 import com.cooked.app.core.designsystem.components.HeatBar
@@ -68,6 +71,7 @@ import com.cooked.app.core.designsystem.components.SectionHeader
 import com.cooked.app.core.designsystem.components.SegmentedControl
 import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import com.cooked.app.core.designsystem.components.StatTile
+import com.cooked.app.feature.settings.components.DebugGridOverlay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
