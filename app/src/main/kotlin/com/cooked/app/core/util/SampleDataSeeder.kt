@@ -35,24 +35,24 @@ class SampleDataSeeder @Inject constructor(
 
         // 1. Past 60 Days: Completed items (18 items, on-time and late, with nags & snoozes)
         val pastTitles = listOf(
-            Triple("Submit Operating Systems Assignment 1", ItemKind.DEADLINE, "🔥"),
-            Triple("Pay Semester Fee", ItemKind.REMINDER, "💳"),
-            Triple("Algorithms Problem Set 2", ItemKind.DEADLINE, "💻"),
-            Triple("Renew Domain cooked.app", ItemKind.REMINDER, "🌐"),
-            Triple("Review Pull Request #412", ItemKind.REMINDER, "👀"),
-            Triple("File GST Quarterly Return", ItemKind.DEADLINE, "📝"),
-            Triple("Calculus Midterm Prep", ItemKind.DEADLINE, "📐"),
-            Triple("Send Client Invoice #1042", ItemKind.REMINDER, "💵"),
-            Triple("Dentist Cleaning Checkup", ItemKind.REMINDER, "🦷"),
-            Triple("Renew Two-Wheeler Insurance", ItemKind.REMINDER, "🛵"),
-            Triple("Submit Machine Learning Project Milestone", ItemKind.DEADLINE, "🤖"),
-            Triple("Call Mom & Wish Birthday", ItemKind.REMINDER, "🎂"),
-            Triple("Backup SSD to Cloud", ItemKind.REMINDER, "💾"),
-            Triple("Physics Thermodynamics Lab", ItemKind.DEADLINE, "⚡"),
-            Triple("Order College Textbooks", ItemKind.REMINDER, "📚"),
-            Triple("Freelance Dashboard Frontend", ItemKind.DEADLINE, "🎨"),
-            Triple("Return Amazon Return Package", ItemKind.REMINDER, "📦"),
-            Triple("Electricity Bill Payment", ItemKind.REMINDER, "💡")
+            Triple("Submit Operating Systems Assignment 1", ItemKind.DEADLINE, "assignment"),
+            Triple("Pay Semester Fee", ItemKind.REMINDER, "bill"),
+            Triple("Algorithms Problem Set 2", ItemKind.DEADLINE, "code"),
+            Triple("Renew Domain cooked.app", ItemKind.REMINDER, "renewal"),
+            Triple("Review Pull Request #412", ItemKind.REMINDER, "code"),
+            Triple("File GST Quarterly Return", ItemKind.DEADLINE, "assignment"),
+            Triple("Calculus Midterm Prep", ItemKind.DEADLINE, "exam"),
+            Triple("Send Client Invoice #1042", ItemKind.REMINDER, "bill"),
+            Triple("Dentist Cleaning Checkup", ItemKind.REMINDER, "health"),
+            Triple("Renew Two-Wheeler Insurance", ItemKind.REMINDER, "vehicle"),
+            Triple("Submit Machine Learning Project Milestone", ItemKind.DEADLINE, "code"),
+            Triple("Call Mom & Wish Birthday", ItemKind.REMINDER, "call"),
+            Triple("Backup SSD to Cloud", ItemKind.REMINDER, "renewal"),
+            Triple("Physics Thermodynamics Lab", ItemKind.DEADLINE, "lightning"),
+            Triple("Order College Textbooks", ItemKind.REMINDER, "cart"),
+            Triple("Freelance Dashboard Frontend", ItemKind.DEADLINE, "creative"),
+            Triple("Return Amazon Return Package", ItemKind.REMINDER, "cart"),
+            Triple("Electricity Bill Payment", ItemKind.REMINDER, "bill")
         )
 
         pastTitles.forEachIndexed { index, (title, kind, emoji) ->
@@ -99,10 +99,10 @@ class SampleDataSeeder @Inject constructor(
 
         // 2. Today: 4 items (Active, due today)
         val todayItems = listOf(
-            Triple("Submit Distributed Systems Report", ItemKind.DEADLINE, "🚨"),
-            Triple("Take Evening Multivitamin", ItemKind.REMINDER, "💊"),
-            Triple("Reply to Client Scope Email", ItemKind.REMINDER, "📧"),
-            Triple("LeetCode Daily Challenge", ItemKind.REMINDER, "⚡")
+            Triple("Submit Distributed Systems Report", ItemKind.DEADLINE, "assignment"),
+            Triple("Take Evening Multivitamin", ItemKind.REMINDER, "health"),
+            Triple("Reply to Client Scope Email", ItemKind.REMINDER, "work"),
+            Triple("LeetCode Daily Challenge", ItemKind.REMINDER, "code")
         )
 
         todayItems.forEachIndexed { index, (title, kind, emoji) ->
@@ -139,14 +139,14 @@ class SampleDataSeeder @Inject constructor(
 
         // 3. Next 30 Days: 8 upcoming items & deadlines
         val upcomingItems = listOf(
-            Triple("GATE Mock Examination 5", ItemKind.DEADLINE, "🎯"),
-            Triple("Renew Spotify Subscription", ItemKind.REMINDER, "🎵"),
-            Triple("Compiler Design Lab Final", ItemKind.DEADLINE, "💻"),
-            Triple("Car Service & Wheel Alignment", ItemKind.REMINDER, "🚗"),
-            Triple("Quarterly Freelance Project Showcase", ItemKind.DEADLINE, "💼"),
-            Triple("Buy Mom Mother's Day Gift", ItemKind.REMINDER, "🎁"),
-            Triple("Database Internals Presentation", ItemKind.DEADLINE, "📊"),
-            Triple("Book Train Tickets to Hometown", ItemKind.REMINDER, "🚆")
+            Triple("GATE Mock Examination 5", ItemKind.DEADLINE, "target"),
+            Triple("Renew Spotify Subscription", ItemKind.REMINDER, "renewal"),
+            Triple("Compiler Design Lab Final", ItemKind.DEADLINE, "code"),
+            Triple("Car Service & Wheel Alignment", ItemKind.REMINDER, "vehicle"),
+            Triple("Quarterly Freelance Project Showcase", ItemKind.DEADLINE, "work"),
+            Triple("Buy Mom Mother's Day Gift", ItemKind.REMINDER, "cart"),
+            Triple("Database Internals Presentation", ItemKind.DEADLINE, "work"),
+            Triple("Book Train Tickets to Hometown", ItemKind.REMINDER, "travel")
         )
 
         upcomingItems.forEachIndexed { index, (title, kind, emoji) ->

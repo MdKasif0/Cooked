@@ -43,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -348,7 +349,12 @@ private fun BenefitCard(
                     .background(CookedTheme.colors.surfaceContainerHigh, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = benefit.iconEmoji, fontSize = 20.sp)
+                Icon(
+                    painter = painterResource(id = benefit.iconRes),
+                    contentDescription = null,
+                    tint = CookedTheme.colors.primary,
+                    modifier = Modifier.size(22.dp)
+                )
             }
 
             Spacer(modifier = Modifier.width(14.dp))

@@ -124,7 +124,7 @@ fun SnitchBottomSheet(
 
             // Action 1: Send to Buddy
             PrimaryButton(
-                text = if (preferredApp == "whatsapp") "Send via WhatsApp 💬" else "Share with Friend 📤",
+                text = if (preferredApp == "whatsapp") "Send via WhatsApp" else "Share with Friend",
                 onClick = {
                     val shareIntent = SnitchManager.createShareIntent(context, message, preferredApp)
                     context.startActivity(shareIntent)
@@ -136,7 +136,7 @@ fun SnitchBottomSheet(
 
             // Action 2: Share Card to Story
             SecondaryButton(
-                text = "Snitch Yourself Publicly (Story Card) 📸",
+                text = "Share Story Card",
                 onClick = {
                     val cardUri = SnitchManager.createStoryCardUri(context, item.title, snoozeCount)
                     if (cardUri != null) {

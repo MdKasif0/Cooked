@@ -58,6 +58,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.painterResource
+import com.cooked.app.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -421,12 +423,23 @@ private fun FirstWinStep(
                         color = CookedTheme.colors.surfaceContainerLow,
                         border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
                     ) {
-                        Text(
-                            text = "💡 $prompt",
-                            style = CookedTheme.typography.bodyMedium,
-                            color = CookedTheme.colors.onSurface,
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
-                        )
+                        Row(
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_lightbulb_hint),
+                                contentDescription = null,
+                                tint = CookedTheme.colors.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = prompt,
+                                style = CookedTheme.typography.bodyMedium,
+                                color = CookedTheme.colors.onSurface
+                            )
+                        }
                     }
                 }
             }
@@ -442,7 +455,12 @@ private fun FirstWinStep(
                         modifier = Modifier.padding(14.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("🎉", fontSize = 20.sp)
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_sparkle_celebration),
+                            contentDescription = null,
+                            tint = CookedTheme.colors.primary,
+                            modifier = Modifier.size(22.dp)
+                        )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = "First win locked in! You're 1% less cooked.",
@@ -471,7 +489,7 @@ private fun FirstWinStep(
             )
         ) {
             Text(
-                text = if (isCreated) "Continue →" else if (input.isNotBlank()) "Lock it in 🔥" else "I'll add later →",
+                text = if (isCreated) "Continue →" else if (input.isNotBlank()) "Lock it in" else "I'll add later →",
                 style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
         }
@@ -663,7 +681,12 @@ private fun PaywallSoftSellStep(
                     .background(CookedTheme.colors.primaryContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Text("👑", fontSize = 40.sp)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_premium_crown),
+                    contentDescription = null,
+                    tint = CookedTheme.colors.primary,
+                    modifier = Modifier.size(44.dp)
+                )
             }
 
             Text(
@@ -685,10 +708,10 @@ private fun PaywallSoftSellStep(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    ProPerkRow("🔥 Escalating alarms (nag every 5m until done)")
-                    ProPerkRow("📊 12-week historical Cooked Score analysis")
-                    ProPerkRow("⚡ Full-screen emergency alarm over lock screen")
-                    ProPerkRow("🎨 Custom app icons and unhinged voice packs")
+                    ProPerkRow(R.drawable.ic_emergency_siren, "Escalating alarms (nag every 5m until done)")
+                    ProPerkRow(R.drawable.ic_chart_analytics, "12-week historical Cooked Score analysis")
+                    ProPerkRow(R.drawable.ic_cat_lightning, "Full-screen emergency alarm over lock screen")
+                    ProPerkRow(R.drawable.ic_cat_creative, "Custom app icons and unhinged voice packs")
                 }
             }
         }
@@ -729,10 +752,22 @@ private fun PaywallSoftSellStep(
 }
 
 @Composable
-private fun ProPerkRow(text: String) {
-    Text(
-        text = text,
-        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-        color = CookedTheme.colors.onSurface
-    )
+private fun ProPerkRow(
+    @androidx.annotation.DrawableRes iconRes: Int,
+    text: String
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = null,
+            tint = CookedTheme.colors.primary,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = text,
+            style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+            color = CookedTheme.colors.onSurface
+        )
+    }
 }

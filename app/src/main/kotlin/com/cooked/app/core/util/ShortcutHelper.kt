@@ -26,13 +26,8 @@ object ShortcutHelper {
         }
 
         val shortcuts = hottestDeadlines.take(2).mapIndexed { index, item ->
-            val emoji = item.emoji ?: "🎯"
-            val icon = try {
-                val bitmap = EmojiBitmapHelper.createEmojiBitmap(emoji, sizePx = 96)
-                IconCompat.createWithBitmap(bitmap)
-            } catch (_: Exception) {
-                IconCompat.createWithResource(context, R.drawable.ic_launcher_foreground)
-            }
+            val iconRes = com.cooked.app.core.designsystem.components.CategoryIcons.resolve(item.emoji)
+            val icon = IconCompat.createWithResource(context, iconRes)
 
             val intent = Intent(context, MainActivity::class.java).apply {
                 action = Intent.ACTION_VIEW
@@ -43,7 +38,7 @@ object ShortcutHelper {
 
             ShortcutInfoCompat.Builder(context, "deadline_${item.id}")
                 .setShortLabel(item.title.take(16))
-                .setLongLabel("$emoji ${item.title}")
+                .setLongLabel(item.title)
                 .setIcon(icon)
                 .setIntent(intent)
                 .setRank(index)
@@ -62,13 +57,8 @@ object ShortcutHelper {
      */
     fun requestPinDeadline(context: Context, item: Item) {
         if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
-            val emoji = item.emoji ?: "🎯"
-            val icon = try {
-                val bitmap = EmojiBitmapHelper.createEmojiBitmap(emoji, sizePx = 96)
-                IconCompat.createWithBitmap(bitmap)
-            } catch (_: Exception) {
-                IconCompat.createWithResource(context, R.drawable.ic_launcher_foreground)
-            }
+            val iconRes = com.cooked.app.core.designsystem.components.CategoryIcons.resolve(item.emoji)
+            val icon = IconCompat.createWithResource(context, iconRes)
 
             val intent = Intent(context, MainActivity::class.java).apply {
                 action = Intent.ACTION_VIEW

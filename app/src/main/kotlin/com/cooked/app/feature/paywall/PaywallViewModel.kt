@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cooked.app.R
 import com.cooked.app.core.telemetry.Telemetry
 import com.cooked.app.data.billing.RevenueCatBillingManager
 import com.cooked.app.domain.billing.BillingManager
@@ -42,28 +43,32 @@ class PaywallViewModel @Inject constructor(
         val benefits = listOf(
             PaywallBenefit(
                 id = "critical_alarm",
-                iconEmoji = "🚨",
+                iconEmoji = "",
+                iconRes = R.drawable.ic_emergency_siren,
                 title = "Critical Alarm Alerts",
                 description = "Full-screen waking alarms that bypass silent mode until explicitly acknowledged.",
                 isHighlighted = featureHint == "critical_alarm"
             ),
             PaywallBenefit(
                 id = "custom_nag",
-                iconEmoji = "⚙️",
+                iconEmoji = "",
+                iconRes = R.drawable.ic_cat_bell,
                 title = "Custom Nag Intervals & Rules",
                 description = "Set per-item 1m to 60m custom nagging frequency and max-nag safety limits.",
                 isHighlighted = featureHint == "custom_nag"
             ),
             PaywallBenefit(
                 id = "insights_range",
-                iconEmoji = "📊",
+                iconEmoji = "",
+                iconRes = R.drawable.ic_chart_analytics,
                 title = "Deep Insights & All History",
                 description = "Unlock 30d/90d/All productivity charts, snooze heatmaps, and latency trends.",
                 isHighlighted = featureHint == "insights_range"
             ),
             PaywallBenefit(
                 id = "live_widgets",
-                iconEmoji = "⏱️",
+                iconEmoji = "",
+                iconRes = R.drawable.ic_cat_routine,
                 title = "Countdown & Score Widgets",
                 description = "Live urgency countdowns and Cooked Score gauges directly on your home screen.",
                 isHighlighted = featureHint == "live_widgets"
@@ -114,7 +119,7 @@ class PaywallViewModel @Inject constructor(
                 is PurchaseResult.Success -> {
                     telemetry.logPurchaseSuccess(result.productId)
                     entitlementRepository.refresh()
-                    _uiState.update { it.copy(successMessage = "Welcome to Cooked Pro! 🔥") }
+                    _uiState.update { it.copy(successMessage = "Welcome to Cooked Pro!") }
                 }
                 is PurchaseResult.UserCancelled -> {
                     telemetry.logPurchaseCancelled()

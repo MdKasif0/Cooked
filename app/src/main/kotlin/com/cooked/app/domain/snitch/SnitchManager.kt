@@ -34,7 +34,7 @@ object SnitchManager {
                 "$nameLabel has snoozed '$itemTitle' $snoozeCount times. Please bully them into finishing it. - sent via Cooked $playStoreLink"
             }
             Personality.UNHINGED -> {
-                "🚨 EMERGENCY ACCOUNTABILITY ALERT 🚨 $nameLabel has snoozed '$itemTitle' $snoozeCount TIMES. Roast them into submission immediately. - sent via Cooked $playStoreLink"
+                "EMERGENCY ACCOUNTABILITY ALERT: $nameLabel has snoozed '$itemTitle' $snoozeCount TIMES. Roast them into submission immediately. - sent via Cooked $playStoreLink"
             }
         }
     }

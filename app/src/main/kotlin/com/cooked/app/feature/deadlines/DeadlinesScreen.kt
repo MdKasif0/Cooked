@@ -153,7 +153,7 @@ fun DeadlinesScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Scan datesheet or timetable 📷", style = CookedTheme.typography.labelLarge)
+                            Text("Scan datesheet or timetable", style = CookedTheme.typography.labelLarge)
                         }
                     }
                 }

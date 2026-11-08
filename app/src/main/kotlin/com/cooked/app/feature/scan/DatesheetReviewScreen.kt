@@ -106,7 +106,7 @@ fun DatesheetReviewScreen(
                     .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
                 PrimaryButton(
-                    text = if (selectedCount > 0) "Add $selectedCount Deadlines 🎯" else "Select at least 1 deadline",
+                    text = if (selectedCount > 0) "Add $selectedCount Deadlines" else "Select at least 1 deadline",
                     enabled = selectedCount > 0,
                     onClick = {
                         val chosen = items.filter { it.isSelected }

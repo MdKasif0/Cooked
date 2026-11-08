@@ -62,17 +62,9 @@ object LiveCountdownNotificationManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val heatEmoji = when (heatLevel) {
-            HeatLevel.CHILL -> "🥚"
-            HeatLevel.WARM -> "🍳"
-            HeatLevel.TOASTY -> "👀"
-            HeatLevel.COOKED -> "🔥"
-            HeatLevel.DONE -> "🫡"
-        }
-
         val builder = NotificationCompat.Builder(context, NotificationChannels.CHANNEL_LIVE_COUNTDOWN)
             .setSmallIcon(R.drawable.ic_launcher_monochrome)
-            .setContentTitle("$heatEmoji ${item.title}")
+            .setContentTitle(item.title)
             .setContentText("Due in ${formatMinutesLeft(dueAtMillis - nowMillis)} · ${heatLevel.displayName}")
             .setUsesChronometer(true)
             .setChronometerCountDown(true)
@@ -114,7 +106,7 @@ object LiveCountdownNotificationManager {
 
         val builder = NotificationCompat.Builder(context, NotificationChannels.CHANNEL_LIVE_COUNTDOWN)
             .setSmallIcon(R.drawable.ic_launcher_monochrome)
-            .setContentTitle("🍳 Cooking: $itemTitle")
+            .setContentTitle("Focus: $itemTitle")
             .setContentText("Focus session in progress...")
             .setUsesChronometer(true)
             .setChronometerCountDown(true)

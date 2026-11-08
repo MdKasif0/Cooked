@@ -49,8 +49,7 @@ class ReminderNotificationBuilder @Inject constructor(
         )
 
         val notificationId = getNotificationId(item.id)
-        val emojiPrefix = if (!item.emoji.isNullOrBlank()) "${item.emoji} " else "🔥 "
-        val displayTitle = "$emojiPrefix${item.title}"
+        val displayTitle = item.title
 
         // Tap to open app
         val openIntent = Intent(context, MainActivity::class.java).apply {
@@ -141,7 +140,7 @@ class ReminderNotificationBuilder @Inject constructor(
             .setContentTitle(displayTitle)
             .setContentText(copyText)
             .setStyle(NotificationCompat.BigTextStyle().bigText(
-                if (!item.note.isNullOrBlank()) "$copyText\n\n📝 ${item.note}" else copyText
+                if (!item.note.isNullOrBlank()) "$copyText\n\nNote: ${item.note}" else copyText
             ))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -166,22 +165,28 @@ class ReminderNotificationBuilder @Inject constructor(
                 snitchIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
-            val snitchAction = NotificationCompat.Action.Builder(0, "Time to snitch? 💬", snitchPendingIntent).build()
+            val snitchAction = NotificationCompat.Action.Builder(0, "Time to snitch?", snitchPendingIntent).build()
             builder.addAction(snitchAction)
         }
 
-        // Emoji large icon
-        val emojiChar = item.emoji ?: if (item.kind == com.cooked.app.domain.model.ItemKind.DEADLINE) "🎯" else "🔥"
+        // Custom Vector Large Icon
         try {
-            val emojiBitmap = EmojiBitmapHelper.createEmojiBitmap(emojiChar)
-            builder.setLargeIcon(emojiBitmap)
+            val iconRes = com.cooked.app.core.designsystem.components.CategoryIcons.resolve(item.emoji)
+            val drawable = androidx.core.content.ContextCompat.getDrawable(context, iconRes)
+            if (drawable != null) {
+                val bitmap = android.graphics.Bitmap.createBitmap(192, 192, android.graphics.Bitmap.Config.ARGB_8888)
+                val canvas = android.graphics.Canvas(bitmap)
+                drawable.setBounds(16, 16, 176, 176)
+                drawable.draw(canvas)
+                builder.setLargeIcon(bitmap)
+            }
         } catch (_: Exception) {}
 
         // Deadline countdown / heat line
         if (item.kind == com.cooked.app.domain.model.ItemKind.DEADLINE) {
             val now = java.time.Instant.now()
             val subText = if (now.isAfter(item.dueAt)) {
-                "Overdue · Cooked 🔥"
+                "Overdue · Cooked"
             } else {
                 val duration = java.time.Duration.between(now, item.dueAt)
                 val hours = duration.toHours()
