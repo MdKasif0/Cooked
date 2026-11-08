@@ -1,0 +1,73 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Toasty Mascot: Crispy brown edges, worried expression -->
+    <!-- Crispy Brown Outer Crust -->
+    <path
+        android:fillColor="#854D0E"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M32,24 C44,18 64,20 74,30 C84,40 88,60 80,72 C72,84 48,88 34,84 C20,80 10,64 14,48 C18,32 20,30 32,24 Z" />
+
+    <!-- Egg White (Toasted Off-White Inside) -->
+    <path
+        android:fillColor="#FDFBF7"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M34,28 C44,23 62,24 71,33 C80,42 83,58 76,68 C69,78 48,82 36,78 C24,74 16,60 19,46 C22,32 24,33 34,28 Z" />
+
+    <!-- Crispy Crunch Marks on Edge -->
+    <path
+        android:strokeColor="#78350F"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M73,28 L78,32" />
+    <path
+        android:strokeColor="#78350F"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M78,74 L83,71" />
+    <path
+        android:strokeColor="#78350F"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M16,56 L20,58" />
+
+    <!-- Yolk (Hot Ember Amber) -->
+    <path
+        android:fillColor="#EA580C"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:pathData="M34,51 A15,15 0 1 0 64,51 A15,15 0 1 0 34,51 Z" />
+
+    <!-- Worried Slanted Eyebrows -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M43,44 L49,46" />
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M57,46 L51,44" />
+
+    <!-- Wide Worried Eyes -->
+    <path
+        android:fillColor="#1A1714"
+        android:pathData="M44,49 A2.5,2.5 0 1 0 49,49 A2.5,2.5 0 1 0 44,49 Z" />
+    <path
+        android:fillColor="#1A1714"
+        android:pathData="M51,49 A2.5,2.5 0 1 0 56,49 A2.5,2.5 0 1 0 51,49 Z" />
+
+    <!-- "O" Worried Mouth -->
+    <path
+        android:fillColor="#78350F"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="1.5"
+        android:pathData="M47,56 A3,4 0 1 0 53,56 A3,4 0 1 0 47,56 Z" />
+</vector>

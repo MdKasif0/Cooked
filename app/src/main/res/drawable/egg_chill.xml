@@ -1,0 +1,41 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Chill Mascot: Whole raw egg, upright, serene & chill -->
+    <!-- Egg Body -->
+    <path
+        android:fillColor="#F6F2EC"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M48,12 C32,12 22,34 22,56 C22,74 34,84 48,84 C62,84 74,74 74,56 C74,34 64,12 48,12 Z" />
+
+    <!-- Cute Blush Dots -->
+    <path
+        android:fillColor="#FFE4D6"
+        android:pathData="M31,58 A4,3 0 1 0 39,58 A4,3 0 1 0 31,58 Z" />
+    <path
+        android:fillColor="#FFE4D6"
+        android:pathData="M57,58 A4,3 0 1 0 65,58 A4,3 0 1 0 57,58 Z" />
+
+    <!-- Calm Peaceful Eyes (Sleeping/Serene Arches) -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M35,53 C37,50 41,50 43,53" />
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M53,53 C55,50 59,50 61,53" />
+
+    <!-- Tiny Content Smile -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M45,61 C47,63 49,63 51,61" />
+</vector>
