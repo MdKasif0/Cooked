@@ -147,9 +147,9 @@ fun SecondaryButton(
             },
         enabled = enabled && !isLoading,
         shape = CookedShapes.small,
-        border = BorderStroke(1.dp, CookedTheme.colors.outline),
+        border = BorderStroke(1.dp, if (CookedTheme.colors.isDark) CookedTheme.colors.outline else CookedTheme.colors.outlineVariant),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
+            containerColor = if (CookedTheme.colors.isDark) Color.Transparent else CookedTheme.colors.surface,
             contentColor = CookedTheme.colors.onSurface,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = CookedTheme.colors.onSurfaceVariant
@@ -232,6 +232,67 @@ fun GhostButton(
                 text = text,
                 style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Medium)
             )
+        }
+    }
+}
+
+/**
+ * Neon call-to-action (upgrade, start session, celebratory confirms). Ink text on volt.
+ */
+@Composable
+fun AccentButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    leadingIcon: (@Composable () -> Unit)? = null
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val animationsDisabled = rememberAreAnimationsDisabled()
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed && enabled && !isLoading) 0.97f else 1.0f,
+        animationSpec = if (animationsDisabled) CookedMotion.fadeSpec(0) else CookedMotion.layoutSpring(),
+        label = "AccentButtonScale"
+    )
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .defaultMinSize(minHeight = 56.dp)
+            .height(56.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            },
+        enabled = enabled && !isLoading,
+        shape = CookedShapes.small,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = CookedTheme.colors.accent,
+            contentColor = CookedTheme.colors.onAccent,
+            disabledContainerColor = CookedTheme.colors.surfaceContainerHigh,
+            disabledContentColor = CookedTheme.colors.onSurfaceVariant
+        ),
+        interactionSource = interactionSource,
+        contentPadding = PaddingValues(horizontal = 24.dp)
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(22.dp),
+                color = CookedTheme.colors.onAccent,
+                strokeWidth = 2.5.dp
+            )
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (leadingIcon != null) {
+                    leadingIcon()
+                    Spacer(modifier = Modifier.width(CookedTheme.spacing.s8))
+                }
+                Text(
+                    text = text,
+                    style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                )
+            }
         }
     }
 }

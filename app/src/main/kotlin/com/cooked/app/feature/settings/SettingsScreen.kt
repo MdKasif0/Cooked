@@ -105,7 +105,7 @@ import java.time.LocalTime
 @Composable
 fun SettingsScreen(
     uiState: SettingsUiState,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)? = null,
     onNavigateToReliability: () -> Unit,
     onNavigateToPaywall: () -> Unit,
     onThemeModeSelected: (ThemeMode) -> Unit,
@@ -196,7 +196,9 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 20.dp),
+            // Bottom room so the last rows clear the floating navigation bar
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 128.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { Spacer(modifier = Modifier.height(4.dp)) }
@@ -207,7 +209,7 @@ fun SettingsScreen(
                     CookedCard(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, CookedTheme.colors.primary, RoundedCornerShape(16.dp))
+                            .border(1.dp, CookedTheme.colors.primary, RoundedCornerShape(24.dp))
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
@@ -421,7 +423,7 @@ fun SettingsScreen(
                                         .weight(1f)
                                         .height(40.dp)
                                         .clickable { onNagIntervalSelected(minutes) },
-                                    shape = RoundedCornerShape(10.dp),
+                                    shape = RoundedCornerShape(14.dp),
                                     color = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.surfaceContainerHigh,
                                     border = androidx.compose.foundation.BorderStroke(
                                         1.dp,
@@ -560,7 +562,7 @@ fun SettingsScreen(
                                         .weight(1f)
                                         .height(42.dp)
                                         .clickable { onPersonalitySelected(personality) },
-                                    shape = RoundedCornerShape(10.dp),
+                                    shape = RoundedCornerShape(14.dp),
                                     color = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.surfaceContainerHigh,
                                     border = androidx.compose.foundation.BorderStroke(
                                         1.dp,
@@ -835,7 +837,7 @@ fun SettingsScreen(
                                             onAppIconSelected(iconStyle)
                                         }
                                     },
-                                shape = RoundedCornerShape(12.dp),
+                                shape = RoundedCornerShape(18.dp),
                                 color = if (isSelected) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surfaceContainerLow,
                                 border = androidx.compose.foundation.BorderStroke(
                                     1.dp,
@@ -873,7 +875,7 @@ fun SettingsScreen(
                                                 ) {
                                                     Text(
                                                         text = "PRO",
-                                                        style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.ExtraBold),
+                                                        style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
                                                         color = Color.White,
                                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                                                     )
@@ -1206,7 +1208,7 @@ fun SettingsScreen(
                     CookedAppLogo(size = 52.dp)
                     Text(
                         text = "Cooked",
-                        style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Black),
+                        style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                         color = CookedTheme.colors.onSurface
                     )
                     Text(

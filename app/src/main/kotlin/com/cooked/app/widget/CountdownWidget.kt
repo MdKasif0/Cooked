@@ -95,7 +95,7 @@ class CountdownWidget : GlanceAppWidget() {
                             .fillMaxSize()
                             .appWidgetBackground()
                             .background(CookedGlanceColors.Surface)
-                            .cornerRadius(16.dp)
+                            .cornerRadius(28.dp)
                             .padding(16.dp)
                             .clickable(actionStartActivity<MainActivity>()),
                         contentAlignment = Alignment.Center
@@ -146,7 +146,7 @@ class CountdownWidget : GlanceAppWidget() {
                             .fillMaxSize()
                             .appWidgetBackground()
                             .background(CookedGlanceColors.Surface)
-                            .cornerRadius(16.dp)
+                            .cornerRadius(28.dp)
                             .padding(14.dp)
                             .clickable(actionStartActivity<MainActivity>()),
                         verticalAlignment = Alignment.CenterVertically

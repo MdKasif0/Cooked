@@ -42,7 +42,7 @@ fun SnoozeHabitChart(
     val onSurfaceVariant = CookedTheme.colors.onSurfaceVariant
 
     Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         color = CookedTheme.colors.surfaceContainerLow,
         modifier = modifier
             .fillMaxWidth()
@@ -74,7 +74,7 @@ fun SnoozeHabitChart(
 
                 if (snoozeHabit.peakHour != null && snoozeHabit.peakCount > 0) {
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(12.dp),
                         color = peakColor.copy(alpha = 0.2f)
                     ) {
                         Text(
@@ -145,7 +145,7 @@ fun SnoozeHabitChart(
             // Most snoozed item callout
             if (!snoozeHabit.mostSnoozedItemTitle.isNullOrBlank() && snoozeHabit.mostSnoozedCount > 0) {
                 Surface(
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(14.dp),
                     color = CookedTheme.colors.surfaceContainerHigh,
                     modifier = Modifier.fillMaxWidth()
                 ) {

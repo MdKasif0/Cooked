@@ -44,7 +44,7 @@ fun AvatarBubble(
         modifier = clickableModifier
             .size(size)
             .clip(CircleShape)
-            .background(CookedTheme.colors.primaryContainer),
+            .background(CookedTheme.colors.hero),
         contentAlignment = Alignment.Center
     ) {
         if (!initials.isNullOrBlank()) {
@@ -54,14 +54,14 @@ fun AvatarBubble(
                     fontWeight = FontWeight.Bold,
                     fontSize = (size.value * 0.4f).sp
                 ),
-                color = CookedTheme.colors.onPrimaryContainer
+                color = CookedTheme.colors.accent
             )
         } else {
             Icon(
                 imageVector = Icons.Rounded.LocalFireDepartment,
                 contentDescription = "Profile",
-                tint = CookedTheme.colors.primary,
-                modifier = Modifier.size(size * 0.6f)
+                tint = CookedTheme.colors.accent,
+                modifier = Modifier.size(size * 0.5f)
             )
         }
     }

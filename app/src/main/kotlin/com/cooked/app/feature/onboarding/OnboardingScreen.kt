@@ -1,5 +1,9 @@
 package com.cooked.app.feature.onboarding
 
+import com.cooked.app.core.designsystem.components.softShadow
+
+import androidx.compose.ui.draw.drawBehind
+
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -220,25 +224,37 @@ private fun HookStep(onNext: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Animated Cooked App Logo Emblem
+            val glow = CookedTheme.colors.accent
             Box(
                 modifier = Modifier
-                    .offset { IntOffset(0, bounceY.value.roundToInt()) }
-                    .size(96.dp),
+                    .size(220.dp)
+                    .drawBehind {
+                        // Soft volt halo behind the emblem
+                        drawCircle(
+                            brush = androidx.compose.ui.graphics.Brush.radialGradient(
+                                colors = listOf(glow.copy(alpha = 0.45f), glow.copy(alpha = 0.10f), androidx.compose.ui.graphics.Color.Transparent)
+                            ),
+                            radius = size.minDimension / 2f
+                        )
+                    },
                 contentAlignment = Alignment.Center
             ) {
-                CookedAppLogo(
-                    size = 96.dp
-                )
+                Box(
+                    modifier = Modifier
+                        .offset { IntOffset(0, bounceY.value.roundToInt()) }
+                        .size(112.dp)
+                        .softShadow(androidx.compose.foundation.shape.RoundedCornerShape(26.dp), 24.dp, 0.25f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CookedAppLogo(size = 112.dp)
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = "Reminders that\nwon't shut up.",
-                style = CookedTheme.typography.displaySmall.copy(
-                    fontWeight = FontWeight.Black,
-                    lineHeight = 42.sp
-                ),
+                style = CookedTheme.typography.headlineLarge.copy(fontSize = 38.sp, lineHeight = 42.sp),
                 color = CookedTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
@@ -257,7 +273,7 @@ private fun HookStep(onNext: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = CookedTheme.colors.primary,
                 contentColor = CookedTheme.colors.onPrimary
@@ -287,7 +303,7 @@ private fun PersonalityStep(
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(
                 text = "Pick your vibe.",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = CookedTheme.colors.onBackground
             )
             Text(
@@ -308,7 +324,7 @@ private fun PersonalityStep(
                             .weight(1f)
                             .height(44.dp)
                             .clickable { onSelect(personality) },
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(18.dp),
                         color = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.surfaceContainerHigh,
                         border = androidx.compose.foundation.BorderStroke(
                             1.dp,
@@ -341,7 +357,7 @@ private fun PersonalityStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = CookedTheme.colors.primary,
                 contentColor = CookedTheme.colors.onPrimary
@@ -379,7 +395,7 @@ private fun FirstWinStep(
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(
                 text = "What are you forgetting right now?",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = CookedTheme.colors.onBackground
             )
             Text(
@@ -393,7 +409,7 @@ private fun FirstWinStep(
                 onValueChange = onInputChanged,
                 placeholder = { Text("e.g. Call dentist tomorrow 11am") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(20.dp),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { if (input.isNotBlank()) onSave(input) }),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -418,7 +434,7 @@ private fun FirstWinStep(
                                 onInputChanged(prompt)
                                 onSave(prompt)
                             },
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(18.dp),
                         color = CookedTheme.colors.surfaceContainerLow,
                         border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
                     ) {
@@ -446,7 +462,7 @@ private fun FirstWinStep(
             if (isCreated) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(18.dp),
                     color = CookedTheme.colors.surfaceContainerHigh,
                     border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.primary)
                 ) {
@@ -481,7 +497,7 @@ private fun FirstWinStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = CookedTheme.colors.primary,
                 contentColor = CookedTheme.colors.onPrimary
@@ -521,7 +537,7 @@ private fun PermissionsStep(
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(
                 text = "Make it reliable.",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = CookedTheme.colors.onBackground
             )
             Text(
@@ -587,7 +603,7 @@ private fun PermissionsStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = CookedTheme.colors.primary,
                 contentColor = CookedTheme.colors.onPrimary
@@ -647,7 +663,7 @@ private fun PermissionExplainRow(
             } else {
                 OutlinedButton(
                     onClick = onRequest,
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(14.dp),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 6.dp)
                 ) {
                     Text(text = actionLabel, fontSize = 12.sp)
@@ -690,7 +706,7 @@ private fun PaywallSoftSellStep(
 
             Text(
                 text = "Become Uncookable.",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = CookedTheme.colors.onBackground,
                 textAlign = TextAlign.Center
             )
@@ -724,7 +740,7 @@ private fun PaywallSoftSellStep(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = CookedTheme.colors.primary,
                     contentColor = CookedTheme.colors.onPrimary

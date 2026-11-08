@@ -44,7 +44,7 @@ fun PersonalityPreviewCard(
             .fillMaxWidth()
             .background(
                 color = CookedTheme.colors.surfaceContainerLow,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(24.dp)
             )
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -76,7 +76,7 @@ fun PersonalityPreviewCard(
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(18.dp),
                 color = CookedTheme.colors.surface,
                 border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
             ) {

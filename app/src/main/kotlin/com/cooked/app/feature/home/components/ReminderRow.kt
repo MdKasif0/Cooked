@@ -1,5 +1,11 @@
 package com.cooked.app.feature.home.components
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
+import com.cooked.app.core.designsystem.components.CircleButtonStyle
+import com.cooked.app.core.designsystem.components.CircleIconButton
+import com.cooked.app.core.designsystem.components.softShadow
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
@@ -167,8 +173,8 @@ fun ReminderRow(
                 val targetValue = dismissState.targetValue
                 val bgColor by animateColorAsState(
                     targetValue = when (targetValue) {
-                        SwipeToDismissBoxValue.StartToEnd -> CookedTheme.colors.heatFor(HeatLevel.CHILL).color
-                        SwipeToDismissBoxValue.EndToStart -> CookedTheme.colors.heatFor(HeatLevel.WARM).color
+                        SwipeToDismissBoxValue.StartToEnd -> CookedTheme.colors.accent
+                        SwipeToDismissBoxValue.EndToStart -> CookedTheme.colors.hero
                         else -> Color.Transparent
                     },
                     label = "SwipeBgColor"
@@ -177,7 +183,7 @@ fun ReminderRow(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(RoundedCornerShape(24.dp))
                         .background(bgColor)
                         .padding(horizontal = 20.dp),
                     contentAlignment = if (targetValue == SwipeToDismissBoxValue.StartToEnd) Alignment.CenterStart else Alignment.CenterEnd
@@ -187,7 +193,7 @@ fun ReminderRow(
                             Icon(
                                 imageVector = Icons.Rounded.Check,
                                 contentDescription = "Done",
-                                tint = CookedTheme.colors.heatFor(HeatLevel.CHILL).onColor,
+                                tint = CookedTheme.colors.onAccent,
                                 modifier = Modifier
                                     .size(24.dp)
                                     .scale(iconScale)
@@ -196,7 +202,7 @@ fun ReminderRow(
                             Text(
                                 text = "Done!",
                                 style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                                color = CookedTheme.colors.heatFor(HeatLevel.CHILL).onColor
+                                color = CookedTheme.colors.onAccent
                             )
                         }
                     } else if (targetValue == SwipeToDismissBoxValue.EndToStart) {
@@ -204,13 +210,13 @@ fun ReminderRow(
                             Text(
                                 text = "Snooze",
                                 style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                                color = CookedTheme.colors.heatFor(HeatLevel.WARM).onColor
+                                color = CookedTheme.colors.onHero
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 imageVector = Icons.Rounded.Snooze,
                                 contentDescription = "Snooze",
-                                tint = CookedTheme.colors.heatFor(HeatLevel.WARM).onColor,
+                                tint = CookedTheme.colors.onHero,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -226,10 +232,15 @@ fun ReminderRow(
             }
 
             Surface(
-                shape = RoundedCornerShape(14.dp),
-                color = if (isSelected) CookedTheme.colors.primaryContainer.copy(alpha = 0.5f) else CookedTheme.colors.surfaceContainerLow,
+                shape = RoundedCornerShape(24.dp),
+                color = when {
+                    isSelected -> CookedTheme.colors.accentContainer
+                    CookedTheme.colors.isDark -> CookedTheme.colors.surfaceContainer
+                    else -> CookedTheme.colors.surface
+                },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .softShadow(RoundedCornerShape(24.dp), 14.dp, 0.06f)
                     .combinedClickable(
                         onClick = onItemClick,
                         onLongClick = onLongClick
@@ -250,7 +261,7 @@ fun ReminderRow(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 14.dp, vertical = 12.dp),
+                        .padding(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (isMultiSelectMode) {
@@ -265,19 +276,28 @@ fun ReminderRow(
                         Spacer(modifier = Modifier.width(8.dp))
                     }
 
-                    // Custom SVG category icon
-                    if (!item.emoji.isNullOrBlank()) {
-                        Box(
-                            modifier = Modifier.padding(end = 10.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CookedCategoryIcon(
-                                keyOrEmoji = item.emoji,
-                                size = 20.dp,
-                                tint = CookedTheme.colors.primary
-                            )
-                        }
+                    // Category icon tile (neon-tinted for critical / overdue items)
+                    val tileHot = item.critical || isOverdue
+                    Box(
+                        modifier = Modifier
+                            .size(46.dp)
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(
+                                when {
+                                    tileHot -> CookedTheme.colors.hero
+                                    CookedTheme.colors.isDark -> CookedTheme.colors.surfaceContainerHigh
+                                    else -> CookedTheme.colors.surfaceContainerLow
+                                }
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CookedCategoryIcon(
+                            keyOrEmoji = item.emoji ?: if (item.kind == ItemKind.DEADLINE) "target" else "bell",
+                            size = 22.dp,
+                            tint = if (tileHot) CookedTheme.colors.accent else CookedTheme.colors.onSurface
+                        )
                     }
+                    Spacer(modifier = Modifier.width(14.dp))
 
                     // Title & Metadata
                     Column(
@@ -286,9 +306,7 @@ fun ReminderRow(
                     ) {
                         Text(
                             text = item.title,
-                            style = CookedTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.SemiBold
-                            ),
+                            style = CookedTheme.typography.titleMedium,
                             color = CookedTheme.colors.onSurface,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
@@ -300,9 +318,9 @@ fun ReminderRow(
                         ) {
                             // Time
                             Text(
-                                text = formattedTime,
-                                style = CookedTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                                color = if (isOverdue) CookedTheme.colors.heatFor(HeatLevel.COOKED).color else CookedTheme.colors.onSurfaceVariant
+                                text = if (isOverdue) "Overdue · $formattedTime" else formattedTime,
+                                style = CookedTheme.typography.labelMedium,
+                                color = if (isOverdue) CookedTheme.colors.heatFor(HeatLevel.COOKED).textColor else CookedTheme.colors.onSurfaceVariant
                             )
 
                             // Repeating Icon
@@ -333,13 +351,23 @@ fun ReminderRow(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (item.critical) {
-                            HeatChip(level = HeatLevel.COOKED)
-                        } else if (item.kind == ItemKind.DEADLINE) {
-                            Icon(
-                                imageVector = Icons.Rounded.Whatshot,
-                                contentDescription = "Deadline",
-                                tint = CookedTheme.colors.primary,
-                                modifier = Modifier.size(18.dp)
+                            HeatChip(level = HeatLevel.COOKED, label = "Critical")
+                        }
+                        if (!isMultiSelectMode) {
+                            // One-tap complete, mirroring swipe-right
+                            CircleIconButton(
+                                icon = Icons.Rounded.Check,
+                                contentDescription = "Mark ${item.title} done",
+                                onClick = {
+                                    haptics.confirmDone()
+                                    soundManager.playDonePop()
+                                    onDone()
+                                },
+                                style = if (CookedTheme.colors.isDark) CircleButtonStyle.Surface else CircleButtonStyle.Ghost,
+                                size = 40.dp,
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .border(1.5.dp, CookedTheme.colors.outline, CircleShape)
                             )
                         }
                     }
@@ -374,7 +402,7 @@ private fun RowSteamPuff(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
         val p = progress.value
         val alpha = (1f - p).coerceIn(0f, 1f)
-        val particleColor = Color(0xFF10B981) // Done emerald tint
+        val particleColor = Color(0xFFB8E62E) // Volt steam
 
         val offsets = listOf(
             Offset(-12f * p, -16f * p),

@@ -33,7 +33,7 @@ fun PressureBadge(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(12.dp))
             .background(bgColor)
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {

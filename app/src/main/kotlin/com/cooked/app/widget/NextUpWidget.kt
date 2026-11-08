@@ -81,7 +81,7 @@ class NextUpWidget : GlanceAppWidget() {
                         .fillMaxSize()
                         .appWidgetBackground()
                         .background(CookedGlanceColors.Surface)
-                        .cornerRadius(16.dp)
+                        .cornerRadius(28.dp)
                         .padding(12.dp)
                 ) {
                     // Header
@@ -170,7 +170,7 @@ private fun NextUpItemRow(
         modifier = GlanceModifier
             .fillMaxWidth()
             .background(CookedGlanceColors.SurfaceContainer)
-            .cornerRadius(10.dp)
+            .cornerRadius(16.dp)
             .padding(horizontal = 8.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -211,7 +211,7 @@ private fun NextUpItemRow(
             modifier = GlanceModifier
                 .size(24.dp)
                 .background(CookedGlanceColors.Surface)
-                .cornerRadius(12.dp)
+                .cornerRadius(20.dp)
                 .clickable(
                     actionRunCallback<MarkDoneActionCallback>(
                         actionParametersOf(MarkDoneActionCallback.itemIdKey to item.id)

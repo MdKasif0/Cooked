@@ -54,10 +54,10 @@ fun <T> SegmentedControl(
 
     Box(
         modifier = modifier
-            .height(48.dp)
+            .height(50.dp)
             .clip(RoundedCornerShape(CookedRadius.Button))
-            .background(CookedTheme.colors.surfaceContainer)
-            .padding(4.dp)
+            .background(if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainer else CookedTheme.colors.surfaceContainer)
+            .padding(5.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -74,13 +74,7 @@ fun <T> SegmentedControl(
                         .clip(RoundedCornerShape(CookedRadius.Button - 2.dp))
                         .then(
                             if (isSelected) {
-                                Modifier.background(
-                                    if (CookedTheme.colors.isDark) {
-                                        CookedTheme.colors.surfaceContainerHigh
-                                    } else {
-                                        CookedTheme.colors.surface
-                                    }
-                                )
+                                Modifier.background(CookedTheme.colors.primary)
                             } else {
                                 Modifier
                             }
@@ -98,11 +92,11 @@ fun <T> SegmentedControl(
                 ) {
                     Text(
                         text = labelProvider(item),
-                        style = CookedTheme.typography.titleMedium.copy(
+                        style = CookedTheme.typography.labelLarge.copy(
                             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
                         ),
                         color = if (isSelected) {
-                            CookedTheme.colors.onSurface
+                            CookedTheme.colors.onPrimary
                         } else {
                             CookedTheme.colors.onSurfaceVariant
                         }

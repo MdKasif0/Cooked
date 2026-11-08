@@ -580,7 +580,7 @@ private fun ColorSwatchRow(
     showBorder: Boolean = false
 ) {
     val borderModifier = if (showBorder) {
-        Modifier.border(1.dp, CookedTheme.colors.outlineVariant, RoundedCornerShape(8.dp))
+        Modifier.border(1.dp, CookedTheme.colors.outlineVariant, RoundedCornerShape(12.dp))
     } else {
         Modifier
     }
@@ -588,7 +588,7 @@ private fun ColorSwatchRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(12.dp))
             .background(color)
             .then(borderModifier)
             .padding(horizontal = 14.dp, vertical = 10.dp),

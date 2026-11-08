@@ -203,7 +203,7 @@ fun CookSessionScreen(
                     text = timerString,
                     style = CookedTheme.typography.displayLarge.copy(
                         fontSize = 64.sp,
-                        fontWeight = FontWeight.ExtraBold,
+                        fontWeight = FontWeight.SemiBold,
                         fontFeatureSettings = FontFeatureSettingsTabular
                     ),
                     color = if (isRunning && !isPaused) CookedTheme.colors.primary else CookedTheme.colors.onSurface

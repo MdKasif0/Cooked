@@ -118,7 +118,7 @@ fun DeadlineDashboardScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(22.dp))
+                        .clip(RoundedCornerShape(28.dp))
                         .background(
                             Brush.verticalGradient(
                                 listOf(
@@ -127,7 +127,7 @@ fun DeadlineDashboardScreen(
                                 )
                             )
                         )
-                        .border(1.dp, indicatorColor.copy(alpha = 0.35f), RoundedCornerShape(22.dp))
+                        .border(1.dp, indicatorColor.copy(alpha = 0.35f), RoundedCornerShape(28.dp))
                         .padding(20.dp)
                 ) {
                     Column {
@@ -144,7 +144,7 @@ fun DeadlineDashboardScreen(
                             Text(
                                 text = "${cookedScore.score} / 100",
                                 style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Black,
+                                    fontWeight = FontWeight.SemiBold,
                                     color = indicatorColor
                                 )
                             )
@@ -241,12 +241,12 @@ fun DeadlineDashboardScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(18.dp))
+                            .clip(RoundedCornerShape(24.dp))
                             .background(MaterialTheme.colorScheme.surface)
                             .border(
                                 1.dp,
                                 MaterialTheme.colorScheme.outline.copy(alpha = 0.35f),
-                                RoundedCornerShape(18.dp)
+                                RoundedCornerShape(24.dp)
                             )
                             .clickable { onNavigateToEditReminder(item.reminder.id) }
                             .padding(16.dp)
@@ -325,7 +325,7 @@ fun DeadlineDashboardScreen(
                                         containerColor = FlameOrange.copy(alpha = 0.15f),
                                         contentColor = FlameOrange
                                     ),
-                                    shape = RoundedCornerShape(12.dp)
+                                    shape = RoundedCornerShape(18.dp)
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Check,

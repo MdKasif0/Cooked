@@ -317,7 +317,7 @@ fun QuickAddBottomSheet(
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
                     .scale(sizzleScale.value),
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(20.dp),
                 visualTransformation = visualTransformation,
                 singleLine = false,
                 maxLines = 3,
@@ -349,7 +349,7 @@ fun QuickAddBottomSheet(
                 exit = fadeOut()
             ) {
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(12.dp),
                     color = CookedTheme.colors.surfaceContainerHigh,
                     modifier = Modifier.fillMaxWidth()
                 ) {

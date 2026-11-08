@@ -54,7 +54,7 @@ fun SectionHeader(
             ) {
                 Text(
                     text = title,
-                    style = CookedTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = CookedTheme.typography.titleLarge,
                     color = CookedTheme.colors.onBackground
                 )
 
@@ -63,7 +63,7 @@ fun SectionHeader(
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(CookedTheme.colors.surfaceContainerHigh)
+                            .background(CookedTheme.colors.primary)
                             .padding(horizontal = 8.dp, vertical = 2.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -73,7 +73,7 @@ fun SectionHeader(
                                 fontWeight = FontWeight.Bold,
                                 fontFeatureSettings = FontFeatureSettingsTabular
                             ),
-                            color = CookedTheme.colors.onSurfaceVariant
+                            color = CookedTheme.colors.onPrimary
                         )
                     }
                 }
@@ -82,8 +82,8 @@ fun SectionHeader(
             if (actionText != null && onActionClick != null) {
                 Text(
                     text = actionText,
-                    style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                    color = CookedTheme.colors.primary,
+                    style = CookedTheme.typography.labelLarge,
+                    color = CookedTheme.colors.onSurfaceVariant,
                     modifier = Modifier
                         .clip(CookedTheme.shapes.extraSmall)
                         .clickable(onClick = onActionClick)

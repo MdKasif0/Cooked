@@ -86,7 +86,7 @@ fun HomeScreen(
                             Text(
                                 text = stringResource(R.string.app_name),
                                 style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Black,
+                                    fontWeight = FontWeight.SemiBold,
                                     fontSize = 24.sp
                                 ),
                                 color = MaterialTheme.colorScheme.onBackground
@@ -125,7 +125,7 @@ fun HomeScreen(
                 onClick = onNavigateToAddReminder,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = RoundedCornerShape(18.dp)
+                shape = RoundedCornerShape(24.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -149,9 +149,9 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .clip(RoundedCornerShape(14.dp))
+                            .clip(RoundedCornerShape(20.dp))
                             .background(FlameOrange.copy(alpha = 0.12f))
-                            .border(1.dp, FlameOrange.copy(alpha = 0.3f), RoundedCornerShape(14.dp))
+                            .border(1.dp, FlameOrange.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
                             .clickable(onClick = onNavigateToOemGuide)
                             .padding(12.dp)
                     ) {
@@ -239,7 +239,7 @@ fun HomeScreen(
                         }
                     },
                     singleLine = true,
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surface,
                         unfocusedContainerColor = MaterialTheme.colorScheme.surface,

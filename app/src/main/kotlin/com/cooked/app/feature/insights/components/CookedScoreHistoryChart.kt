@@ -81,15 +81,16 @@ fun CookedScoreHistoryChart(
         "12-week Cooked Score chart with no active data."
     }
 
-    val primaryColor = CookedTheme.colors.primary
-    val outlineVariant = CookedTheme.colors.outlineVariant
-    val surfaceColor = CookedTheme.colors.surface
-    val onSurfaceVariant = CookedTheme.colors.onSurfaceVariant
-    val onSurface = CookedTheme.colors.onSurface
+    // Rendered as an ink hero panel with a volt trend line (reference: "AI Price Forecast").
+    val primaryColor = CookedTheme.colors.accent
+    val outlineVariant = CookedTheme.colors.heroRaised
+    val surfaceColor = CookedTheme.colors.hero
+    val onSurfaceVariant = CookedTheme.colors.onHeroMuted
+    val onSurface = CookedTheme.colors.onHero
 
     Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = CookedTheme.colors.surfaceContainerLow,
+        shape = RoundedCornerShape(28.dp),
+        color = CookedTheme.colors.hero,
         modifier = modifier
             .fillMaxWidth()
             .semantics { contentDescription = talkBackDescription }
@@ -120,17 +121,14 @@ fun CookedScoreHistoryChart(
 
                 if (currentWeekPoint != null) {
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = CookedTheme.colors.surfaceContainerHigh
+                        shape = com.cooked.app.core.designsystem.PillShape,
+                        color = CookedTheme.colors.accent
                     ) {
                         Text(
-                            text = "Now: ${currentWeekPoint.score}/100",
-                            style = CookedTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = FontFamily.Monospace
-                            ),
-                            color = primaryColor,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            text = "Now ${currentWeekPoint.score}",
+                            style = CookedTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                            color = CookedTheme.colors.onAccent,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
                 }
@@ -312,8 +310,8 @@ fun CookedScoreHistoryChart(
                     if (selectedIndex in points.indices) {
                         val point = points[selectedIndex]
                         Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = CookedTheme.colors.surfaceContainerHigh,
+                            shape = RoundedCornerShape(18.dp),
+                            color = CookedTheme.colors.heroRaised,
                             tonalElevation = 4.dp,
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
@@ -323,7 +321,7 @@ fun CookedScoreHistoryChart(
                                 text = "${point.weekLabel}: ${point.score}/100",
                                 style = CookedTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
-                                    fontFamily = FontFamily.Monospace
+                                    fontFeatureSettings = "tnum"
                                 ),
                                 color = onSurface,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)

@@ -1,5 +1,9 @@
 package com.cooked.app.feature.insights
 
+import androidx.compose.foundation.rememberScrollState
+
+import androidx.compose.foundation.horizontalScroll
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -90,67 +94,46 @@ fun InsightsScreen(
                 .fillMaxSize()
                 .padding(horizontal = CookedTheme.spacing.screenHorizontal),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(top = 16.dp, bottom = 100.dp)
+            contentPadding = PaddingValues(top = 4.dp, bottom = 132.dp)
         ) {
             // Header Title
             item(key = "header_title") {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(top = 8.dp)) {
+                    com.cooked.app.core.designsystem.components.Overline(text = "Rhythm, habits & capacity")
                     Text(
-                        text = "Insights",
-                        style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+                        text = "How you've been cooking",
+                        style = CookedTheme.typography.headlineLarge,
                         color = CookedTheme.colors.onBackground
-                    )
-                    Text(
-                        text = "Your rhythm, habits, and workload capacity.",
-                        style = CookedTheme.typography.bodyMedium,
-                        color = CookedTheme.colors.onSurfaceVariant
                     )
                 }
             }
 
-            // 1. Range Segmented Control (7d / 30d / 90d / All)
+            // 1. Range chips (7d / 30d / 90d / All)
             item(key = "range_selector") {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(CookedTheme.colors.surfaceContainerLow)
-                        .padding(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     InsightRange.entries.forEach { range ->
                         val isSelected = uiState.selectedRange == range
-                        Surface(
+                        com.cooked.app.core.designsystem.components.PillChip(
+                            text = range.label,
+                            selected = isSelected,
                             onClick = { onRangeSelected(range) },
-                            shape = RoundedCornerShape(8.dp),
-                            color = if (isSelected) CookedTheme.colors.primary else Color.Transparent,
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = range.label,
-                                    style = CookedTheme.typography.labelMedium.copy(
-                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
-                                    ),
-                                    color = if (isSelected) CookedTheme.colors.onPrimary else CookedTheme.colors.onSurfaceVariant
-                                )
-                                if (range.isPro) {
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text(
-                                        text = "PRO",
-                                        fontSize = 9.sp,
-                                        fontWeight = FontWeight.Black,
-                                        color = if (isSelected) CookedTheme.colors.onPrimary else CookedTheme.colors.primary
+                            trailing = if (range.isPro && !uiState.isProUser) {
+                                {
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Icon(
+                                        imageVector = Icons.Rounded.Lock,
+                                        contentDescription = "Pro",
+                                        tint = if (isSelected) CookedTheme.colors.onPrimary else CookedTheme.colors.onSurfaceVariant,
+                                        modifier = Modifier.size(14.dp)
                                     )
                                 }
-                            }
-                        }
+                            } else null
+                        )
                     }
                 }
             }
@@ -159,8 +142,8 @@ fun InsightsScreen(
             if (uiState.isSoftLocked) {
                 item(key = "soft_lock_banner") {
                     Surface(
-                        shape = RoundedCornerShape(14.dp),
-                        color = CookedTheme.colors.surfaceContainerHigh,
+                        shape = RoundedCornerShape(24.dp),
+                        color = CookedTheme.colors.accentContainer,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Row(
@@ -174,34 +157,34 @@ fun InsightsScreen(
                                 Icon(
                                     imageVector = Icons.Rounded.Lock,
                                     contentDescription = null,
-                                    tint = CookedTheme.colors.primary,
+                                    tint = CookedTheme.colors.onAccentContainer,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Column {
                                     Text(
-                                        text = "${uiState.selectedRange.label} Analytics is Pro",
-                                        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                                        color = CookedTheme.colors.onSurface
+                                        text = "${uiState.selectedRange.label} history is Pro",
+                                        style = CookedTheme.typography.titleSmall,
+                                        color = CookedTheme.colors.onAccentContainer
                                     )
                                     Text(
-                                        text = "Showing preview with current 7-day data",
+                                        text = "Previewing your last 7 days",
                                         style = CookedTheme.typography.bodySmall,
-                                        color = CookedTheme.colors.onSurfaceVariant
+                                        color = CookedTheme.colors.onAccentContainer.copy(alpha = 0.8f)
                                     )
                                 }
                             }
 
                             Button(
                                 onClick = onNavigateToPaywall,
-                                shape = RoundedCornerShape(8.dp),
+                                shape = com.cooked.app.core.designsystem.PillShape,
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = CookedTheme.colors.primary,
-                                    contentColor = CookedTheme.colors.onPrimary
+                                    containerColor = CookedTheme.colors.hero,
+                                    contentColor = CookedTheme.colors.accent
                                 ),
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                             ) {
-                                Text("Unlock", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text("Unlock", style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold))
                             }
                         }
                     }
@@ -241,7 +224,7 @@ fun InsightsScreen(
             // 6. Insight Cards (Up to 3 Generated Insights)
             if (summary.insights.isNotEmpty()) {
                 item(key = "insights_header") {
-                    SectionHeader(title = "Patterns & Habits")
+                    SectionHeader(title = "Patterns & habits", subtitle = "What your data says about you")
                 }
 
                 items(
@@ -255,8 +238,9 @@ fun InsightsScreen(
             // 7. "Your Cooked Report" Weekly Recap Entry Point
             item(key = "cooked_report_card") {
                 Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    color = CookedTheme.colors.surfaceContainer,
+                    shape = RoundedCornerShape(28.dp),
+                    color = CookedTheme.colors.accent,
+                    contentColor = CookedTheme.colors.onAccent,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onShowCookedReport(true) }
@@ -276,13 +260,13 @@ fun InsightsScreen(
                             Box(
                                 modifier = Modifier
                                     .size(44.dp)
-                                    .background(CookedTheme.colors.primary.copy(alpha = 0.15f), RoundedCornerShape(12.dp)),
+                                    .background(CookedTheme.colors.hero, androidx.compose.foundation.shape.CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.AutoAwesome,
                                     contentDescription = null,
-                                    tint = CookedTheme.colors.primary,
+                                    tint = CookedTheme.colors.accent,
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
@@ -290,21 +274,21 @@ fun InsightsScreen(
                             Column {
                                 Text(
                                     text = "Your Cooked Report",
-                                    style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                                    color = CookedTheme.colors.onSurface
+                                    style = CookedTheme.typography.titleLarge,
+                                    color = CookedTheme.colors.onAccent
                                 )
                                 Text(
-                                    text = "Weekly story recap ready to share • Tap to view",
+                                    text = "Your week as a shareable story",
                                     style = CookedTheme.typography.bodySmall,
-                                    color = CookedTheme.colors.onSurfaceVariant
+                                    color = CookedTheme.colors.onAccent.copy(alpha = 0.72f)
                                 )
                             }
                         }
 
                         Text(
                             text = "View →",
-                            style = CookedTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                            color = CookedTheme.colors.primary
+                            style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                            color = CookedTheme.colors.onAccent
                         )
                     }
                 }

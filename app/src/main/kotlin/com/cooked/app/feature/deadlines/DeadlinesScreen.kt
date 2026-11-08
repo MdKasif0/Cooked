@@ -64,12 +64,12 @@ fun DeadlinesScreen(
             .fillMaxSize()
             .padding(horizontal = CookedTheme.spacing.screenHorizontal),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(top = 16.dp, bottom = 96.dp)
+        contentPadding = PaddingValues(top = 8.dp, bottom = 132.dp)
     ) {
         // Hero Card: Cooked Score Semicircle Gauge
         if (uiState.scoreResult != null) {
             item(key = "hero_gauge") {
-                CookedCard(modifier = Modifier.fillMaxWidth()) {
+                com.cooked.app.core.designsystem.components.HeroCard(modifier = Modifier.fillMaxWidth()) {
                     CookedScoreGauge(
                         scoreResult = uiState.scoreResult,
                         onSuggestedActionClick = {
@@ -121,10 +121,9 @@ fun DeadlinesScreen(
         // Deadlines List Header
         item(key = "deadlines_header") {
             SectionHeader(
-                title = if (uiState.deadlines.isNotEmpty())
-                    "Deadlines by Urgency (${uiState.deadlines.size})"
-                else
-                    "Deadlines"
+                title = if (uiState.deadlines.isNotEmpty()) "By urgency" else "Deadlines",
+                count = uiState.deadlines.size.takeIf { it > 0 },
+                subtitle = if (uiState.deadlines.isNotEmpty()) "Hottest first. Start the top one." else null
             )
         }
 
@@ -145,7 +144,7 @@ fun DeadlinesScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         OutlinedButton(
                             onClick = onScanDatesheetClick,
-                            shape = RoundedCornerShape(12.dp)
+                            shape = com.cooked.app.core.designsystem.PillShape
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.CameraAlt,

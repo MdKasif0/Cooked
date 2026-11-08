@@ -3,6 +3,26 @@ package com.cooked.app.ui.navigation
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.PersonOutline
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import com.cooked.app.core.designsystem.components.CircleIconButton
+import com.cooked.app.core.designsystem.components.FloatingNavBar
+import com.cooked.app.core.designsystem.components.FloatingNavItem
+import com.cooked.app.core.designsystem.components.NavCenterAction
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -90,15 +110,19 @@ fun CookedAppShell(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomNavItems = listOf(
-        BottomNavItem(TodayTabRoute, "Today", Icons.Rounded.CalendarToday),
-        BottomNavItem(DeadlinesTabRoute, "Deadlines", Icons.Rounded.LocalFireDepartment),
-        BottomNavItem(InsightsTabRoute, "Insights", Icons.Rounded.BarChart)
+    val tabs = listOf(
+        ShellTab(TodayTabRoute, FloatingNavItem("today", Icons.Rounded.Home, "Today"), "Your day, handled"),
+        ShellTab(DeadlinesTabRoute, FloatingNavItem("deadlines", Icons.Rounded.LocalFireDepartment, "Deadlines"), "Pressure board"),
+        ShellTab(InsightsTabRoute, FloatingNavItem("insights", Icons.Rounded.BarChart, "Insights"), "Your rhythm"),
+        ShellTab(SettingsNavRoute, FloatingNavItem("you", Icons.Rounded.PersonOutline, "You"), "Preferences")
     )
 
-    val isTopLevelDestination = bottomNavItems.any { item ->
-        currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
+    val currentTab = tabs.firstOrNull { tab ->
+        currentDestination?.hierarchy?.any { it.hasRoute(tab.route::class) } == true
     }
+    val isTopLevelDestination = currentTab != null
+    // Settings draws its own title bar; the brand header belongs to the three content tabs.
+    val showBrandHeader = currentTab != null && currentTab.route != SettingsNavRoute
 
     var showQuickAddSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -138,122 +162,62 @@ fun CookedAppShell(
         }
     }
 
+    fun navigateToTab(route: Any) {
+        navController.navigate(route) {
+            popUpTo<TodayTabRoute> { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = CookedTheme.colors.background,
         snackbarHost = {
-            androidx.compose.material3.SnackbarHost(hostState = snackbarHostState)
+            androidx.compose.material3.SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = if (isTopLevelDestination) 96.dp else 0.dp)
+            )
         },
         topBar = {
-            if (isTopLevelDestination) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "Cooked",
-                            style = CookedTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold
-                            ),
-                            color = CookedTheme.colors.onBackground
-                        )
-                    },
-                    actions = {
-                        IconButton(onClick = { navController.navigate(OemGuideNavRoute) }) {
-                            Icon(
-                                imageVector = Icons.Rounded.BatteryAlert,
-                                contentDescription = stringResource(R.string.nav_oem_guide),
-                                tint = CookedTheme.colors.onSurfaceVariant
-                            )
-                        }
-                        IconButton(onClick = { navController.navigate(SettingsNavRoute) }) {
-                            AvatarBubble(
-                                size = 32.dp,
-                                onClick = { navController.navigate(SettingsNavRoute) }
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = CookedTheme.colors.background
-                    )
+            AnimatedVisibility(
+                visible = showBrandHeader,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                BrandHeader(
+                    subtitle = currentTab?.subtitle ?: "",
+                    onReliabilityClick = { navController.navigate(OemGuideNavRoute) },
+                    onProfileClick = { navigateToTab(SettingsNavRoute) }
                 )
-            }
-        },
-        bottomBar = {
-            if (isTopLevelDestination) {
-                // Tonal navigation bar without heavy drop shadows
-                NavigationBar(
-                    containerColor = CookedTheme.colors.surfaceContainer,
-                    tonalElevation = 0.dp
-                ) {
-                    bottomNavItems.forEach { item ->
-                        val selected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = {
-                                navController.navigate(item.route) {
-                                    popUpTo<TodayTabRoute> {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = item.icon,
-                                    contentDescription = item.title,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = item.title,
-                                    style = CookedTheme.typography.labelSmall.copy(
-                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
-                                    )
-                                )
-                            },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = CookedTheme.colors.primary,
-                                selectedTextColor = CookedTheme.colors.primary,
-                                indicatorColor = CookedTheme.colors.primaryContainer,
-                                unselectedIconColor = CookedTheme.colors.onSurfaceVariant,
-                                unselectedTextColor = CookedTheme.colors.onSurfaceVariant
-                            )
-                        )
-                    }
-                }
-            }
-        },
-        floatingActionButton = {
-            if (isTopLevelDestination) {
-                FloatingActionButton(
-                    onClick = { showQuickAddSheet = true },
-                    containerColor = CookedTheme.colors.primary,
-                    contentColor = CookedTheme.colors.onPrimary,
-                    shape = RoundedCornerShape(18.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = stringResource(R.string.home_fab_add),
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
             }
         }
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
         ) {
             NavHost(
                 navController = navController,
                 startDestination = startDestination,
                 modifier = Modifier.fillMaxSize(),
-                enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
-                exitTransition = { slideOutHorizontally(targetOffsetX = { -it / 4 }) + fadeOut() },
-                popEnterTransition = { slideInHorizontally(initialOffsetX = { -it / 4 }) + fadeIn() },
-                popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+                enterTransition = {
+                    if (isTabSwitch(initialState.destination, targetState.destination, tabs)) fadeIn(tween(220))
+                    else slideInHorizontally(initialOffsetX = { it / 3 }) + fadeIn(tween(260))
+                },
+                exitTransition = {
+                    if (isTabSwitch(initialState.destination, targetState.destination, tabs)) fadeOut(tween(180))
+                    else slideOutHorizontally(targetOffsetX = { -it / 6 }) + fadeOut(tween(200))
+                },
+                popEnterTransition = {
+                    if (isTabSwitch(initialState.destination, targetState.destination, tabs)) fadeIn(tween(220))
+                    else slideInHorizontally(initialOffsetX = { -it / 6 }) + fadeIn(tween(260))
+                },
+                popExitTransition = {
+                    if (isTabSwitch(initialState.destination, targetState.destination, tabs)) fadeOut(tween(180))
+                    else slideOutHorizontally(targetOffsetX = { it / 3 }) + fadeOut(tween(200))
+                }
             ) {
                 composable<TodayTabRoute> {
                     TodayRoute(
@@ -308,7 +272,7 @@ fun CookedAppShell(
 
                 composable<SettingsNavRoute> {
                     SettingsRoute(
-                        onNavigateBack = { navController.popBackStack() },
+                        onNavigateBack = null,
                         onNavigateToReliability = { navController.navigate(ReliabilityNavRoute) },
                         onNavigateToPaywall = { navController.navigate(PaywallNavRoute()) },
                         onNavigateToDesignGallery = { navController.navigate(DesignGalleryNavRoute) }
@@ -395,6 +359,45 @@ fun CookedAppShell(
                     )
                 }
             }
+
+            // Floating ink pill navigation with neon quick-add in the center
+            AnimatedVisibility(
+                visible = isTopLevelDestination,
+                enter = fadeIn(tween(200)) + androidx.compose.animation.slideInVertically { it / 2 },
+                exit = fadeOut(tween(150)) + androidx.compose.animation.slideOutVertically { it / 2 },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(Color.Transparent, CookedTheme.colors.background.copy(alpha = 0.92f))
+                            )
+                        )
+                        .navigationBarsPadding()
+                        .padding(horizontal = 28.dp, vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    FloatingNavBar(
+                        items = tabs.map { it.item },
+                        selectedKey = currentTab?.item?.key,
+                        onItemSelected = { item ->
+                            tabs.firstOrNull { it.item.key == item.key }?.let { navigateToTab(it.route) }
+                        },
+                        centerAction = {
+                            NavCenterAction(
+                                icon = Icons.Rounded.Add,
+                                contentDescription = stringResource(R.string.home_fab_add),
+                                onClick = { showQuickAddSheet = true }
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 
@@ -420,5 +423,66 @@ fun CookedAppShell(
                 }
             }
         )
+    }
+}
+
+
+private data class ShellTab(
+    val route: Any,
+    val item: FloatingNavItem,
+    val subtitle: String
+)
+
+private fun isTabSwitch(
+    from: androidx.navigation.NavDestination,
+    to: androidx.navigation.NavDestination,
+    tabs: List<ShellTab>
+): Boolean {
+    fun isTab(d: androidx.navigation.NavDestination) = tabs.any { tab -> d.hasRoute(tab.route::class) }
+    return isTab(from) && isTab(to)
+}
+
+/** Brand row in the spirit of the references: mark + name + context line, round actions on the right. */
+@Composable
+private fun BrandHeader(
+    subtitle: String,
+    onReliabilityClick: () -> Unit,
+    onProfileClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(CookedTheme.colors.background)
+            .statusBarsPadding()
+            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        com.cooked.app.core.designsystem.components.CookedAppLogo(size = 44.dp)
+        Spacer(Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = "Cooked",
+                style = CookedTheme.typography.titleLarge,
+                color = CookedTheme.colors.onBackground
+            )
+            androidx.compose.animation.AnimatedContent(
+                targetState = subtitle,
+                transitionSpec = { fadeIn(tween(180)) togetherWith fadeOut(tween(120)) },
+                label = "brandSubtitle"
+            ) { text ->
+                Text(
+                    text = text,
+                    style = CookedTheme.typography.labelMedium,
+                    color = CookedTheme.colors.onSurfaceVariant
+                )
+            }
+        }
+        CircleIconButton(
+            icon = Icons.Rounded.BatteryAlert,
+            contentDescription = stringResource(R.string.nav_oem_guide),
+            onClick = onReliabilityClick
+        )
+        Spacer(Modifier.width(10.dp))
+        AvatarBubble(size = 44.dp, onClick = onProfileClick)
     }
 }

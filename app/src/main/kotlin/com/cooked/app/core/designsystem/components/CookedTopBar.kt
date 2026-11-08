@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -15,6 +16,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,19 +36,19 @@ fun CookedTopBar(
 ) {
     val navIcon: (@Composable () -> Unit)? = navigationIcon ?: onNavigationClick?.let { onClick ->
         {
-            IconButton(onClick = onClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = "Back",
-                    tint = CookedTheme.colors.onBackground
-                )
-            }
+            CircleIconButton(
+                icon = Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = "Back",
+                onClick = onClick,
+                modifier = Modifier.padding(start = 12.dp, end = 4.dp),
+                size = 42.dp
+            )
         }
     }
 
     val colors = TopAppBarDefaults.topAppBarColors(
         containerColor = CookedTheme.colors.background,
-        scrolledContainerColor = CookedTheme.colors.surfaceContainerLow,
+        scrolledContainerColor = CookedTheme.colors.background,
         navigationIconContentColor = CookedTheme.colors.onBackground,
         titleContentColor = CookedTheme.colors.onBackground,
         actionIconContentColor = CookedTheme.colors.onSurfaceVariant
@@ -57,7 +59,7 @@ fun CookedTopBar(
             title = {
                 Text(
                     text = title,
-                    style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                    style = CookedTheme.typography.headlineLarge,
                     color = CookedTheme.colors.onBackground
                 )
             },
@@ -66,7 +68,7 @@ fun CookedTopBar(
             actions = actions,
             colors = TopAppBarDefaults.largeTopAppBarColors(
                 containerColor = CookedTheme.colors.background,
-                scrolledContainerColor = CookedTheme.colors.surfaceContainerLow,
+                scrolledContainerColor = CookedTheme.colors.background,
                 navigationIconContentColor = CookedTheme.colors.onBackground,
                 titleContentColor = CookedTheme.colors.onBackground,
                 actionIconContentColor = CookedTheme.colors.onSurfaceVariant
@@ -78,7 +80,7 @@ fun CookedTopBar(
             title = {
                 Text(
                     text = title,
-                    style = CookedTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = CookedTheme.typography.headlineSmall,
                     color = CookedTheme.colors.onBackground
                 )
             },

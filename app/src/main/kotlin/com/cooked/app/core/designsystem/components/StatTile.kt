@@ -54,7 +54,7 @@ fun StatTile(
             ) {
                 Text(
                     text = label,
-                    style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+                    style = CookedTheme.typography.labelMedium,
                     color = CookedTheme.colors.onSurfaceVariant,
                     modifier = Modifier.weight(1f)
                 )
@@ -91,7 +91,7 @@ fun StatTile(
 
             Text(
                 text = value,
-                style = CookedTheme.typography.displayLarge.copy(
+                style = CookedTheme.typography.displaySmall.copy(
                     fontFeatureSettings = FontFeatureSettingsTabular
                 ),
                 color = CookedTheme.colors.onSurface

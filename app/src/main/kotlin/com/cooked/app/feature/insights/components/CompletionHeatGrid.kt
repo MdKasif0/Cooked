@@ -48,7 +48,7 @@ fun CompletionHeatGrid(
     val onSurfaceVariant = CookedTheme.colors.onSurfaceVariant
 
     Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         color = CookedTheme.colors.surfaceContainerLow,
         modifier = modifier
             .fillMaxWidth()

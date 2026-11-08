@@ -25,7 +25,7 @@ fun ExactAlarmExplainerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(28.dp),
         icon = {
             CookedCategoryIcon(
                 keyOrEmoji = "routine",

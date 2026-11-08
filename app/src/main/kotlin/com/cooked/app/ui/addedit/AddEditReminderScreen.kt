@@ -140,7 +140,7 @@ fun AddEditReminderScreen(
                         containerColor = FlameOrange,
                         contentColor = Color.White
                     ),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.save_reminder),
@@ -172,7 +172,7 @@ fun AddEditReminderScreen(
                             style = MaterialTheme.typography.bodyLarge
                         )
                     },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(20.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surface,
                         unfocusedContainerColor = MaterialTheme.colorScheme.surface,
@@ -274,7 +274,7 @@ fun AddEditReminderScreen(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(20.dp),
                     minLines = 2,
                     maxLines = 4,
                     colors = OutlinedTextFieldDefaults.colors(
@@ -291,12 +291,12 @@ fun AddEditReminderScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(24.dp))
                         .background(MaterialTheme.colorScheme.surface)
                         .border(
                             1.dp,
                             if (uiState.isDeadlineMode) FlameOrange else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                            RoundedCornerShape(16.dp)
+                            RoundedCornerShape(24.dp)
                         )
                         .padding(16.dp)
                 ) {

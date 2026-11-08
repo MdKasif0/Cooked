@@ -24,6 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -68,8 +70,8 @@ fun DeadlineCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Header Row: Emoji, Title, HeatChip
             Row(
@@ -82,19 +84,26 @@ fun DeadlineCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Box(
-                        modifier = Modifier.padding(end = 10.dp),
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(
+                                if (heatResult.heatLevel == com.cooked.app.core.designsystem.HeatLevel.COOKED) CookedTheme.colors.hero
+                                else if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainerHigh
+                                else CookedTheme.colors.surfaceContainerLow
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         CookedCategoryIcon(
-                            keyOrEmoji = item.emoji,
+                            keyOrEmoji = item.emoji ?: "target",
                             size = 22.dp,
-                            tint = CookedTheme.colors.primary
+                            tint = if (heatResult.heatLevel == com.cooked.app.core.designsystem.HeatLevel.COOKED) CookedTheme.colors.accent else CookedTheme.colors.onSurface
                         )
                     }
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = item.title,
                         style = CookedTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
                         color = CookedTheme.colors.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -113,17 +122,19 @@ fun DeadlineCard(
             ) {
                 CountdownText(
                     targetInstant = item.dueAt,
-                    style = CookedTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = CookedTheme.colors.heatFor(heatResult.heatLevel).color
+                    style = CookedTheme.typography.displaySmall.copy(
+                        color = CookedTheme.colors.onSurface
                     )
                 )
 
                 Text(
                     text = startByText,
-                    style = CookedTheme.typography.bodyMedium,
+                    style = CookedTheme.typography.labelMedium,
                     color = CookedTheme.colors.onSurfaceVariant,
-                    fontSize = 12.sp
+                    modifier = Modifier
+                        .clip(com.cooked.app.core.designsystem.PillShape)
+                        .background(if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surfaceContainerLow)
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
                 )
             }
 
@@ -165,8 +176,8 @@ fun DeadlineCard(
                         )
                     }
                     Text(
-                        text = "${item.progress}% done",
-                        style = CookedTheme.typography.labelSmall,
+                        text = "${item.progress}%",
+                        style = CookedTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = CookedTheme.colors.onSurfaceVariant
                     )
@@ -174,28 +185,32 @@ fun DeadlineCard(
 
                 // Quick buttons
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(
+                    androidx.compose.material3.Button(
                         onClick = onImOnItClick,
-                        shape = RoundedCornerShape(10.dp)
+                        shape = com.cooked.app.core.designsystem.PillShape,
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surfaceContainerLow,
+                            contentColor = CookedTheme.colors.onSurface
+                        ),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.PlayArrow,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
-                            tint = CookedTheme.colors.primary
+                            modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "I'm on it",
-                            style = CookedTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = CookedTheme.colors.primary
-                        )
+                        Text(text = "I'm on it", style = CookedTheme.typography.labelLarge)
                     }
 
-                    FilledTonalButton(
+                    androidx.compose.material3.Button(
                         onClick = onDoneClick,
-                        shape = RoundedCornerShape(10.dp)
+                        shape = com.cooked.app.core.designsystem.PillShape,
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = CookedTheme.colors.primary,
+                            contentColor = CookedTheme.colors.onPrimary
+                        ),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Check,
@@ -203,11 +218,7 @@ fun DeadlineCard(
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "Done",
-                            style = CookedTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Text(text = "Done", style = CookedTheme.typography.labelLarge)
                     }
                 }
             }

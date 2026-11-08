@@ -17,6 +17,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -26,6 +27,18 @@ private val LightMaterialColorScheme = lightColorScheme(
     onPrimary = LightOnPrimary,
     primaryContainer = LightPrimaryContainer,
     onPrimaryContainer = LightOnPrimaryContainer,
+    secondary = Ink,
+    onSecondary = LightOnPrimary,
+    secondaryContainer = LightSurfaceContainer,
+    onSecondaryContainer = Ink,
+    tertiary = VoltDeep,
+    onTertiary = LightOnPrimary,
+    surfaceTint = Color.Transparent,
+    surfaceContainerLowest = LightSurface,
+    surfaceContainerHighest = LightSurfaceContainerHigh,
+    inverseSurface = Ink,
+    inverseOnSurface = LightOnPrimary,
+    inversePrimary = Volt,
     background = LightBackground,
     onBackground = LightOnBackground,
     surface = LightSurface,
@@ -44,6 +57,18 @@ private val DarkMaterialColorScheme = darkColorScheme(
     onPrimary = DarkOnPrimary,
     primaryContainer = DarkPrimaryContainer,
     onPrimaryContainer = DarkOnPrimaryContainer,
+    secondary = Volt,
+    onSecondary = DarkOnPrimary,
+    secondaryContainer = DarkSurfaceContainerHigh,
+    onSecondaryContainer = DarkOnSurface,
+    tertiary = Volt,
+    onTertiary = DarkOnPrimary,
+    surfaceTint = Color.Transparent,
+    surfaceContainerLowest = DarkBackground,
+    surfaceContainerHighest = DarkSurfaceContainerHigh,
+    inverseSurface = DarkOnSurface,
+    inverseOnSurface = DarkBackground,
+    inversePrimary = Ink,
     background = DarkBackground,
     onBackground = DarkOnBackground,
     surface = DarkSurface,
@@ -61,7 +86,7 @@ private val DarkMaterialColorScheme = darkColorScheme(
 @Composable
 fun CookedTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // OFF by default (brand-first Ember palette)
+    dynamicColor: Boolean = false, // OFF by default (brand-first Volt palette)
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
@@ -87,7 +112,7 @@ fun CookedTheme(
         }
     }
 
-    val rippleConfiguration = RippleConfiguration(color = cookedColors.primary)
+    val rippleConfiguration = RippleConfiguration(color = cookedColors.onSurface)
 
     CompositionLocalProvider(
         LocalCookedColors provides cookedColors,

@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -45,8 +46,13 @@ import com.cooked.app.domain.deadline.CookedScoreResult
 fun CookedScoreGauge(
     scoreResult: CookedScoreResult,
     onSuggestedActionClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onHero: Boolean = true
 ) {
+    val colors = CookedTheme.colors
+    val textColor = if (onHero) colors.onHero else colors.onSurface
+    val mutedColor = if (onHero) colors.onHeroMuted else colors.onSurfaceVariant
+    val raisedColor = if (onHero) colors.heroRaised else colors.surfaceContainerLow
     val animatedProgress by animateFloatAsState(
         targetValue = (scoreResult.score / 100f).coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 900),
@@ -57,16 +63,24 @@ fun CookedScoreGauge(
     val warmColor = CookedTheme.colors.heatFor(HeatLevel.WARM).color
     val toastyColor = CookedTheme.colors.heatFor(HeatLevel.TOASTY).color
     val cookedColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
-    val trackColor = CookedTheme.colors.surfaceContainerHigh
+    val trackColor = if (onHero) colors.heroRaised else colors.surfaceContainerHigh
 
     val activeColor = CookedTheme.colors.heatFor(scoreResult.heatLevel).color
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Cooked score",
+                style = CookedTheme.typography.labelMedium,
+                color = mutedColor,
+                modifier = Modifier.weight(1f)
+            )
+            com.cooked.app.core.designsystem.components.AccentBadge(text = "${scoreResult.score}/100")
+        }
+        Spacer(modifier = Modifier.height(12.dp))
         // Hero Gauge & Egg Mascot Row
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -79,7 +93,7 @@ fun CookedScoreGauge(
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Canvas(modifier = Modifier.size(200.dp)) {
-                    val strokeWidth = 16.dp.toPx()
+                    val strokeWidth = 14.dp.toPx()
                     val diameter = size.minDimension - strokeWidth
                     val topLeft = Offset(strokeWidth / 2f, strokeWidth / 2f)
                     val arcSize = Size(diameter, diameter)
@@ -120,18 +134,14 @@ fun CookedScoreGauge(
                 ) {
                     RollingNumberText(
                         number = scoreResult.score,
-                        style = CookedTheme.typography.displayLarge.copy(
-                            fontWeight = FontWeight.Black,
-                            lineHeight = 44.sp
-                        ),
-                        color = CookedTheme.colors.onSurface
+                        style = CookedTheme.typography.displayLarge.copy(lineHeight = 56.sp),
+                        color = textColor
                     )
                     Text(
-                        text = scoreResult.label.uppercase(),
-                        style = CookedTheme.typography.labelSmall,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = activeColor,
-                        letterSpacing = 1.2.sp
+                        text = scoreResult.label,
+                        style = CookedTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = activeColor
                     )
                 }
             }
@@ -151,28 +161,34 @@ fun CookedScoreGauge(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = CookedTheme.colors.surfaceContainerLow,
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    .clip(RoundedCornerShape(28.dp))
+                    .background(color = raisedColor)
                     .clickable(onClick = onSuggestedActionClick)
-                    .padding(horizontal = 14.dp, vertical = 10.dp)
+                    .padding(horizontal = 14.dp, vertical = 12.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Bolt,
-                        contentDescription = null,
-                        tint = CookedTheme.colors.primary,
-                        modifier = Modifier.size(18.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(androidx.compose.foundation.shape.CircleShape)
+                            .background(colors.accent),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Bolt,
+                            contentDescription = null,
+                            tint = colors.onAccent,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                     Text(
                         text = scoreResult.suggestedAction,
                         style = CookedTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = CookedTheme.colors.onSurface,
+                        fontWeight = FontWeight.Medium,
+                        color = textColor,
                         modifier = Modifier.weight(1f)
                     )
                 }

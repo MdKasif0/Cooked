@@ -5,7 +5,7 @@
     </style>
 
     <style name="Theme.Cooked.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#121214</item>
+        <item name="windowSplashScreenBackground">#0A0B09</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.Cooked</item>
     </style>

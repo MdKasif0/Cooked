@@ -1,5 +1,9 @@
 package com.cooked.app.feature.home
 
+import com.cooked.app.core.designsystem.components.AccentBadge
+import com.cooked.app.core.designsystem.components.HeroCard
+import com.cooked.app.core.designsystem.components.Overline
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -105,151 +109,93 @@ fun TodayScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = CookedTheme.spacing.screenHorizontal),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                contentPadding = PaddingValues(top = 12.dp, bottom = 100.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(top = 4.dp, bottom = 132.dp)
             ) {
-                // Large Collapsing Title Header with Date, Voice Status & Egg Mascot
+                // Editorial greeting
                 item(key = "today_header") {
+                    val hour = remember { java.time.LocalTime.now().hour }
+                    val greeting = when (hour) {
+                        in 5..11 -> "Good morning"
+                        in 12..16 -> "Good afternoon"
+                        in 17..21 -> "Good evening"
+                        else -> "Late night"
+                    }
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(top = 8.dp, bottom = 4.dp),
+                        verticalAlignment = Alignment.Bottom
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            CookedAppLogo(size = 46.dp)
-                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text(
-                                    text = uiState.dateTitle,
-                                    style = CookedTheme.typography.headlineMedium.copy(
-                                        fontWeight = FontWeight.Black
-                                    ),
-                                    color = CookedTheme.colors.onBackground
-                                )
-                                Text(
-                                    text = uiState.voiceStatus,
-                                    style = CookedTheme.typography.bodyLarge,
-                                    color = CookedTheme.colors.onSurfaceVariant
-                                )
-                            }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Overline(text = "$greeting · ${uiState.dateTitle}")
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = uiState.voiceStatus,
+                                style = CookedTheme.typography.headlineLarge,
+                                color = CookedTheme.colors.onBackground
+                            )
                         }
-
                         Spacer(modifier = Modifier.width(12.dp))
-
                         EggMascot(
                             level = uiState.hottestDeadlines.firstOrNull()?.second ?: HeatLevel.CHILL,
-                            size = 52.dp
+                            size = 56.dp
                         )
                     }
                 }
 
-                // Gentle Reliability Warning Banner
+                // Day-at-a-glance hero (ink + neon)
+                item(key = "today_hero") {
+                    TodayHeroCard(
+                        uiState = uiState,
+                        onClick = onCookedScoreClick
+                    )
+                }
+
+                // Gentle reliability notice
                 if (uiState.hasExactAlarmWarning) {
                     item(key = "reliability_warning_banner") {
-                        Surface(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { onNavigateToReliability() },
-                            shape = RoundedCornerShape(12.dp),
-                            color = CookedTheme.colors.primaryContainer,
-                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.primary.copy(alpha = 0.5f))
+                                .clip(RoundedCornerShape(28.dp))
+                                .background(CookedTheme.colors.accentContainer)
+                                .clickable { onNavigateToReliability() }
+                                .padding(horizontal = 16.dp, vertical = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(CookedTheme.colors.hero),
+                                contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_emergency_siren),
                                     contentDescription = null,
-                                    tint = CookedTheme.colors.primary,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Text(
-                                    text = "Cooked might stay silent. Tap to fix exact alarms & battery settings.",
-                                    style = CookedTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                                    color = CookedTheme.colors.onPrimaryContainer,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                Text(
-                                    text = "Fix →",
-                                    style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = CookedTheme.colors.primary
+                                    tint = CookedTheme.colors.accent,
+                                    modifier = Modifier.size(18.dp)
                                 )
                             }
-                        }
-                    }
-                }
-
-                // Compact Strip of Top 2 Hottest Deadlines
-                if (uiState.hottestDeadlines.isNotEmpty()) {
-                    item(key = "hottest_deadlines_strip") {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(CookedTheme.colors.surfaceContainer)
-                                .clickable { onCookedScoreClick() }
-                                .padding(14.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.LocalFireDepartment,
-                                        contentDescription = null,
-                                        tint = CookedTheme.colors.primary,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Text(
-                                        text = "Top Heat Deadlines",
-                                        style = CookedTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                        color = CookedTheme.colors.onSurface
-                                    )
-                                }
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "View All →",
-                                    style = CookedTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                                    color = CookedTheme.colors.primary
+                                    text = "Alarms may run late",
+                                    style = CookedTheme.typography.titleSmall,
+                                    color = CookedTheme.colors.onAccentContainer
+                                )
+                                Text(
+                                    text = "Allow exact alarms so nags land on time.",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onAccentContainer.copy(alpha = 0.8f)
                                 )
                             }
-
-                            uiState.hottestDeadlines.forEach { (deadline, heat) ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(CookedTheme.colors.surfaceContainerLow)
-                                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = deadline.title,
-                                        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
-                                        color = CookedTheme.colors.onSurface,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    CountdownText(
-                                        targetInstant = deadline.dueAt,
-                                        style = CookedTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                                        color = CookedTheme.colors.heatFor(heat).color
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    HeatChip(level = heat)
-                                }
-                            }
+                            Text(
+                                text = "Fix",
+                                style = CookedTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                                color = CookedTheme.colors.onAccentContainer
+                            )
                         }
                     }
                 }
@@ -283,8 +229,9 @@ fun TodayScreen(
                 if (uiState.overdueItems.isNotEmpty()) {
                     item(key = "overdue_header") {
                         SectionHeader(
-                            title = "Overdue (${uiState.overdueItems.size})",
-                            modifier = Modifier.padding(top = 8.dp)
+                            title = "Overdue",
+                            count = uiState.overdueItems.size,
+                            modifier = Modifier.padding(top = 10.dp)
                         )
                     }
 
@@ -315,8 +262,9 @@ fun TodayScreen(
                 if (uiState.nowItems.isNotEmpty()) {
                     item(key = "now_header") {
                         SectionHeader(
-                            title = "Due Now (${uiState.nowItems.size})",
-                            modifier = Modifier.padding(top = 8.dp)
+                            title = "Due now",
+                            count = uiState.nowItems.size,
+                            modifier = Modifier.padding(top = 10.dp)
                         )
                     }
 
@@ -347,8 +295,9 @@ fun TodayScreen(
                 if (uiState.laterTodayItems.isNotEmpty()) {
                     item(key = "later_today_header") {
                         SectionHeader(
-                            title = "Later Today (${uiState.laterTodayItems.size})",
-                            modifier = Modifier.padding(top = 8.dp)
+                            title = "Later today",
+                            count = uiState.laterTodayItems.size,
+                            modifier = Modifier.padding(top = 10.dp)
                         )
                     }
 
@@ -381,15 +330,15 @@ fun TodayScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(8.dp))
+                                .clip(RoundedCornerShape(12.dp))
                                 .clickable { isTomorrowExpanded = !isTomorrowExpanded }
                                 .padding(vertical = 6.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Tomorrow Peek (${uiState.tomorrowPeekItems.size})",
-                                style = CookedTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                text = "Tomorrow · ${uiState.tomorrowPeekItems.size}",
+                                style = CookedTheme.typography.titleMedium,
                                 color = CookedTheme.colors.onSurfaceVariant
                             )
                             Icon(
@@ -437,10 +386,11 @@ fun TodayScreen(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(20.dp),
-                color = CookedTheme.colors.surfaceContainerHigh,
-                tonalElevation = 6.dp
+                    .padding(start = 16.dp, end = 16.dp, bottom = 110.dp),
+                shape = RoundedCornerShape(32.dp),
+                color = CookedTheme.colors.hero,
+                contentColor = CookedTheme.colors.onHero,
+                tonalElevation = 0.dp
             ) {
                 Row(
                     modifier = Modifier
@@ -454,13 +404,13 @@ fun TodayScreen(
                             Icon(
                                 imageVector = Icons.Rounded.Close,
                                 contentDescription = "Cancel selection",
-                                tint = CookedTheme.colors.onSurface
+                                tint = CookedTheme.colors.onHero
                             )
                         }
                         Text(
                             text = "${uiState.selectedItemIds.size} selected",
-                            style = CookedTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = CookedTheme.colors.onSurface
+                            style = CookedTheme.typography.titleSmall,
+                            color = CookedTheme.colors.onHero
                         )
                     }
 
@@ -470,12 +420,12 @@ fun TodayScreen(
                             onClick = onBatchDone,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CookedTheme.colors.heatFor(HeatLevel.CHILL).color, CircleShape)
+                                .background(CookedTheme.colors.accent, CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Check,
                                 contentDescription = "Mark done",
-                                tint = CookedTheme.colors.heatFor(HeatLevel.CHILL).onColor,
+                                tint = CookedTheme.colors.onAccent,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -485,12 +435,12 @@ fun TodayScreen(
                             onClick = onOpenBatchSnooze,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CookedTheme.colors.heatFor(HeatLevel.WARM).color, CircleShape)
+                                .background(CookedTheme.colors.heroRaised, CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Snooze,
                                 contentDescription = "Batch snooze",
-                                tint = CookedTheme.colors.heatFor(HeatLevel.WARM).onColor,
+                                tint = CookedTheme.colors.onHero,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -500,12 +450,12 @@ fun TodayScreen(
                             onClick = onBatchDelete,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CookedTheme.colors.surfaceContainer, CircleShape)
+                                .background(CookedTheme.colors.heroRaised, CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
                                 contentDescription = "Delete selected",
-                                tint = CookedTheme.colors.onSurfaceVariant,
+                                tint = CookedTheme.colors.onHero,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -539,5 +489,131 @@ fun TodayScreen(
             message = "Not cooked today.",
             onFinished = onDismissCelebration
         )
+    }
+}
+
+
+/**
+ * Ink hero summarizing the day: big count, a time-of-day distribution in neon bars,
+ * and the hottest deadline with a live countdown.
+ */
+@Composable
+private fun TodayHeroCard(
+    uiState: TodayUiState,
+    onClick: () -> Unit
+) {
+    val colors = CookedTheme.colors
+    val todayItems = uiState.overdueItems + uiState.nowItems + uiState.laterTodayItems
+    val total = todayItems.size
+    val zone = java.time.ZoneId.systemDefault()
+    // Six 4-hour buckets across the day
+    val buckets = remember(todayItems) {
+        val counts = FloatArray(6)
+        todayItems.forEach { item ->
+            val h = item.dueAt.atZone(zone).hour
+            counts[(h / 4).coerceIn(0, 5)] += 1f
+        }
+        counts.map { it + 0.35f }
+    }
+    val currentBucket = (java.time.LocalTime.now().hour / 4).coerceIn(0, 5)
+
+    HeroCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Overline(text = "Today at a glance", color = colors.onHeroMuted, modifier = Modifier.weight(1f))
+            AccentBadge(
+                text = when {
+                    uiState.overdueItems.isNotEmpty() -> "${uiState.overdueItems.size} overdue"
+                    total == 0 -> "All clear"
+                    else -> "On track"
+                }
+            )
+        }
+        Spacer(Modifier.height(14.dp))
+        Row(verticalAlignment = Alignment.Bottom) {
+            Text(
+                text = total.toString(),
+                style = CookedTheme.typography.displayLarge,
+                color = colors.onHero
+            )
+            Spacer(Modifier.width(10.dp))
+            Column(modifier = Modifier.weight(1f).padding(bottom = 8.dp)) {
+                Text(
+                    text = if (total == 1) "thing due" else "things due",
+                    style = CookedTheme.typography.titleMedium,
+                    color = colors.onHero
+                )
+                Text(
+                    text = "${uiState.nowItems.size} in the next hour",
+                    style = CookedTheme.typography.bodySmall,
+                    color = colors.onHeroMuted
+                )
+            }
+            Row(
+                modifier = Modifier.height(56.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                val max = (buckets.maxOrNull() ?: 1f).coerceAtLeast(1f)
+                buckets.forEachIndexed { index, v ->
+                    Box(
+                        modifier = Modifier
+                            .width(9.dp)
+                            .height(56.dp * (v / max).coerceIn(0.14f, 1f))
+                            .clip(RoundedCornerShape(50))
+                            .background(if (index == currentBucket) colors.accent else colors.heroRaised)
+                    )
+                }
+            }
+        }
+
+        val hottest = uiState.hottestDeadlines.firstOrNull()
+        if (hottest != null) {
+            val (deadline, heat) = hottest
+            Spacer(Modifier.height(18.dp))
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(colors.heroRaised)
+            )
+            Spacer(Modifier.height(16.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(colors.heroRaised),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.LocalFireDepartment,
+                        contentDescription = null,
+                        tint = colors.heatFor(heat).color,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = deadline.title,
+                        style = CookedTheme.typography.titleSmall,
+                        color = colors.onHero,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = "Hottest deadline · ${heat.displayName}",
+                        style = CookedTheme.typography.bodySmall,
+                        color = colors.onHeroMuted
+                    )
+                }
+                Spacer(Modifier.width(8.dp))
+                CountdownText(
+                    targetInstant = deadline.dueAt,
+                    style = CookedTheme.typography.titleLarge,
+                    color = colors.accent
+                )
+            }
+        }
     }
 }

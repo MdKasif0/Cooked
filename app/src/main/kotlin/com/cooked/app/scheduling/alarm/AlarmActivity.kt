@@ -254,7 +254,7 @@ class AlarmActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .background(
                                 color = DarkSurfaceContainer,
-                                shape = RoundedCornerShape(16.dp)
+                                shape = RoundedCornerShape(24.dp)
                             )
                             .padding(horizontal = 20.dp, vertical = 14.dp),
                         contentAlignment = Alignment.Center
@@ -285,7 +285,7 @@ class AlarmActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(60.dp),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(24.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = DarkPrimary,
                             contentColor = DarkOnPrimary
@@ -316,7 +316,7 @@ class AlarmActivity : ComponentActivity() {
                             modifier = Modifier
                                 .weight(1f)
                                 .height(50.dp),
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(20.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = DarkOnBackground
                             )
@@ -343,7 +343,7 @@ class AlarmActivity : ComponentActivity() {
                             modifier = Modifier
                                 .weight(1f)
                                 .height(50.dp),
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(20.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = DarkOnBackground
                             )

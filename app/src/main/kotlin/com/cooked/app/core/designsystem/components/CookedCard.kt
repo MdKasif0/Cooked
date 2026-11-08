@@ -38,16 +38,14 @@ fun CookedCard(
         CookedTheme.colors.surface
     }
 
-    val border = if (isDark) {
-        null
-    } else {
-        BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
-    }
+    // Premium cards float on soft diffused light instead of hairline borders.
+    val border: BorderStroke? = null
+    val shadowModifier = modifier.softShadow(CookedShapes.medium, 16.dp, 0.07f)
 
     if (onClick != null) {
         Card(
             onClick = onClick,
-            modifier = modifier,
+            modifier = shadowModifier,
             shape = CookedShapes.medium,
             colors = CardDefaults.cardColors(
                 containerColor = containerColor,
@@ -59,7 +57,7 @@ fun CookedCard(
         )
     } else {
         Card(
-            modifier = modifier,
+            modifier = shadowModifier,
             shape = CookedShapes.medium,
             colors = CardDefaults.cardColors(
                 containerColor = containerColor,

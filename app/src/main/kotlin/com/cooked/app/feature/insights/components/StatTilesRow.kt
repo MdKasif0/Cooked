@@ -1,5 +1,7 @@
 package com.cooked.app.feature.insights.components
 
+import com.cooked.app.core.designsystem.components.softShadow
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -115,36 +117,37 @@ private fun StatTile(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = CookedTheme.colors.surfaceContainerLow,
-        modifier = modifier.semantics {
+        shape = RoundedCornerShape(24.dp),
+        color = if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainer else CookedTheme.colors.surface,
+        modifier = modifier
+            .softShadow(RoundedCornerShape(24.dp), 14.dp, 0.06f)
+            .semantics {
             contentDescription = accessibilityText
         }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+                .padding(horizontal = 14.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
                 text = title,
-                style = CookedTheme.typography.labelSmall,
+                style = CookedTheme.typography.labelMedium,
                 color = CookedTheme.colors.onSurfaceVariant
             )
 
             Text(
                 text = value,
-                style = CookedTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Black,
-                    fontFamily = FontFamily.Monospace // Tabular numerals
+                style = CookedTheme.typography.displaySmall.copy(
+                    fontFeatureSettings = "tnum"
                 ),
                 color = CookedTheme.colors.onSurface
             )
 
             if (delta != null) {
                 val deltaColor = if (isDeltaPositive) {
-                    CookedTheme.colors.heatFor(HeatLevel.CHILL).color
+                    CookedTheme.colors.accentText
                 } else {
                     CookedTheme.colors.heatFor(HeatLevel.COOKED).color
                 }

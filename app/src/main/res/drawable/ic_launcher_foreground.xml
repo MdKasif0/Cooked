@@ -9,13 +9,13 @@
 
     <!-- Ambient Cast Shadow (Elevates the egg off the background) -->
     <path
-        android:fillColor="#350E04"
+        android:fillColor="#000000"
         android:fillAlpha="0.30"
         android:pathData="M34,35 C44,28 66,30 74,38 C82,46 83,60 78,71 C72,82 52,85 40,82 C29,79 23,67 25,54 C27,42 28,39 34,35 Z" />
 
     <!-- Crispy Caramelized Rim (Delicate butter-sizzled golden edge) -->
     <path
-        android:strokeColor="#B45309"
+        android:strokeColor="#5C7300"
         android:strokeWidth="3.2"
         android:strokeLineJoin="round"
         android:pathData="M33,32 C43,25 65,27 73,35 C81,43 82,57 77,68 C71,79 51,82 39,79 C28,76 22,64 24,51 C26,39 27,36 33,32 Z" />
@@ -36,7 +36,7 @@
 
     <!-- Golden Yolk Under-Shadow -->
     <path
-        android:fillColor="#B45309"
+        android:fillColor="#5C7300"
         android:fillAlpha="0.25"
         android:pathData="M40.5,56 A13.5,13.5 0 1 0 67.5,56 A13.5,13.5 0 1 0 40.5,56 Z" />
 
@@ -52,9 +52,9 @@
                 android:endX="64"
                 android:endY="64"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#FFB703" />
-                <item android:offset="0.55" android:color="#FB8500" />
-                <item android:offset="1.0" android:color="#E85D04" />
+                <item android:offset="0.0" android:color="#ECFF9A" />
+                <item android:offset="0.55" android:color="#D4FF3F" />
+                <item android:offset="1.0" android:color="#A8D61A" />
             </gradient>
         </aapt:attr>
     </path>
@@ -73,11 +73,11 @@
 
     <!-- Soft Rosy Warmth Cheeks -->
     <path
-        android:fillColor="#F97316"
+        android:fillColor="#8CB000"
         android:fillAlpha="0.32"
         android:pathData="M43.5,57.5 A2.5,1.8 0 1 0 48.5,57.5 A2.5,1.8 0 1 0 43.5,57.5 Z" />
     <path
-        android:fillColor="#F97316"
+        android:fillColor="#8CB000"
         android:fillAlpha="0.32"
         android:pathData="M59.5,57.5 A2.5,1.8 0 1 0 64.5,57.5 A2.5,1.8 0 1 0 59.5,57.5 Z" />
 

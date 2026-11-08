@@ -5,9 +5,9 @@
     android:height="96dp"
     android:viewportWidth="96"
     android:viewportHeight="96">
-    <!-- Cooked Brand Emblem: Radiant Ember Base with Mascot Egg -->
+    <!-- Cooked Brand Emblem: Ink squircle with volt-yolk mascot egg -->
 
-    <!-- Base Squircle with Flame Gradient -->
+    <!-- Base Squircle: ink gradient -->
     <path android:pathData="M16,4 C8,4 4,8 4,16 L4,80 C4,88 8,92 16,92 L80,92 C88,92 92,88 92,80 L92,16 C92,8 88,4 80,4 Z">
         <aapt:attr name="android:fillColor">
             <gradient
@@ -16,14 +16,14 @@
                 android:endX="88"
                 android:endY="88"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#FF7A00" />
-                <item android:offset="0.5" android:color="#E85D04" />
-                <item android:offset="1.0" android:color="#9A3412" />
+                <item android:offset="0.0" android:color="#2A2B26" />
+                <item android:offset="0.55" android:color="#151612" />
+                <item android:offset="1.0" android:color="#0A0B09" />
             </gradient>
         </aapt:attr>
     </path>
 
-    <!-- Warm Radial Core Glow -->
+    <!-- Neon radial core glow -->
     <path android:pathData="M16,4 C8,4 4,8 4,16 L4,80 C4,88 8,92 16,92 L80,92 C88,92 92,88 92,80 L92,16 C92,8 88,4 80,4 Z">
         <aapt:attr name="android:fillColor">
             <gradient
@@ -31,8 +31,8 @@
                 android:centerY="44"
                 android:gradientRadius="42"
                 android:type="radial">
-                <item android:offset="0.0" android:color="#40FFAA5A" />
-                <item android:offset="0.75" android:color="#10FF7A00" />
+                <item android:offset="0.0" android:color="#38D4FF3F" />
+                <item android:offset="0.75" android:color="#0CD4FF3F" />
                 <item android:offset="1.0" android:color="#00000000" />
             </gradient>
         </aapt:attr>
@@ -40,13 +40,13 @@
 
     <!-- Drop Shadow under Egg White -->
     <path
-        android:fillColor="#350E04"
+        android:fillColor="#000000"
         android:fillAlpha="0.35"
         android:pathData="M29,29 C38,23 58,25 66,32 C74,39 75,52 70,62 C65,72 47,75 36,72 C26,69 20,58 22,46 C24,35 25,32 29,29 Z" />
 
-    <!-- Crispy Caramelized Rim -->
+    <!-- Crisp rim -->
     <path
-        android:strokeColor="#B45309"
+        android:strokeColor="#3A3C33"
         android:strokeWidth="2.8"
         android:strokeLineJoin="round"
         android:pathData="M28,27 C37,21 57,23 65,30 C73,37 74,50 69,60 C64,70 46,73 35,70 C25,67 19,56 21,44 C23,33 24,30 28,27 Z" />
@@ -54,20 +54,20 @@
     <!-- Porcelain Egg White Body -->
     <path
         android:fillColor="#FFFDF9"
-        android:strokeColor="#24140E"
+        android:strokeColor="#0A0B09"
         android:strokeWidth="2"
         android:strokeLineJoin="round"
         android:pathData="M28,27 C37,21 57,23 65,30 C73,37 74,50 69,60 C64,70 46,73 35,70 C25,67 19,56 21,44 C23,33 24,30 28,27 Z" />
 
-    <!-- Golden Yolk Under-Shadow -->
+    <!-- Yolk under-shadow -->
     <path
-        android:fillColor="#B45309"
-        android:fillAlpha="0.25"
+        android:fillColor="#5C7300"
+        android:fillAlpha="0.30"
         android:pathData="M35,49 A12,12 0 1 0 59,49 A12,12 0 1 0 35,49 Z" />
 
-    <!-- Golden Yolk with Gradient -->
+    <!-- Volt yolk with gradient -->
     <path
-        android:strokeColor="#24140E"
+        android:strokeColor="#0A0B09"
         android:strokeWidth="2"
         android:pathData="M35,47 A12,12 0 1 0 59,47 A12,12 0 1 0 35,47 Z">
         <aapt:attr name="android:fillColor">
@@ -77,9 +77,9 @@
                 android:endX="56"
                 android:endY="56"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#FFB703" />
-                <item android:offset="0.6" android:color="#FB8500" />
-                <item android:offset="1.0" android:color="#E85D04" />
+                <item android:offset="0.0" android:color="#ECFF9A" />
+                <item android:offset="0.55" android:color="#D4FF3F" />
+                <item android:offset="1.0" android:color="#A8D61A" />
             </gradient>
         </aapt:attr>
     </path>
@@ -92,12 +92,12 @@
 
     <!-- Rosy Cheeks -->
     <path
-        android:fillColor="#F97316"
-        android:fillAlpha="0.32"
+        android:fillColor="#8CB000"
+        android:fillAlpha="0.35"
         android:pathData="M37.5,50.5 A2.2,1.6 0 1 0 41.9,50.5 A2.2,1.6 0 1 0 37.5,50.5 Z" />
     <path
-        android:fillColor="#F97316"
-        android:fillAlpha="0.32"
+        android:fillColor="#8CB000"
+        android:fillAlpha="0.35"
         android:pathData="M52.1,50.5 A2.2,1.6 0 1 0 56.5,50.5 A2.2,1.6 0 1 0 52.1,50.5 Z" />
 
     <!-- High-Contrast Obsidian Eyes with Glint -->

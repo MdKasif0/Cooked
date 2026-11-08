@@ -120,7 +120,7 @@ fun ReliabilityCheckScreen(
                 val isSafe = report?.isFullyReliable == true
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(24.dp),
                     color = if (isSafe) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.primaryContainer,
                     border = androidx.compose.foundation.BorderStroke(
                         1.dp,
@@ -269,7 +269,7 @@ fun ReliabilityCheckScreen(
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(18.dp)
                         ) {
                             Text("Open ${manufacturer.replaceFirstChar { it.uppercase() }} Settings")
                         }
@@ -299,7 +299,7 @@ fun ReliabilityCheckScreen(
                         if (uiState.testResultMessage != null) {
                             Surface(
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(10.dp),
+                                shape = RoundedCornerShape(14.dp),
                                 color = CookedTheme.colors.surfaceContainerHigh
                             ) {
                                 Text(
@@ -317,7 +317,7 @@ fun ReliabilityCheckScreen(
                                 .fillMaxWidth()
                                 .height(48.dp),
                             enabled = !uiState.isTestingAlarm,
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(18.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = CookedTheme.colors.primary,
                                 contentColor = CookedTheme.colors.onPrimary
@@ -384,7 +384,7 @@ private fun ChecklistRow(
             Spacer(modifier = Modifier.width(8.dp))
             OutlinedButton(
                 onClick = onFix,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(12.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 6.dp)
             ) {
                 Text(text = actionLabel, fontSize = 12.sp)

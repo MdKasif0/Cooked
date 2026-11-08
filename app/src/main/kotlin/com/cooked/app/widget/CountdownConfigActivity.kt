@@ -203,7 +203,7 @@ private fun DeadlineToPinRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(20.dp),
         color = CookedTheme.colors.surface,
         border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
     ) {

@@ -73,24 +73,9 @@ fun OemGuideScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Make Cooked Unkillable",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.cd_back)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+            com.cooked.app.core.designsystem.components.CookedTopBar(
+                title = "Make Cooked unkillable",
+                onNavigationClick = onNavigateBack
             )
         }
     ) { innerPadding ->
@@ -107,31 +92,30 @@ fun OemGuideScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(18.dp))
-                        .background(FlameOrange.copy(alpha = 0.12f))
-                        .border(1.dp, FlameOrange.copy(alpha = 0.3f), RoundedCornerShape(18.dp))
-                        .padding(16.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(com.cooked.app.core.designsystem.CookedTheme.colors.hero)
+                        .padding(20.dp)
                 ) {
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.Security,
                                 contentDescription = null,
-                                tint = FlameOrange,
+                                tint = com.cooked.app.core.designsystem.CookedTheme.colors.accent,
                                 modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Detected OEM: ${OemDetector.currentOem.name}",
-                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.onSurface
+                                text = "Detected: ${OemDetector.currentOem.name.lowercase().replaceFirstChar { it.uppercase() }}",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = com.cooked.app.core.designsystem.CookedTheme.colors.onHero
                             )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(R.string.oem_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = com.cooked.app.core.designsystem.CookedTheme.colors.onHeroMuted
                         )
                     }
                 }
@@ -209,9 +193,8 @@ private fun OemStepCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.35f), RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Column {
@@ -219,7 +202,7 @@ private fun OemStepCard(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = FlameOrange,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(10.dp))
@@ -238,9 +221,9 @@ private fun OemStepCard(
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedButton(
                 onClick = onAction,
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = FlameOrange
+                    contentColor = MaterialTheme.colorScheme.onSurface
                 )
             ) {
                 Text(text = actionLabel, style = MaterialTheme.typography.labelMedium)

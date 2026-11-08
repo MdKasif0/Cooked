@@ -50,7 +50,7 @@ fun CookedBottomSheet(
             topStart = CookedRadius.Sheet,
             topEnd = CookedRadius.Sheet
         ),
-        containerColor = CookedTheme.colors.surfaceContainer,
+        containerColor = if (CookedTheme.colors.isDark) CookedTheme.colors.surface else CookedTheme.colors.surfaceContainerLow,
         contentColor = CookedTheme.colors.onSurface,
         dragHandle = {
             Box(

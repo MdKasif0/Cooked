@@ -44,7 +44,7 @@ fun WorkloadWarningBanner(
             .fillMaxWidth()
             .background(
                 color = CookedTheme.colors.surfaceContainerHigh,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(24.dp)
             )
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -60,7 +60,7 @@ fun WorkloadWarningBanner(
             Text(
                 text = "OVERLOAD WARNING",
                 style = CookedTheme.typography.labelSmall,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.SemiBold,
                 color = toastyColor,
                 letterSpacing = 1.sp
             )
@@ -79,7 +79,7 @@ fun WorkloadWarningBanner(
         ) {
             OutlinedButton(
                 onClick = onStartOneClick,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = CookedTheme.colors.primary
                 )
@@ -89,14 +89,14 @@ fun WorkloadWarningBanner(
 
             OutlinedButton(
                 onClick = onPushDeadlineClick,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Text("Push a deadline", fontSize = 12.sp)
             }
             if (onSaveMeClick != null) {
                 OutlinedButton(
                     onClick = onSaveMeClick,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
                     )

@@ -85,7 +85,7 @@ fun DayCompletionsBottomSheet(
 
             if (dayCompletion.items.isEmpty()) {
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(18.dp),
                     color = CookedTheme.colors.surfaceContainerLow,
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -107,7 +107,7 @@ fun DayCompletionsBottomSheet(
                     ) { item ->
                         val isOnTime = item.completedAt != null && !item.completedAt.isAfter(item.dueAt)
                         Surface(
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(18.dp),
                             color = CookedTheme.colors.surfaceContainerLow,
                             modifier = Modifier.fillMaxWidth()
                         ) {

@@ -78,5 +78,20 @@ class ColorContrastTest {
             }
         }
     }
-}
 
+    @Test
+    fun neonAndHeroPairs_satisfyWcagAa_inBothThemes() {
+        for (colors in listOf(LightCookedColors, DarkCookedColors)) {
+            // Ink content on the volt accent (badges, nav selection, CTAs)
+            assertThat(contrastRatio(colors.onAccent, colors.accent)).isAtLeast(4.5)
+            // Insight / callout surfaces
+            assertThat(contrastRatio(colors.onAccentContainer, colors.accentContainer)).isAtLeast(4.5)
+            // Neon-family text placed directly on the canvas
+            assertThat(contrastRatio(colors.accentText, colors.background)).isAtLeast(4.5)
+            // Hero panels: primary + secondary text, and the volt highlight
+            assertThat(contrastRatio(colors.onHero, colors.hero)).isAtLeast(4.5)
+            assertThat(contrastRatio(colors.onHeroMuted, colors.hero)).isAtLeast(4.5)
+            assertThat(contrastRatio(colors.accent, colors.hero)).isAtLeast(4.5)
+        }
+    }
+}

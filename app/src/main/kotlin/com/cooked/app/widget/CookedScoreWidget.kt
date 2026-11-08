@@ -86,7 +86,7 @@ class CookedScoreWidget : GlanceAppWidget() {
                         .fillMaxSize()
                         .appWidgetBackground()
                         .background(CookedGlanceColors.Surface)
-                        .cornerRadius(16.dp)
+                        .cornerRadius(28.dp)
                         .padding(horizontal = 14.dp, vertical = 10.dp)
                         .clickable(actionStartActivity<MainActivity>()),
                     verticalAlignment = Alignment.CenterVertically
@@ -105,7 +105,7 @@ class CookedScoreWidget : GlanceAppWidget() {
                         modifier = GlanceModifier
                             .size(44.dp)
                             .background(CookedGlanceColors.SurfaceContainer)
-                            .cornerRadius(12.dp),
+                            .cornerRadius(20.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(

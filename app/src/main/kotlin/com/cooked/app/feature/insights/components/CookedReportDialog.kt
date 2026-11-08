@@ -235,7 +235,7 @@ private fun ReportPageHeadline(summary: AnalyticsSummary) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "You handled business.",
-            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Black),
+            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
             color = CookedTheme.colors.onBackground,
             textAlign = TextAlign.Center
         )
@@ -268,7 +268,7 @@ private fun ReportPageOnTime(summary: AnalyticsSummary) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Delay Reality Check",
-            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Black),
+            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
             color = CookedTheme.colors.onBackground,
             textAlign = TextAlign.Center
         )
@@ -302,7 +302,7 @@ private fun ReportPageSnooze(summary: AnalyticsSummary, hideTitles: Boolean) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Top Snoozed Champion",
-            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Black),
+            style = CookedTheme.typography.headlineLarge.copy(fontWeight = FontWeight.SemiBold),
             color = CookedTheme.colors.onBackground,
             textAlign = TextAlign.Center
         )
@@ -346,7 +346,7 @@ private fun ReportPageForecastAndShare(
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Next Week Forecast",
-            style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
+            style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
             color = CookedTheme.colors.onBackground,
             textAlign = TextAlign.Center
         )
@@ -366,7 +366,7 @@ private fun ReportPageForecastAndShare(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(12.dp))
                 .clickable { onToggleHideTitles() }
                 .padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
@@ -393,7 +393,7 @@ private fun ReportPageForecastAndShare(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .height(50.dp),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(18.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = CookedTheme.colors.primary,
                 contentColor = CookedTheme.colors.onPrimary

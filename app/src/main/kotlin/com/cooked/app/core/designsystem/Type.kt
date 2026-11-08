@@ -24,64 +24,119 @@ val Inter = FontFamily(
 
 const val FontFeatureSettingsTabular = "tnum"
 
+/**
+ * Editorial type scale. Hierarchy comes from size and tracking rather than heavy weight:
+ * large numerals and headlines use Bricolage Grotesque at regular/semibold with tight
+ * negative tracking; everything functional is Inter.
+ */
 val CookedTypography = Typography(
-    // Display Large: 48sp / 52sp line height, Bricolage Grotesque, tabular numbers for countdowns
+    // Hero numerals (score, countdown, totals)
     displayLarge = TextStyle(
         fontFamily = BricolageGrotesque,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 48.sp,
-        lineHeight = 52.sp,
+        fontWeight = FontWeight.Normal,
+        fontSize = 60.sp,
+        lineHeight = 62.sp,
+        letterSpacing = (-2).sp,
         fontFeatureSettings = FontFeatureSettingsTabular
     ),
-    // Headline Medium: 28sp / 34sp line height, Bricolage Grotesque
+    displayMedium = TextStyle(
+        fontFamily = BricolageGrotesque,
+        fontWeight = FontWeight.Normal,
+        fontSize = 46.sp,
+        lineHeight = 50.sp,
+        letterSpacing = (-1.4).sp,
+        fontFeatureSettings = FontFeatureSettingsTabular
+    ),
+    displaySmall = TextStyle(
+        fontFamily = BricolageGrotesque,
+        fontWeight = FontWeight.Normal,
+        fontSize = 36.sp,
+        lineHeight = 40.sp,
+        letterSpacing = (-1).sp,
+        fontFeatureSettings = FontFeatureSettingsTabular
+    ),
+    // Screen titles
+    headlineLarge = TextStyle(
+        fontFamily = BricolageGrotesque,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 34.sp,
+        lineHeight = 38.sp,
+        letterSpacing = (-1).sp
+    ),
     headlineMedium = TextStyle(
         fontFamily = BricolageGrotesque,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
-        lineHeight = 34.sp,
+        lineHeight = 32.sp,
+        letterSpacing = (-0.7).sp,
         fontFeatureSettings = FontFeatureSettingsTabular
     ),
-    // Title Large: 22sp / 28sp line height, Bricolage Grotesque
+    headlineSmall = TextStyle(
+        fontFamily = BricolageGrotesque,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 24.sp,
+        lineHeight = 28.sp,
+        letterSpacing = (-0.5).sp
+    ),
     titleLarge = TextStyle(
         fontFamily = BricolageGrotesque,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp,
+        lineHeight = 26.sp,
+        letterSpacing = (-0.3).sp
     ),
-    // Title Medium: 17sp / 24sp semibold, Inter
     titleMedium = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 17.sp,
-        lineHeight = 24.sp
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
+        letterSpacing = (-0.15).sp
     ),
-    // Body Large: 16sp / 24sp, Inter
+    titleSmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = (-0.1).sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 24.sp,
+        letterSpacing = (-0.1).sp
     ),
-    // Body Medium: 14sp / 20sp, Inter
     bodyMedium = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
-    // Label Large: 14sp / 20sp medium, Inter
+    bodySmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp
+    ),
     labelLarge = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
-    // Label Small: 11sp / 16sp (+0.4 tracking, uppercase overlines), Inter
+    labelMedium = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.1.sp
+    ),
+    // Overlines / micro labels
     labelSmall = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.SemiBold,
         fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.4.sp
+        lineHeight = 14.sp,
+        letterSpacing = 0.5.sp
     )
 )

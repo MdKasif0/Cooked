@@ -54,7 +54,7 @@ class QuickAddWidget : GlanceAppWidget() {
                             .fillMaxSize()
                             .appWidgetBackground()
                             .background(CookedGlanceColors.Surface)
-                            .cornerRadius(16.dp)
+                            .cornerRadius(28.dp)
                             .padding(horizontal = 14.dp, vertical = 8.dp)
                             .clickable(actionStartActivity<QuickAddActivity>()),
                         verticalAlignment = Alignment.CenterVertically
@@ -95,7 +95,7 @@ class QuickAddWidget : GlanceAppWidget() {
                             .fillMaxSize()
                             .appWidgetBackground()
                             .background(CookedGlanceColors.Primary)
-                            .cornerRadius(16.dp)
+                            .cornerRadius(28.dp)
                             .clickable(actionStartActivity<QuickAddActivity>()),
                         contentAlignment = Alignment.Center
                     ) {

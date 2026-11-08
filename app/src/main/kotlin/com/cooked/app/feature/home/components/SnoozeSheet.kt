@@ -169,7 +169,7 @@ private fun SnoozeRowItem(
 ) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(18.dp),
         color = CookedTheme.colors.surfaceContainerLow,
         modifier = Modifier.fillMaxWidth()
     ) {

@@ -1,5 +1,7 @@
 package com.cooked.app.feature.paywall
 
+import com.cooked.app.core.designsystem.components.softShadow
+
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -129,34 +131,28 @@ fun PaywallScreen(
         ) {
             // 1. HERO HEADER
             item {
-                Column(
+                com.cooked.app.core.designsystem.components.HeroCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp, bottom = 4.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(top = 4.dp),
+                    contentPadding = 24.dp
                 ) {
-                    EggMascot(
-                        level = HeatLevel.COOKED,
-                        size = 76.dp
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        com.cooked.app.core.designsystem.components.AccentBadge(text = "Cooked Pro")
+                        Spacer(modifier = Modifier.weight(1f))
+                        EggMascot(level = HeatLevel.COOKED, size = 64.dp)
+                    }
+                    Spacer(modifier = Modifier.height(18.dp))
                     Text(
                         text = uiState.headline,
-                        style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Black),
-                        color = CookedTheme.colors.onBackground,
-                        textAlign = TextAlign.Center
+                        style = CookedTheme.typography.headlineLarge,
+                        color = CookedTheme.colors.onHero
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = uiState.subheadline,
                         style = CookedTheme.typography.bodyMedium,
-                        color = CookedTheme.colors.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 12.dp)
+                        color = CookedTheme.colors.onHeroMuted
                     )
                 }
             }
@@ -164,11 +160,8 @@ fun PaywallScreen(
             // 2. 4 PRO BENEFIT ROWS
             item {
                 Text(
-                    text = "WHAT'S INCLUDED IN PRO",
-                    style = CookedTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    ),
+                    text = "What's included",
+                    style = CookedTheme.typography.titleLarge,
                     color = CookedTheme.colors.onSurfaceVariant,
                     modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
                 )
@@ -182,11 +175,8 @@ fun PaywallScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "CHOOSE YOUR PLAN",
-                    style = CookedTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    ),
+                    text = "Choose your plan",
+                    style = CookedTheme.typography.titleLarge,
                     color = CookedTheme.colors.onSurfaceVariant
                 )
             }
@@ -224,21 +214,21 @@ fun PaywallScreen(
                             .fillMaxWidth()
                             .height(54.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = CookedTheme.colors.primary,
-                            contentColor = CookedTheme.colors.onPrimary
+                            containerColor = CookedTheme.colors.accent,
+                            contentColor = CookedTheme.colors.onAccent
                         ),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = com.cooked.app.core.designsystem.PillShape
                     ) {
                         if (uiState.isPurchasing) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
-                                color = CookedTheme.colors.onPrimary,
+                                color = CookedTheme.colors.onAccent,
                                 strokeWidth = 2.dp
                             )
                         } else {
                             Text(
                                 text = ctaText,
-                                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                                style = CookedTheme.typography.titleMedium
                             )
                         }
                     }
@@ -337,7 +327,7 @@ private fun BenefitCard(
     CookedCard(
         modifier = modifier
             .fillMaxWidth()
-            .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
+            .border(borderWidth, borderColor, RoundedCornerShape(24.dp))
     ) {
         Row(
             modifier = Modifier.padding(14.dp),
@@ -408,18 +398,19 @@ private fun PlanSelectionCard(
     onSelect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val borderColor = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.outline
-    val borderWidth = if (isSelected) 2.dp else 1.dp
-    val containerColor = if (isSelected) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surface
+    val colors = CookedTheme.colors
+    val containerColor = if (isSelected) colors.hero else if (colors.isDark) colors.surfaceContainer else colors.surface
+    val titleColor = if (isSelected) colors.onHero else colors.onSurface
+    val mutedColor = if (isSelected) colors.onHeroMuted else colors.onSurfaceVariant
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .then(if (isSelected) Modifier else Modifier.softShadow(RoundedCornerShape(24.dp), 14.dp, 0.06f))
+            .clip(RoundedCornerShape(24.dp))
             .background(containerColor)
-            .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
             .clickable(onClick = onSelect)
-            .padding(16.dp)
+            .padding(18.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -428,7 +419,7 @@ private fun PlanSelectionCard(
             Icon(
                 imageVector = if (isSelected) Icons.Rounded.CheckCircle else Icons.Rounded.RadioButtonUnchecked,
                 contentDescription = null,
-                tint = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.outline,
+                tint = if (isSelected) colors.accent else colors.outline,
                 modifier = Modifier.size(24.dp)
             )
 
@@ -441,26 +432,12 @@ private fun PlanSelectionCard(
                 ) {
                     Text(
                         text = plan.title,
-                        style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = CookedTheme.colors.onSurface
+                        style = CookedTheme.typography.titleMedium,
+                        color = titleColor
                     )
 
                     if (plan.isBestValue) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(6.dp))
-                                .background(CookedTheme.colors.primary)
-                                .padding(horizontal = 8.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = "BEST VALUE",
-                                style = CookedTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Black,
-                                    fontSize = 10.sp
-                                ),
-                                color = CookedTheme.colors.onPrimary
-                            )
-                        }
+                        com.cooked.app.core.designsystem.components.AccentBadge(text = "Best value")
                     }
                 }
 
@@ -469,7 +446,7 @@ private fun PlanSelectionCard(
                 Text(
                     text = plan.subtitle,
                     style = CookedTheme.typography.bodySmall,
-                    color = CookedTheme.colors.onSurfaceVariant
+                    color = mutedColor
                 )
             }
 
@@ -477,8 +454,8 @@ private fun PlanSelectionCard(
 
             Text(
                 text = plan.formattedPrice,
-                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = CookedTheme.colors.onSurface
+                style = CookedTheme.typography.titleLarge,
+                color = titleColor
             )
         }
     }

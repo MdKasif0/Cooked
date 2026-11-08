@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun SettingsRoute(
-    onNavigateBack: () -> Unit,
+    onNavigateBack: (() -> Unit)?,
     onNavigateToReliability: () -> Unit,
     onNavigateToPaywall: () -> Unit,
     onNavigateToDesignGallery: () -> Unit = {},

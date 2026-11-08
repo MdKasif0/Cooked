@@ -173,23 +173,15 @@ fun ReminderDetailScreen(
         topBar = {
             CookedTopBar(
                 title = if (item.kind == ItemKind.DEADLINE) "Deadline Details" else "Reminder Details",
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = stringResource(R.string.cd_back),
-                            tint = CookedTheme.colors.onBackground
-                        )
-                    }
-                },
+                onNavigationClick = onNavigateBack,
                 actions = {
-                    IconButton(onClick = { showDeleteConfirmDialog = true }) {
-                        Icon(
-                            imageVector = Icons.Rounded.Delete,
-                            contentDescription = "Delete",
-                            tint = CookedTheme.colors.onSurfaceVariant
-                        )
-                    }
+                    com.cooked.app.core.designsystem.components.CircleIconButton(
+                        icon = Icons.Rounded.Delete,
+                        contentDescription = "Delete",
+                        onClick = { showDeleteConfirmDialog = true },
+                        size = 42.dp,
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
                 }
             )
         }
@@ -200,7 +192,7 @@ fun ReminderDetailScreen(
                 .padding(innerPadding)
                 .padding(horizontal = CookedTheme.spacing.screenHorizontal),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(top = 8.dp, bottom = 48.dp)
+            contentPadding = PaddingValues(top = 8.dp, bottom = 56.dp)
         ) {
             // 1. Inline Editable Title & Emoji
             item(key = "title_emoji_card") {
@@ -218,17 +210,17 @@ fun ReminderDetailScreen(
                         ) {
                             // Custom SVG Icon trigger button
                             Surface(
-                                shape = CircleShape,
-                                color = CookedTheme.colors.surfaceContainerHigh,
+                                shape = RoundedCornerShape(24.dp),
+                                color = CookedTheme.colors.hero,
                                 modifier = Modifier
-                                    .size(52.dp)
+                                    .size(56.dp)
                                     .clickable { onShowEmojiPicker(true) }
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     CookedCategoryIcon(
                                         keyOrEmoji = item.emoji,
-                                        size = 28.dp,
-                                        tint = CookedTheme.colors.primary
+                                        size = 26.dp,
+                                        tint = CookedTheme.colors.accent
                                     )
                                 }
                             }
@@ -242,18 +234,18 @@ fun ReminderDetailScreen(
                                 },
                                 singleLine = false,
                                 maxLines = 3,
-                                textStyle = CookedTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Bold,
+                                textStyle = CookedTheme.typography.titleLarge.copy(
                                     color = CookedTheme.colors.onSurface
                                 ),
                                 placeholder = { Text("Task title...") },
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = CookedTheme.colors.primary,
+                                    focusedBorderColor = CookedTheme.colors.outline,
                                     unfocusedBorderColor = Color.Transparent,
-                                    focusedContainerColor = CookedTheme.colors.surfaceContainerLow,
-                                    unfocusedContainerColor = CookedTheme.colors.surfaceContainerLow
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    cursorColor = CookedTheme.colors.onSurface
                                 ),
-                                shape = RoundedCornerShape(12.dp),
+                                shape = RoundedCornerShape(18.dp),
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -333,7 +325,7 @@ fun ReminderDetailScreen(
                             CountdownText(
                                 targetInstant = item.dueAt,
                                 style = CookedTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Black,
+                                    fontWeight = FontWeight.SemiBold,
                                     color = CookedTheme.colors.heatFor(heat.heatLevel).color
                                 )
                             )
@@ -349,7 +341,7 @@ fun ReminderDetailScreen(
                                     .fillMaxWidth()
                                     .background(
                                         color = CookedTheme.colors.surfaceContainerLow,
-                                        shape = RoundedCornerShape(8.dp)
+                                        shape = RoundedCornerShape(12.dp)
                                     )
                                     .padding(10.dp)
                             ) {
@@ -376,7 +368,7 @@ fun ReminderDetailScreen(
                                                 containerColor = CookedTheme.colors.primary,
                                                 contentColor = CookedTheme.colors.onPrimary
                                             ),
-                                            shape = RoundedCornerShape(12.dp),
+                                            shape = RoundedCornerShape(18.dp),
                                             modifier = Modifier.weight(1f)
                                         ) {
                                             Icon(
@@ -392,20 +384,20 @@ fun ReminderDetailScreen(
                                     if (FeatureFlags.isPanicButtonEnabled && onTriggerRescuePlan != null &&
                                         (heat.heatLevel == HeatLevel.COOKED || heat.heatLevel == HeatLevel.TOASTY)
                                     ) {
-                                        OutlinedButton(
+                                        Button(
                                             onClick = onTriggerRescuePlan,
-                                            colors = ButtonDefaults.outlinedButtonColors(
-                                                contentColor = CookedTheme.colors.cooked.color
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = CookedTheme.colors.cooked.container,
+                                                contentColor = CookedTheme.colors.cooked.textColor
                                             ),
-                                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.cooked.color),
-                                            shape = RoundedCornerShape(12.dp),
+                                            shape = RoundedCornerShape(18.dp),
                                             modifier = Modifier.weight(1f)
                                         ) {
                                             Icon(
                                                 painter = painterResource(id = R.drawable.ic_sos_rescue),
                                                 contentDescription = null,
                                                 modifier = Modifier.size(18.dp),
-                                                tint = CookedTheme.colors.cooked.color
+                                                tint = CookedTheme.colors.cooked.textColor
                                             )
                                             Spacer(modifier = Modifier.width(6.dp))
                                             Text("Save me", style = CookedTheme.typography.labelLarge)
@@ -429,7 +421,7 @@ fun ReminderDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                             Icon(
                                 imageVector = Icons.Rounded.Schedule,
                                 contentDescription = null,
@@ -453,9 +445,10 @@ fun ReminderDetailScreen(
                             }
                         }
 
+                        Spacer(modifier = Modifier.width(8.dp))
                         FilledTonalButton(
                             onClick = { onShowDatePicker(true) },
-                            shape = RoundedCornerShape(10.dp)
+                            shape = com.cooked.app.core.designsystem.PillShape
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.EditCalendar,
@@ -631,7 +624,7 @@ fun ReminderDetailScreen(
                             minLines = 3,
                             maxLines = 6,
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(18.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = CookedTheme.colors.primary,
                                 unfocusedBorderColor = CookedTheme.colors.outline,
@@ -775,7 +768,7 @@ fun ReminderDetailScreen(
                             OutlinedButton(
                                 onClick = { onShowRescheduleSheet(true) },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(10.dp)
+                                shape = RoundedCornerShape(14.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.EditCalendar,
@@ -854,7 +847,7 @@ fun ReminderDetailScreen(
                                 }
                             ),
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(18.dp)
                         )
                         FilledTonalButton(
                             onClick = {
@@ -863,7 +856,7 @@ fun ReminderDetailScreen(
                                     newStepText = ""
                                 }
                             },
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(18.dp),
                             modifier = Modifier.height(52.dp)
                         ) {
                             Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add")
@@ -925,7 +918,7 @@ fun ReminderDetailScreen(
                         containerColor = CookedTheme.colors.primary,
                         contentColor = CookedTheme.colors.onPrimary
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(18.dp)
                 ) {
                     Icon(imageVector = Icons.Rounded.Check, contentDescription = null)
                     Spacer(modifier = Modifier.width(6.dp))
@@ -1000,7 +993,7 @@ fun ReminderDetailScreen(
     if (uiState.showRescheduleSheet) {
         AlertDialog(
             onDismissRequest = { onShowRescheduleSheet(false) },
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(28.dp),
             title = {
                 Text(
                     text = "Push it: New date, or new plan?",
@@ -1130,6 +1123,6 @@ private fun TimelineEventRow(
 private fun recurrenceChipColors() = FilterChipDefaults.filterChipColors(
     selectedContainerColor = CookedTheme.colors.primary,
     selectedLabelColor = CookedTheme.colors.onPrimary,
-    containerColor = CookedTheme.colors.surfaceContainerHigh,
+    containerColor = if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surfaceContainerLow,
     labelColor = CookedTheme.colors.onSurface
 )

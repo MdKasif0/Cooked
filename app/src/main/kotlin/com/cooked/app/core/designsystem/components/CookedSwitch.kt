@@ -39,11 +39,12 @@ fun CookedSwitch(
         modifier = modifier,
         enabled = enabled,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = CookedTheme.colors.onPrimary,
-            checkedTrackColor = CookedTheme.colors.primary,
-            uncheckedThumbColor = CookedTheme.colors.onSurfaceVariant,
+            checkedThumbColor = CookedTheme.colors.onAccent,
+            checkedTrackColor = CookedTheme.colors.accent,
+            checkedBorderColor = CookedTheme.colors.accent,
+            uncheckedThumbColor = if (CookedTheme.colors.isDark) CookedTheme.colors.onSurfaceVariant else CookedTheme.colors.surface,
             uncheckedTrackColor = CookedTheme.colors.surfaceContainerHigh,
-            uncheckedBorderColor = CookedTheme.colors.outline
+            uncheckedBorderColor = CookedTheme.colors.surfaceContainerHigh
         )
     )
 }

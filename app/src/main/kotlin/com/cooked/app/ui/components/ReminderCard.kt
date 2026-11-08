@@ -64,9 +64,9 @@ fun ReminderCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, borderColor, RoundedCornerShape(18.dp))
+            .border(1.dp, borderColor, RoundedCornerShape(24.dp))
             .clickable(onClick = onClick)
             .padding(16.dp)
     ) {
