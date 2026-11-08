@@ -18,3 +18,4 @@ abstract class RepositoryModule {
         impl: OfflineReminderRepository
     ): ReminderRepository
 }
+

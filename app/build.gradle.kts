@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.detekt)
 }
 
 val enableFirebase = project.findProperty("cooked.enableFirebase")?.toString()?.toBoolean()
@@ -50,6 +51,16 @@ android {
     }
 }
 
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.setFrom(file("../detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "17"
+}
 
 dependencies {
     // AndroidX & Core

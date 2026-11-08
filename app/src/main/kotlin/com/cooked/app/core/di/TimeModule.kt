@@ -18,3 +18,4 @@ abstract class TimeModule {
         impl: SystemCookedClock
     ): CookedClock
 }
+

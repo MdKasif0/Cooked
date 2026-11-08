@@ -25,3 +25,4 @@ fun ReminderDetailRoute(
         modifier = modifier
     )
 }
+

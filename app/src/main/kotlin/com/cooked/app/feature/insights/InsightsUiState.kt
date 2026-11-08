@@ -15,3 +15,4 @@ data class InsightsUiState(
     val emptyMessage: String = "Cooked Index: 0%. You are thriving, no cap.",
     val isLoading: Boolean = false
 )
+

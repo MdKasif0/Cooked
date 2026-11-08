@@ -9,3 +9,4 @@ data class ReminderDetailUiState(
     val isLoading: Boolean = true,
     val isDeleted: Boolean = false
 )
+

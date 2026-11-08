@@ -40,3 +40,4 @@ class InsightsViewModel @Inject constructor(
             initialValue = InsightsUiState(isLoading = true)
         )
 }
+

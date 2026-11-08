@@ -6,3 +6,4 @@ data class PaywallUiState(
     val price: String = "$1.99 / month",
     val isPurchasing: Boolean = false
 )
+

@@ -4,3 +4,4 @@ data class OnboardingUiState(
     val currentStep: Int = 0,
     val isComplete: Boolean = false
 )
+

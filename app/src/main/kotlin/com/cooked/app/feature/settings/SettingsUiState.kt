@@ -5,3 +5,4 @@ data class SettingsUiState(
     val isOemWarningDismissed: Boolean = false,
     val appVersion: String = "1.0.0"
 )
+

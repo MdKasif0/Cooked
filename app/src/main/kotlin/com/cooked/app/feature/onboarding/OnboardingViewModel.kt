@@ -24,3 +24,4 @@ class OnboardingViewModel @Inject constructor() : ViewModel() {
         }
     }
 }
+

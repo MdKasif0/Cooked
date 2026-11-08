@@ -9,3 +9,4 @@ data class TodayUiState(
     val isLoading: Boolean = false,
     val emptyMessage: String = "Nothing due. Suspiciously calm."
 )
+

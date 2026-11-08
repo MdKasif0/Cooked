@@ -74,3 +74,4 @@ class QuickAddViewModel @Inject constructor(
         )
     }
 }
+

@@ -20,3 +20,4 @@ fun InsightsRoute(
         modifier = modifier
     )
 }
+

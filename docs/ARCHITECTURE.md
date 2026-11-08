@@ -11,3 +11,4 @@
 9. **Widgets**: Jetpack Glance app widgets and Android Quick Settings tile service for <3-second quick adds.
 10. **State Management**: `StateFlow<UiState>` collected with lifecycle awareness (`collectAsStateWithLifecycle`).
 11. **Modularity Path**: Packaged so each layer can seamlessly migrate into multi-project Gradle modules in subsequent milestones.
+

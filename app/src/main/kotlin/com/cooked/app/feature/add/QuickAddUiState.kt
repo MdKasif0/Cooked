@@ -10,3 +10,4 @@ data class QuickAddUiState(
     val canSave: Boolean = false,
     val isSaved: Boolean = false
 )
+

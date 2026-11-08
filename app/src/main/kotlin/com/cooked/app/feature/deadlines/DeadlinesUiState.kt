@@ -16,3 +16,4 @@ data class DeadlinesUiState(
     val isLoading: Boolean = false,
     val emptyMessage: String = "Zero hard deadlines on the radar. Don't jinx it."
 )
+

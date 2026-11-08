@@ -19,3 +19,4 @@ class DefaultDispatcherProvider @Inject constructor() : DispatcherProvider {
     override val default: CoroutineDispatcher = Dispatchers.Default
     override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
 }
+
