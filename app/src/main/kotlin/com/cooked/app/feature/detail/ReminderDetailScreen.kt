@@ -78,6 +78,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.R
+import com.cooked.app.core.config.FeatureFlags
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.CookedCard
@@ -350,6 +351,46 @@ fun ReminderDetailScreen(
                                     fontWeight = FontWeight.SemiBold,
                                     color = CookedTheme.colors.onSurface
                                 )
+                            }
+
+                            if ((FeatureFlags.isCookSessionEnabled && onStartCookSession != null) ||
+                                (FeatureFlags.isPanicButtonEnabled && onTriggerRescuePlan != null &&
+                                    (heat.heatLevel == HeatLevel.COOKED || heat.heatLevel == HeatLevel.TOASTY))
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    if (FeatureFlags.isCookSessionEnabled && onStartCookSession != null) {
+                                        Button(
+                                            onClick = onStartCookSession,
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = CookedTheme.colors.primary,
+                                                contentColor = CookedTheme.colors.onPrimary
+                                            ),
+                                            shape = RoundedCornerShape(12.dp),
+                                            modifier = Modifier.weight(1f)
+                                        ) {
+                                            Text("Start cooking 🍳", style = CookedTheme.typography.labelLarge)
+                                        }
+                                    }
+
+                                    if (FeatureFlags.isPanicButtonEnabled && onTriggerRescuePlan != null &&
+                                        (heat.heatLevel == HeatLevel.COOKED || heat.heatLevel == HeatLevel.TOASTY)
+                                    ) {
+                                        OutlinedButton(
+                                            onClick = onTriggerRescuePlan,
+                                            colors = ButtonDefaults.outlinedButtonColors(
+                                                contentColor = CookedTheme.colors.error
+                                            ),
+                                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.error),
+                                            shape = RoundedCornerShape(12.dp),
+                                            modifier = Modifier.weight(1f)
+                                        ) {
+                                            Text("Save me 🆘", style = CookedTheme.typography.labelLarge)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

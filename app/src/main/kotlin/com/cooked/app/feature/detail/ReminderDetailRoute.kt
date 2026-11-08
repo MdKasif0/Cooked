@@ -10,6 +10,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun ReminderDetailRoute(
     onNavigateBack: () -> Unit,
     onEditClick: (String) -> Unit,
+    onStartCookSession: ((String) -> Unit)? = null,
+    onTriggerRescuePlan: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier,
     viewModel: ReminderDetailViewModel = hiltViewModel()
 ) {
@@ -37,6 +39,8 @@ fun ReminderDetailRoute(
         onShowDatePicker = viewModel::setShowDatePicker,
         onMarkDone = viewModel::onMarkDone,
         onDelete = viewModel::onDelete,
+        onStartCookSession = onStartCookSession?.let { action -> { uiState.item?.id?.let { action(it) } } },
+        onTriggerRescuePlan = onTriggerRescuePlan?.let { action -> { uiState.item?.id?.let { action(it) } } },
         modifier = modifier
     )
 }

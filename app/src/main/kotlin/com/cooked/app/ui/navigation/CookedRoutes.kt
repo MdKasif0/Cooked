@@ -43,7 +43,9 @@ data class PaywallNavRoute(
 )
 
 @Serializable
-object DatesheetReviewNavRoute
+data class DatesheetReviewNavRoute(
+    val imageUri: String? = null
+)
 
 @Serializable
 data class CookSessionNavRoute(
