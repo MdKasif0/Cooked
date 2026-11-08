@@ -69,11 +69,11 @@ class DatesheetViewModel @Inject constructor(
             selected.forEach { candidate ->
                 val item = Item(
                     id = UUID.randomUUID().toString(),
-                    title = candidate.subjectTitle,
-                    dueAt = candidate.examInstant,
+                    title = candidate.title,
+                    dueAt = candidate.dueAt,
                     allDay = false,
                     kind = ItemKind.DEADLINE,
-                    effortMinutes = candidate.estimatedEffortMinutes,
+                    effortMinutes = candidate.effortMinutes,
                     createdAt = Instant.now(),
                     updatedAt = Instant.now()
                 )
