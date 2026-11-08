@@ -1,7 +1,7 @@
 package com.cooked.app.domain.usecase
 
-import com.cooked.app.alarm.AlarmScheduler
 import com.cooked.app.domain.repository.ReminderRepository
+import com.cooked.app.scheduling.alarm.AlarmScheduler
 
 class DismissNagUseCase(
     private val repository: ReminderRepository,
@@ -11,7 +11,6 @@ class DismissNagUseCase(
         val reminder = repository.getReminderById(reminderId) ?: return
         if (reminder.isCompleted) return
 
-        // Increment nag count and ensure nagging is active
         repository.setNaggingActive(reminderId, isNagging = true, incrementNagCount = true)
         val updated = repository.getReminderById(reminderId)
         if (updated != null) {
@@ -19,4 +18,3 @@ class DismissNagUseCase(
         }
     }
 }
-

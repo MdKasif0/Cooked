@@ -1,8 +1,8 @@
 package com.cooked.app.domain.usecase
 
-import com.cooked.app.alarm.AlarmScheduler
 import com.cooked.app.domain.model.Reminder
 import com.cooked.app.domain.repository.ReminderRepository
+import com.cooked.app.scheduling.alarm.AlarmScheduler
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,9 +36,7 @@ class DismissNagUseCaseTest {
 
         useCase("test-id-123")
 
-        // Verifies nagging is set active with incremented count
         coVerify { repository.setNaggingActive("test-id-123", isNagging = true, incrementNagCount = true) }
-        // Verifies alarm scheduler was triggered to re-arm the nag
         verify { alarmScheduler.schedule(reminder) }
     }
 
@@ -60,4 +58,3 @@ class DismissNagUseCaseTest {
         verify(exactly = 0) { alarmScheduler.schedule(any()) }
     }
 }
-
