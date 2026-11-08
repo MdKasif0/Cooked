@@ -230,7 +230,7 @@ class ReminderNotificationBuilder @Inject constructor(
 
         return NotificationCompat.Builder(context, NotificationChannels.CHANNEL_REMINDERS_LOUD)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("$count things are cooking 🔥")
+            .setContentTitle("$count things are cooking")
             .setContentText("You have multiple active reminders that need attention.")
             .setGroup(GROUP_COOKED_REMINDERS)
             .setGroupSummary(true)

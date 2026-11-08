@@ -90,7 +90,7 @@ class NextUpWidget : GlanceAppWidget() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Next Up 🔥",
+                            text = "Next Up",
                             style = TextStyle(
                                 color = CookedGlanceColors.OnSurface,
                                 fontSize = 14.sp,

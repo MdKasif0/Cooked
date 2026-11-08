@@ -27,7 +27,7 @@ class CalculateCookedScoreUseCase {
                 level = CookedLevel.CHILLING,
                 totalRequiredHours = 0.0,
                 totalAvailableHours = weeklyProductiveCapacityHours,
-                headline = "Raw & Chilling 🧊",
+                headline = "Raw & Chilling",
                 advice = "Zero pending doom on your horizon. Go drink water or start something bold."
             )
         }
@@ -53,22 +53,22 @@ class CalculateCookedScoreUseCase {
         val (level, headline, advice) = when {
             finalScore <= 25 -> Triple(
                 CookedLevel.CHILLING,
-                "Raw & Chilling 🧊",
+                "Raw & Chilling",
                 "Workload is super breezy. You're genuinely thriving right now."
             )
             finalScore <= 55 -> Triple(
                 CookedLevel.SIMMERING,
-                "Simmering Gently 🍲",
+                "Simmering Gently",
                 "Things are heating up, but totally doable. Knock out the next item and keep your rhythm."
             )
             finalScore <= 80 -> Triple(
                 CookedLevel.COOKED,
-                "Properly Cooked 🔥",
+                "Properly Cooked",
                 "Your schedule is getting spicy. Lock in, mute distractions, and finish the nearest deadline."
             )
             else -> Triple(
                 CookedLevel.DEEP_FRIED,
-                "Deep Fried & Crispy 🚨",
+                "Deep Fried & Crispy",
                 "Emergency overload! Don't panic or doomscroll. Drop the non-essentials and attack one 25-minute chunk."
             )
         }

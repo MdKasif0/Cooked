@@ -31,7 +31,7 @@ fun CountdownTimerText(
     }
 
     val countdown = TimeUtils.formatCountdown(targetUtcMillis, nowMillis)
-    val text = if (targetUtcMillis <= nowMillis) "🔥 Overdue!" else countdown
+    val text = if (targetUtcMillis <= nowMillis) "Overdue!" else countdown
 
     Text(
         text = text,

@@ -76,7 +76,7 @@ fun OemGuideScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Make Cooked Unkillable 🛡️",
+                        text = "Make Cooked Unkillable",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },

@@ -7,7 +7,9 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.DarkBackground
 import com.cooked.app.core.designsystem.DarkPrimary
 import com.cooked.app.domain.model.Personality
@@ -102,13 +104,15 @@ object SnitchManager {
             }
             canvas.drawCircle(size / 2f, 320f, 130f, circlePaint)
 
-            // Mascot text / emoji
-            val emojiPaint = Paint().apply {
-                textSize = 120f
-                textAlign = Paint.Align.CENTER
-                isAntiAlias = true
+            // Mascot egg vector
+            val eggDrawable = ContextCompat.getDrawable(context, R.drawable.egg_cooked)
+            eggDrawable?.let {
+                val eggSize = 160
+                val left = (size / 2 - eggSize / 2)
+                val top = (320 - eggSize / 2)
+                it.setBounds(left, top, left + eggSize, top + eggSize)
+                it.draw(canvas)
             }
-            canvas.drawText("🍳", size / 2f, 360f, emojiPaint)
 
             // Snooze callout
             val headlinePaint = Paint().apply {

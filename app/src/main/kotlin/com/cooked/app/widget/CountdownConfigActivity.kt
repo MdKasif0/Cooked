@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -210,9 +211,10 @@ private fun DeadlineToPinRow(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = item.emoji ?: "🎯",
-                fontSize = 28.sp
+            CookedCategoryIcon(
+                keyOrEmoji = item.emoji,
+                size = 32.dp,
+                tint = CookedTheme.colors.primary
             )
 
             Spacer(modifier = Modifier.width(14.dp))

@@ -37,13 +37,13 @@
 
     <!-- Cooked Score -->
     <string name="cooked_score_label">Cooked Meter</string>
-    <string name="cooked_score_chilling_title">Raw &amp; Chilling 🧊</string>
+    <string name="cooked_score_chilling_title">Raw &amp; Chilling</string>
     <string name="cooked_score_chilling_desc">Light workload. You\'re genuinely thriving.</string>
-    <string name="cooked_score_simmering_title">Simmering Gently 🍲</string>
+    <string name="cooked_score_simmering_title">Simmering Gently</string>
     <string name="cooked_score_simmering_desc">Things are heating up. Keep moving at your pace.</string>
-    <string name="cooked_score_cooked_title">Properly Cooked 🔥</string>
+    <string name="cooked_score_cooked_title">Properly Cooked</string>
     <string name="cooked_score_cooked_desc">Heavy load ahead. Pick the one biggest thing and crush it.</string>
-    <string name="cooked_score_deep_fried_title">Deep Fried &amp; Crispy 🚨</string>
+    <string name="cooked_score_deep_fried_title">Deep Fried &amp; Crispy</string>
     <string name="cooked_score_deep_fried_desc">Emergency overload! Don\'t panic. Breathe, drop the trivial stuff, attack the next deadline.</string>
 
     <!-- Add / Edit Reminder -->

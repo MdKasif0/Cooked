@@ -47,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,6 +57,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.FlameOrange
 import com.cooked.app.core.designsystem.PressureCrispy
+import com.cooked.app.domain.deadline.HeatLevel
+import com.cooked.app.feature.egg.EggMascot
 import com.cooked.app.ui.components.CookedScoreCard
 import com.cooked.app.ui.components.ReminderCard
 
@@ -89,9 +92,11 @@ fun HomeScreen(
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "🔥",
-                                fontSize = 20.sp
+                            Icon(
+                                painter = painterResource(R.drawable.ic_cat_flame),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         Text(
@@ -283,9 +288,9 @@ fun HomeScreen(
                             .padding(vertical = 48.dp, horizontal = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "🧊",
-                            fontSize = 48.sp
+                        EggMascot(
+                            level = HeatLevel.CHILL,
+                            size = 64.dp
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(

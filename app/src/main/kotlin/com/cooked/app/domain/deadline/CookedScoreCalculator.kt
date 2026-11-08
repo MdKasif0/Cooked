@@ -146,7 +146,7 @@ object CookedScoreCalculator {
         dailyCapacity: Int
     ): Pair<String?, Int?> {
         if (contributors.isEmpty() || currentScore == 0) {
-            return Pair("You're all clear! Enjoy the chill 🧊", 0)
+            return Pair("You're all clear! Enjoy the chill", 0)
         }
 
         val topContributor = contributors.first()

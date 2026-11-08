@@ -51,7 +51,7 @@ object HeatCalculator {
                 remainingEffortMinutes = 0,
                 availableMinutes = calculateAvailableMinutes(now, item.dueAt, dailyCapacityMinutes, quietHoursStart, quietHoursEnd, zone, calendarBusyBlocks),
                 slackMinutes = 0,
-                reason = "Done and dusted! 🧊"
+                reason = "Done and dusted!"
             )
         }
 
@@ -82,7 +82,7 @@ object HeatCalculator {
                 remainingEffortMinutes = remainingEffortMinutes,
                 availableMinutes = 0,
                 slackMinutes = -remainingEffortMinutes,
-                reason = "Overdue by $lateFormatted! Maximum heat 🔥"
+                reason = "Overdue by $lateFormatted! Maximum heat"
             )
         }
 

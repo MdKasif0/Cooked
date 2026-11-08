@@ -73,7 +73,7 @@ class CreateItemFromExternal @Inject constructor(
             kind = kind,
             title = parseResult.title.ifBlank { trimmed },
             note = null,
-            emoji = if (kind == ItemKind.DEADLINE) "🎯" else "🔥",
+            emoji = if (kind == ItemKind.DEADLINE) "target" else "flame",
             dueAt = dueAt,
             allDay = parseResult.allDay,
             timeZoneId = zone.id,

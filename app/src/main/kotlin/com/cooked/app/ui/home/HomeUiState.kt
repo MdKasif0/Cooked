@@ -27,7 +27,7 @@ data class HomeUiState(
         level = CookedLevel.CHILLING,
         totalRequiredHours = 0.0,
         totalAvailableHours = 28.0,
-        headline = "Raw & Chilling 🧊",
+        headline = "Raw & Chilling",
         advice = "No pending doom."
     ),
     val isOemWarningVisible: Boolean = false,

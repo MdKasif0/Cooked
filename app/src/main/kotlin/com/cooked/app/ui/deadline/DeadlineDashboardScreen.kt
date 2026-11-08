@@ -56,7 +56,9 @@ import com.cooked.app.core.designsystem.FlameOrange
 import com.cooked.app.core.designsystem.PressureChill
 import com.cooked.app.core.designsystem.PressureCrispy
 import com.cooked.app.core.time.TimeUtils
+import com.cooked.app.domain.deadline.HeatLevel
 import com.cooked.app.domain.model.CookedLevel
+import com.cooked.app.feature.egg.EggMascot
 import com.cooked.app.ui.components.CountdownTimerText
 import com.cooked.app.ui.components.PressureBadge
 
@@ -77,7 +79,7 @@ fun DeadlineDashboardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Deadline Mode 🔥",
+                        text = "Deadline Mode",
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 },
@@ -212,7 +214,10 @@ fun DeadlineDashboardScreen(
                             .padding(vertical = 40.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "🧊", fontSize = 48.sp)
+                        EggMascot(
+                            level = HeatLevel.CHILL,
+                            size = 64.dp
+                        )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = "Zero pending deadlines.",
@@ -300,7 +305,7 @@ fun DeadlineDashboardScreen(
                                 }
 
                                 Text(
-                                    text = if (item.bufferHours > 0) "${item.bufferHours}h safety buffer" else "⚠️ Zero buffer!",
+                                    text = if (item.bufferHours > 0) "${item.bufferHours}h safety buffer" else "Zero buffer!",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = if (item.bufferHours > 0) MaterialTheme.colorScheme.onSurfaceVariant else PressureCrispy,
                                     fontWeight = FontWeight.SemiBold
