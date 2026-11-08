@@ -67,7 +67,8 @@ object HeatCalculator {
             dailyCapacityMinutes = dailyCapacityMinutes,
             quietHoursStart = quietHoursStart,
             quietHoursEnd = quietHoursEnd,
-            zone = zone
+            zone = zone,
+            calendarBusyBlocks = calendarBusyBlocks
         )
 
         // 4. Overdue check
@@ -155,7 +156,8 @@ object HeatCalculator {
         dailyCapacityMinutes: Int,
         quietHoursStart: LocalTime,
         quietHoursEnd: LocalTime,
-        zone: ZoneId
+        zone: ZoneId,
+        calendarBusyBlocks: List<TimeBlock> = emptyList()
     ): Int {
         if (!now.isBefore(dueAt)) return 0
         if (dailyCapacityMinutes <= 0) return 0
@@ -183,7 +185,18 @@ object HeatCalculator {
                     quietHoursEnd = quietHoursEnd,
                     zone = zone
                 )
-                val dayCapacity = min(dailyCapacityMinutes.toLong(), wakingMinutes)
+
+                // Subtract calendar busy overlap in this day window
+                val busyMinutes = calendarBusyBlocks.sumOf { block ->
+                    val bStart = if (block.start.isAfter(windowStart)) block.start else windowStart
+                    val bEnd = if (block.end.isBefore(windowEnd)) block.end else windowEnd
+                    if (bStart.isBefore(bEnd)) {
+                        Duration.between(bStart, bEnd).toMinutes()
+                    } else 0L
+                }
+
+                val freeWakingMinutes = (wakingMinutes - busyMinutes).coerceAtLeast(0L)
+                val dayCapacity = min(dailyCapacityMinutes.toLong(), freeWakingMinutes)
                 totalAvailable += dayCapacity
             }
 
