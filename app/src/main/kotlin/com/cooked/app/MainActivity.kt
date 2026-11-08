@@ -9,17 +9,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.ui.navigation.CookedAppShell
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var userPreferencesRepository: UserPreferencesRepository
 
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
@@ -31,8 +40,20 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
 
         setContent {
-            CookedTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
+            val themeMode by userPreferencesRepository.themeMode
+                .collectAsStateWithLifecycle(initialValue = ThemeMode.SYSTEM)
+
+            val darkTheme = when (themeMode) {
+                ThemeMode.SYSTEM -> isSystemInDarkTheme()
+                ThemeMode.LIGHT -> false
+                ThemeMode.DARK -> true
+            }
+
+            CookedTheme(darkTheme = darkTheme) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = CookedTheme.colors.background
+                ) {
                     CookedAppShell()
                 }
             }
