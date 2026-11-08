@@ -48,3 +48,4 @@ object CookedGlanceColors {
     val Toasty = ColorProvider(day = HeatToastyLight, night = HeatToastyDark)
     val Cooked = ColorProvider(day = HeatCookedLight, night = HeatCookedDark)
 }
+

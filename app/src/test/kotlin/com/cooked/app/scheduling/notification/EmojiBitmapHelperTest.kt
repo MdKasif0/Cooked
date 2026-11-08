@@ -28,3 +28,4 @@ class EmojiBitmapHelperTest {
         assertEquals(64, bitmap.height)
     }
 }
+

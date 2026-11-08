@@ -47,3 +47,4 @@ object EmojiBitmapHelper {
         return bitmap
     }
 }
+

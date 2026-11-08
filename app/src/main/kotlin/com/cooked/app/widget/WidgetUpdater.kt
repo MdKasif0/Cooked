@@ -109,3 +109,4 @@ class WidgetMinuteReceiver : BroadcastReceiver() {
         WidgetUpdater.refreshAll(context)
     }
 }
+

@@ -117,3 +117,4 @@ class QuickAddWidget : GlanceAppWidget() {
 class QuickAddWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = QuickAddWidget()
 }
+
