@@ -3,63 +3,72 @@ package com.cooked.app.core.designsystem
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = FlameOrangeGlow,
-    onPrimary = DarkBackground,
-    primaryContainer = FlameOrangeDark,
-    onPrimaryContainer = TextPrimaryDark,
-    secondary = FlameAmber,
-    onSecondary = DarkBackground,
-    background = DarkBackground,
-    onBackground = TextPrimaryDark,
-    surface = DarkSurface,
-    onSurface = TextPrimaryDark,
-    surfaceVariant = DarkSurfaceElevated,
-    onSurfaceVariant = TextSecondaryDark,
-    outline = BorderDark
+private val LightMaterialColorScheme = lightColorScheme(
+    primary = LightPrimary,
+    onPrimary = LightOnPrimary,
+    primaryContainer = LightPrimaryContainer,
+    onPrimaryContainer = LightOnPrimaryContainer,
+    background = LightBackground,
+    onBackground = LightOnBackground,
+    surface = LightSurface,
+    onSurface = LightOnSurface,
+    surfaceContainerLow = LightSurfaceContainerLow,
+    surfaceContainer = LightSurfaceContainer,
+    surfaceContainerHigh = LightSurfaceContainerHigh,
+    surfaceVariant = LightSurfaceContainer,
+    onSurfaceVariant = LightOnSurfaceVariant,
+    outline = LightOutline,
+    outlineVariant = LightOutlineVariant
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = FlameOrange,
-    onPrimary = CardSurfaceLight,
-    primaryContainer = FlameAmber,
-    onPrimaryContainer = TextPrimaryLight,
-    secondary = CharcoalSlate,
-    onSecondary = CardSurfaceLight,
-    background = WarmOffWhite,
-    onBackground = TextPrimaryLight,
-    surface = CardSurfaceLight,
-    onSurface = TextPrimaryLight,
-    surfaceVariant = WarmOffWhite,
-    onSurfaceVariant = TextSecondaryLight,
-    outline = BorderLight
+private val DarkMaterialColorScheme = darkColorScheme(
+    primary = DarkPrimary,
+    onPrimary = DarkOnPrimary,
+    primaryContainer = DarkPrimaryContainer,
+    onPrimaryContainer = DarkOnPrimaryContainer,
+    background = DarkBackground,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
+    surfaceContainerLow = DarkSurfaceContainerLow,
+    surfaceContainer = DarkSurfaceContainer,
+    surfaceContainerHigh = DarkSurfaceContainerHigh,
+    surfaceVariant = DarkSurfaceContainer,
+    onSurfaceVariant = DarkOnSurfaceVariant,
+    outline = DarkOutline,
+    outlineVariant = DarkOutlineVariant
 )
 
 @Composable
 fun CookedTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Default to our bespoke branded palette
+    dynamicColor: Boolean = false, // OFF by default (brand-first Ember palette)
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    val context = LocalContext.current
+    val cookedColors = if (darkTheme) DarkCookedColors else LightCookedColors
+
+    val materialColorScheme: ColorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> DarkMaterialColorScheme
+        else -> LightMaterialColorScheme
     }
 
     val view = LocalView.current
@@ -67,18 +76,43 @@ fun CookedTheme(
         SideEffect {
             val window = (view.context as? Activity)?.window
             if (window != null) {
-                window.statusBarColor = colorScheme.background.toArgb()
-                window.navigationBarColor = colorScheme.background.toArgb()
-                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
+                val insetsController = WindowCompat.getInsetsController(window, view)
+                insetsController.isAppearanceLightStatusBars = !darkTheme
+                insetsController.isAppearanceLightNavigationBars = !darkTheme
             }
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = CookedTypography,
-        content = content
-    )
+    CompositionLocalProvider(
+        LocalCookedColors provides cookedColors,
+        LocalCookedSpacing provides CookedSpacing()
+    ) {
+        MaterialTheme(
+            colorScheme = materialColorScheme,
+            typography = CookedTypography,
+            shapes = CookedShapes,
+            content = content
+        )
+    }
 }
 
+/**
+ * Direct accessor object for Cooked design system tokens.
+ */
+object CookedTheme {
+    val colors: CookedColors
+        @Composable
+        get() = LocalCookedColors.current
+
+    val spacing: CookedSpacing
+        @Composable
+        get() = LocalCookedSpacing.current
+
+    val shapes: Shapes
+        @Composable
+        get() = MaterialTheme.shapes
+
+    val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography
+}
