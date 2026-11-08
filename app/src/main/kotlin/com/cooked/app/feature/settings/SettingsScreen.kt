@@ -1,5 +1,6 @@
 package com.cooked.app.feature.settings
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -78,6 +79,8 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.VolumeUp
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.core.config.FeatureFlags
+import com.cooked.app.domain.calendar.CalendarManager
 import com.cooked.app.core.designsystem.components.CookedCard
 import com.cooked.app.core.designsystem.components.CookedSwitch
 import com.cooked.app.core.designsystem.components.CookedTopBar
@@ -120,6 +123,11 @@ fun SettingsScreen(
     onSetPrivacyVisible: (Boolean) -> Unit,
     onClearSnackbar: () -> Unit,
     onNavigateToDesignGallery: () -> Unit = {},
+    onSnitchThresholdChanged: (Int) -> Unit = {},
+    onSnitchContactNameChanged: (String) -> Unit = {},
+    onSnitchPreferredAppChanged: (String) -> Unit = {},
+    onLiveCountdownToggled: (Boolean) -> Unit = {},
+    onCalendarCapacityToggled: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -151,6 +159,12 @@ fun SettingsScreen(
                 }
             } catch (_: Exception) {}
         }
+    }
+
+    val calendarPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        onCalendarCapacityToggled(isGranted)
     }
 
     LaunchedEffect(uiState.snackbarMessage) {
@@ -469,6 +483,39 @@ fun SettingsScreen(
                                 modifier = Modifier.width(130.dp)
                             )
                         }
+
+                        if (FeatureFlags.isCalendarCapacityEnabled) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "Calendar-Aware Capacity",
+                                        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                        color = CookedTheme.colors.onSurface
+                                    )
+                                    Text(
+                                        text = "Read busy calendar events to dynamically subtract meetings from available waking minutes.",
+                                        style = CookedTheme.typography.bodySmall,
+                                        color = CookedTheme.colors.onSurfaceVariant
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(16.dp))
+                                CookedSwitch(
+                                    checked = uiState.calendarCapacityEnabled,
+                                    onCheckedChange = { checked ->
+                                        if (checked && !CalendarManager.hasCalendarPermission(context)) {
+                                            calendarPermissionLauncher.launch(Manifest.permission.READ_CALENDAR)
+                                        } else {
+                                            onCalendarCapacityToggled(checked)
+                                        }
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -551,6 +598,87 @@ fun SettingsScreen(
                             checked = uiState.hinglishVibes,
                             onCheckedChange = onHinglishVibesToggled
                         )
+                    }
+                }
+            }
+
+            // 5b2. SNITCH MODE (ACCOUNTABILITY)
+            if (FeatureFlags.isSnitchModeEnabled) {
+                item {
+                    SectionHeader(
+                        title = "Snitch Mode (Accountability)",
+                        subtitle = "Roast yourself through a trusted friend when you snooze too much."
+                    )
+                    CookedCard(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "Snitch after snoozes",
+                                        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                        color = CookedTheme.colors.onSurface
+                                    )
+                                    Text(
+                                        text = "Offer buddy intervention when you hit this limit.",
+                                        style = CookedTheme.typography.bodySmall,
+                                        color = CookedTheme.colors.onSurfaceVariant
+                                    )
+                                }
+                                SegmentedControl(
+                                    items = listOf(2, 3, 5),
+                                    selectedItem = uiState.snitchSnoozeThreshold,
+                                    onItemSelected = onSnitchThresholdChanged,
+                                    labelProvider = { "${it}x" },
+                                    modifier = Modifier.width(130.dp)
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "Preferred Share App",
+                                        style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                        color = CookedTheme.colors.onSurface
+                                    )
+                                    Text(
+                                        text = "Cooked pre-fills the message; you tap send.",
+                                        style = CookedTheme.typography.bodySmall,
+                                        color = CookedTheme.colors.onSurfaceVariant
+                                    )
+                                }
+                                SegmentedControl(
+                                    items = listOf("whatsapp", "sharesheet"),
+                                    selectedItem = uiState.snitchPreferredApp,
+                                    onItemSelected = onSnitchPreferredAppChanged,
+                                    labelProvider = { if (it == "whatsapp") "WhatsApp" else "Share" },
+                                    modifier = Modifier.width(160.dp)
+                                )
+                            }
+
+                            OutlinedTextField(
+                                value = uiState.snitchContactName,
+                                onValueChange = onSnitchContactNameChanged,
+                                label = { Text("Accountability Buddy Name (Optional)") },
+                                placeholder = { Text("e.g. Rahul, Mom, Maya") },
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = CookedTheme.colors.primary,
+                                    unfocusedBorderColor = CookedTheme.colors.outlineVariant
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -785,6 +913,37 @@ fun SettingsScreen(
                             )
                         }
                         Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = CookedTheme.colors.onSurfaceVariant)
+                    }
+                }
+
+                if (FeatureFlags.isLiveCountdownEnabled) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    CookedCard(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Live Countdown Notification",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "Show ongoing chronometer countdown for items due within 60 minutes.",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            CookedSwitch(
+                                checked = uiState.liveCountdownEnabled,
+                                onCheckedChange = onLiveCountdownToggled
+                            )
+                        }
                     }
                 }
             }

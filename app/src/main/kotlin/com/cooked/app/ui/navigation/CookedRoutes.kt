@@ -41,3 +41,16 @@ data class PaywallNavRoute(
     val entryPoint: String = "generic",
     val featureHint: String? = null
 )
+
+@Serializable
+object DatesheetReviewNavRoute
+
+@Serializable
+data class CookSessionNavRoute(
+    val itemId: String
+)
+
+@Serializable
+data class RescuePlanNavRoute(
+    val targetItemId: String
+)

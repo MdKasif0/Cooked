@@ -87,6 +87,11 @@ class SettingsViewModel @Inject constructor(
             soundCritical = prefs.soundCritical,
             inAppSoundsEnabled = prefs.inAppSoundsEnabled,
             appIconChoice = prefs.appIconChoice,
+            snitchSnoozeThreshold = prefs.snitchSnoozeThreshold,
+            snitchContactName = prefs.snitchContactName,
+            snitchPreferredApp = prefs.snitchPreferredApp,
+            liveCountdownEnabled = prefs.liveCountdownEnabled,
+            calendarCapacityEnabled = prefs.calendarCapacityEnabled,
             appVersion = "1.0.0",
             scheduledAlarms = alarms,
             reliabilityReport = report,
@@ -152,6 +157,31 @@ class SettingsViewModel @Inject constructor(
 
     fun onInAppSoundsToggled(enabled: Boolean) {
         viewModelScope.launch { preferencesRepository.setInAppSoundsEnabled(enabled) }
+    }
+
+    fun onSnitchThresholdChanged(threshold: Int) {
+        viewModelScope.launch { preferencesRepository.setSnitchSnoozeThreshold(threshold) }
+    }
+
+    fun onSnitchContactNameChanged(name: String) {
+        viewModelScope.launch { preferencesRepository.setSnitchContactName(name) }
+    }
+
+    fun onSnitchPreferredAppChanged(app: String) {
+        viewModelScope.launch { preferencesRepository.setSnitchPreferredApp(app) }
+    }
+
+    fun onLiveCountdownToggled(enabled: Boolean) {
+        viewModelScope.launch { preferencesRepository.setLiveCountdownEnabled(enabled) }
+    }
+
+    fun onCalendarCapacityToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            preferencesRepository.setCalendarCapacityEnabled(enabled)
+            if (enabled) {
+                telemetry.logCalendarCapacityEnabled()
+            }
+        }
     }
 
     fun onAppIconSelected(context: android.content.Context, style: AppIconStyle) {

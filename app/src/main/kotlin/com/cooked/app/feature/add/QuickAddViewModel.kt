@@ -14,6 +14,7 @@ import com.cooked.app.domain.model.NagPolicy
 import com.cooked.app.domain.model.Recurrence
 import com.cooked.app.domain.parse.QuickParser
 import com.cooked.app.domain.repository.ItemRepository
+import com.cooked.app.domain.template.ItemTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,6 +90,23 @@ class QuickAddViewModel @Inject constructor(
         }
         draftCache = newText
         draftCacheTimestamp = System.currentTimeMillis()
+    }
+
+    fun applyTemplate(template: ItemTemplate) {
+        val text = when (template.kind) {
+            ItemKind.DEADLINE -> "${template.defaultTitle} in 3 days ${template.effortMinutes ?: 180}m"
+            ItemKind.REMINDER -> {
+                if (template.recurrence != null) {
+                    "${template.defaultTitle} tomorrow 10am"
+                } else {
+                    "${template.defaultTitle} tomorrow 10am"
+                }
+            }
+        }
+        onTextChanged(text)
+        if (template.isCritical) {
+            onCriticalToggled()
+        }
     }
 
     fun onQuickChipSelected(chip: QuickTimeChip) {

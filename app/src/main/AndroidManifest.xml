@@ -129,6 +129,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".feature.snitch.SnitchActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <!-- Glance Widget Receivers -->
         <receiver
             android:name=".widget.QuickAddWidgetReceiver"

@@ -32,6 +32,7 @@ fun WorkloadWarningBanner(
     onStartOneClick: () -> Unit,
     onPushDeadlineClick: () -> Unit,
     onLowerEffortClick: () -> Unit,
+    onSaveMeClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val toastyColor = CookedTheme.colors.heatFor(HeatLevel.TOASTY).color
@@ -89,6 +90,17 @@ fun WorkloadWarningBanner(
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Push a deadline", fontSize = 12.sp)
+            }
+            if (onSaveMeClick != null) {
+                OutlinedButton(
+                    onClick = onSaveMeClick,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
+                    )
+                ) {
+                    Text("Save me 🆘", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }

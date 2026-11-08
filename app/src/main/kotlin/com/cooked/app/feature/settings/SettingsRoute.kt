@@ -47,6 +47,11 @@ fun SettingsRoute(
         onTelemetryToggled = viewModel::onTelemetryToggled,
         onSetPrivacyVisible = viewModel::setPrivacyDialogVisible,
         onClearSnackbar = viewModel::clearSnackbar,
+        onSnitchThresholdChanged = viewModel::onSnitchThresholdChanged,
+        onSnitchContactNameChanged = viewModel::onSnitchContactNameChanged,
+        onSnitchPreferredAppChanged = viewModel::onSnitchPreferredAppChanged,
+        onLiveCountdownToggled = viewModel::onLiveCountdownToggled,
+        onCalendarCapacityToggled = viewModel::onCalendarCapacityToggled,
         modifier = modifier
     )
 }

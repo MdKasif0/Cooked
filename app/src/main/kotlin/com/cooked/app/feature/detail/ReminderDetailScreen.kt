@@ -120,6 +120,8 @@ fun ReminderDetailScreen(
     onShowDatePicker: (Boolean) -> Unit,
     onMarkDone: () -> Unit,
     onDelete: () -> Unit,
+    onStartCookSession: (() -> Unit)? = null,
+    onTriggerRescuePlan: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(uiState.isDeleted) {

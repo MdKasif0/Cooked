@@ -9,6 +9,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.cooked.app.MainActivity
 import com.cooked.app.R
+import com.cooked.app.core.config.FeatureFlags
+import com.cooked.app.feature.snitch.SnitchActivity
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.Personality
 import com.cooked.app.scheduling.alarm.AlarmActivity
@@ -152,6 +154,21 @@ class ReminderNotificationBuilder @Inject constructor(
             .addAction(snooze10Action)
             .addAction(snoozeTomorrowAction)
             .extend(wearableExtender)
+
+        if (FeatureFlags.isSnitchModeEnabled && item.snoozeCount >= 3) {
+            val snitchIntent = Intent(context, SnitchActivity::class.java).apply {
+                putExtra(SnitchActivity.EXTRA_ITEM_ID, item.id)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val snitchPendingIntent = PendingIntent.getActivity(
+                context,
+                notificationId + 7,
+                snitchIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            val snitchAction = NotificationCompat.Action.Builder(0, "Time to snitch? 💬", snitchPendingIntent).build()
+            builder.addAction(snitchAction)
+        }
 
         // Emoji large icon
         val emojiChar = item.emoji ?: if (item.kind == com.cooked.app.domain.model.ItemKind.DEADLINE) "🎯" else "🔥"

@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +34,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.EditCalendar
 import androidx.compose.material.icons.rounded.Mic
@@ -43,6 +46,8 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import com.cooked.app.core.config.FeatureFlags
+import com.cooked.app.domain.template.BuiltInTemplates
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
@@ -106,7 +111,8 @@ fun QuickAddBottomSheet(
     onDismissRequest: () -> Unit,
     viewModel: QuickAddViewModel,
     modifier: Modifier = Modifier,
-    onShowSnackbar: ((message: String, onUndo: () -> Unit) -> Unit)? = null
+    onShowSnackbar: ((message: String, onUndo: () -> Unit) -> Unit)? = null,
+    onLaunchScan: (() -> Unit)? = null
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusRequester = remember { FocusRequester() }
@@ -205,6 +211,16 @@ fun QuickAddBottomSheet(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    if (FeatureFlags.isDatesheetScanEnabled && onLaunchScan != null) {
+                        IconButton(onClick = onLaunchScan) {
+                            Icon(
+                                imageVector = Icons.Rounded.CameraAlt,
+                                contentDescription = "Scan datesheet or syllabus",
+                                tint = CookedTheme.colors.primary
+                            )
+                        }
+                    }
+
                     IconButton(
                         onClick = {
                             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
@@ -234,6 +250,26 @@ fun QuickAddBottomSheet(
                             imageVector = Icons.Rounded.Close,
                             contentDescription = "Close",
                             tint = CookedTheme.colors.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+
+            // Growth Feature: Built-in Templates
+            if (FeatureFlags.isTemplatesEnabled) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(BuiltInTemplates.all, key = { it.id }) { template ->
+                        FilterChip(
+                            selected = false,
+                            onClick = { viewModel.applyTemplate(template) },
+                            label = { Text("${template.emoji} ${template.name}") },
+                            colors = FilterChipDefaults.filterChipColors(
+                                containerColor = CookedTheme.colors.surfaceContainer,
+                                labelColor = CookedTheme.colors.onSurface
+                            )
                         )
                     }
                 }
