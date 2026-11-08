@@ -27,10 +27,23 @@ fun CookedTopBar(
     title: String,
     modifier: Modifier = Modifier,
     navigationIcon: (@Composable () -> Unit)? = null,
+    onNavigationClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null,
     isLarge: Boolean = false
 ) {
+    val navIcon: (@Composable () -> Unit)? = navigationIcon ?: onNavigationClick?.let { onClick ->
+        {
+            IconButton(onClick = onClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    contentDescription = "Back",
+                    tint = CookedTheme.colors.onBackground
+                )
+            }
+        }
+    }
+
     val colors = TopAppBarDefaults.topAppBarColors(
         containerColor = CookedTheme.colors.background,
         scrolledContainerColor = CookedTheme.colors.surfaceContainerLow,
@@ -49,7 +62,7 @@ fun CookedTopBar(
                 )
             },
             modifier = modifier,
-            navigationIcon = { navigationIcon?.invoke() },
+            navigationIcon = { navIcon?.invoke() },
             actions = actions,
             colors = TopAppBarDefaults.largeTopAppBarColors(
                 containerColor = CookedTheme.colors.background,
@@ -70,7 +83,7 @@ fun CookedTopBar(
                 )
             },
             modifier = modifier,
-            navigationIcon = { navigationIcon?.invoke() },
+            navigationIcon = { navIcon?.invoke() },
             actions = actions,
             colors = colors,
             scrollBehavior = scrollBehavior
