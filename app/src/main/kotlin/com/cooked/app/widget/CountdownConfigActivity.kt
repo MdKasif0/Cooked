@@ -24,7 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
+import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -112,11 +112,15 @@ class CountdownConfigActivity : ComponentActivity() {
                     ) {
                         val list = deadlines
                         if (list == null) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 20.dp, vertical = 24.dp),
+                                verticalArrangement = Arrangement.spacedBy(14.dp)
                             ) {
-                                CircularProgressIndicator(color = CookedTheme.colors.primary)
+                                repeat(4) {
+                                    ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(64.dp))
+                                }
                             }
                         } else if (list.isEmpty()) {
                             Box(

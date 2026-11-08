@@ -60,6 +60,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.FileProvider
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.designsystem.components.HeatChip
 import com.cooked.app.domain.insights.model.AnalyticsSummary
 import kotlinx.coroutines.launch
@@ -225,7 +226,11 @@ private fun ReportPageHeadline(summary: AnalyticsSummary) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "🔥", fontSize = 64.sp)
+        EggMascot(
+            level = HeatLevel.CHILL,
+            isDone = true,
+            size = 80.dp
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "You handled business.",

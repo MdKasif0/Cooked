@@ -34,6 +34,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import com.cooked.app.core.designsystem.components.EggMascot
+import com.cooked.app.core.designsystem.HeatLevel
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -132,14 +134,10 @@ fun PaywallScreen(
                         .padding(top = 8.dp, bottom = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(68.dp)
-                            .background(CookedTheme.colors.primaryContainer, CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "🔥", fontSize = 36.sp)
-                    }
+                    EggMascot(
+                        level = HeatLevel.COOKED,
+                        size = 76.dp
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 

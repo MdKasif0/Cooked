@@ -41,7 +41,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -129,11 +129,18 @@ fun ReminderDetailScreen(
     }
 
     if (uiState.isLoading || uiState.item == null) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = CookedTheme.spacing.screenHorizontal, vertical = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            CircularProgressIndicator(color = CookedTheme.colors.primary)
+            ShimmerPlaceholder(modifier = Modifier.fillMaxWidth(0.7f).height(36.dp))
+            ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(64.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            repeat(4) {
+                ShimmerPlaceholder(modifier = Modifier.fillMaxWidth().height(72.dp))
+            }
         }
         return
     }
