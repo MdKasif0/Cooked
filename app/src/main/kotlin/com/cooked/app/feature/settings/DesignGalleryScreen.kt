@@ -88,6 +88,7 @@ fun DesignGalleryScreen(
     var interactiveSegment by remember { mutableStateOf("Today") }
     var showSheet by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    var showGrid by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Scaffold(
@@ -104,18 +105,33 @@ fun DesignGalleryScreen(
                             tint = CookedTheme.colors.onBackground
                         )
                     }
+                },
+                actions = {
+                    IconButton(onClick = { showGrid = !showGrid }) {
+                        Icon(
+                            imageVector = if (showGrid) Icons.Rounded.GridOn else Icons.Rounded.GridOff,
+                            contentDescription = "Toggle 4dp/8dp Grid & 20dp Gutter Overlay",
+                            tint = if (showGrid) CookedTheme.colors.primary else CookedTheme.colors.onSurfaceVariant
+                        )
+                    }
                 }
             )
         }
     ) { innerPadding ->
-        LazyColumn(
+        DebugGridOverlay(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = CookedTheme.spacing.screenHorizontal),
-            verticalArrangement = Arrangement.spacedBy(CookedTheme.spacing.xl24),
-            contentPadding = PaddingValues(bottom = 48.dp)
+                .padding(innerPadding),
+            showGrid = showGrid,
+            showGutterGuides = showGrid
         ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = CookedTheme.spacing.screenHorizontal),
+                verticalArrangement = Arrangement.spacedBy(CookedTheme.spacing.xl24),
+                contentPadding = PaddingValues(bottom = 48.dp)
+            ) {
             // Theme Mode Selector
             item {
                 SectionHeader(title = "Theme Mode (Instant Switch)")
