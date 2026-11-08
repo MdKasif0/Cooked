@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ReminderNotificationBuilder @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     fun createNotification(
         reminderId: String,

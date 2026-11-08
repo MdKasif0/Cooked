@@ -109,7 +109,7 @@ fun EmptyState(
         modifier = modifier
             .fillMaxWidth()
             .padding(CookedTheme.spacing.xl24),
-        horizontalAlignment = Alignment.CenterVertically,
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         CalmSkilletIllustration(

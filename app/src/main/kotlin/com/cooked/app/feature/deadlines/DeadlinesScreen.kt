@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.FlameOrange
+import com.cooked.app.core.designsystem.components.EmptyState
 import com.cooked.app.ui.components.CountdownTimerText
 import com.cooked.app.ui.components.PressureBadge
 
@@ -65,28 +66,10 @@ fun DeadlinesScreen(
 
         if (uiState.deadlines.isEmpty() && !uiState.isLoading) {
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 48.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "🧊", fontSize = 48.sp)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = uiState.emptyMessage,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "You are literally unbothered.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                EmptyState(
+                    title = uiState.emptyMessage,
+                    message = "You are literally unbothered."
+                )
             }
         } else {
             items(

@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun SettingsRoute(
     onNavigateBack: () -> Unit,
     onNavigateToOemGuide: () -> Unit,
+    onNavigateToDesignGallery: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -19,8 +20,9 @@ fun SettingsRoute(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onNavigateToOemGuide = onNavigateToOemGuide,
+        onNavigateToDesignGallery = onNavigateToDesignGallery,
+        onThemeModeSelected = viewModel::onThemeModeSelected,
         onNagIntervalSelected = viewModel::onNagIntervalSelected,
         modifier = modifier
     )
 }
-

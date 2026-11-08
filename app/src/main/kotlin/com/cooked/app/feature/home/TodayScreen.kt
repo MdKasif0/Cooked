@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.core.designsystem.components.EmptyState
 import com.cooked.app.domain.model.PressureLevel
 import com.cooked.app.ui.components.CookedScoreCard
 import com.cooked.app.ui.components.ReminderCard
@@ -59,28 +61,10 @@ fun TodayScreen(
 
         if (uiState.reminders.isEmpty() && !uiState.isLoading) {
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 48.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "🧊", fontSize = 48.sp)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = uiState.emptyMessage,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Go drink water or do something bold.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                EmptyState(
+                    title = uiState.emptyMessage,
+                    message = "Go drink water or do something bold."
+                )
             }
         } else {
             items(

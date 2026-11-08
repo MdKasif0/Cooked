@@ -52,7 +52,6 @@ import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.core.designsystem.components.AvatarBubble
 import com.cooked.app.core.designsystem.components.CookedBottomSheet
-import com.cooked.app.core.designsystem.components.CookedButtonsPreview
 import com.cooked.app.core.designsystem.components.CookedCard
 import com.cooked.app.core.designsystem.components.CookedSnackbar
 import com.cooked.app.core.designsystem.components.CookedSwitch

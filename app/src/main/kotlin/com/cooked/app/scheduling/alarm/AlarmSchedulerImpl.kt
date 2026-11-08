@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AlarmSchedulerImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : AlarmScheduler {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager

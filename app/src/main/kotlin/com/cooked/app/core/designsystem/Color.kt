@@ -229,3 +229,24 @@ val DarkCookedColors = CookedColors(
 val LocalCookedColors = staticCompositionLocalOf<CookedColors> {
     error("No CookedColors provided")
 }
+
+// Backward-compatibility aliases for Step 1 screens
+val FlameOrange = LightPrimary
+val FlameOrangeDark = Color(0xFF9A3412)
+val FlameAmber = HeatWarmLight
+val FlameGold = Color(0xFFFFB300)
+val CharcoalSlate = Color(0xFF263238)
+val WarmOffWhite = LightBackground
+val CardSurfaceLight = LightSurface
+val TextPrimaryLight = LightOnBackground
+val TextSecondaryLight = LightOnSurfaceVariant
+val BorderLight = LightOutline
+val FlameOrangeGlow = DarkPrimary
+val DarkSurfaceElevated = DarkSurfaceContainerHigh
+val TextPrimaryDark = DarkOnBackground
+val TextSecondaryDark = DarkOnSurfaceVariant
+val BorderDark = DarkOutline
+val PressureChill = HeatChillLight
+val PressureSimmer = HeatWarmLight
+val PressureCooked = HeatToastyLight
+val PressureCrispy = HeatCookedLight
