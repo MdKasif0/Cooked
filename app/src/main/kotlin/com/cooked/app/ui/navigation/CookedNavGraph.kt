@@ -58,6 +58,7 @@ import com.cooked.app.feature.detail.ReminderDetailRoute
 import com.cooked.app.feature.home.TodayRoute
 import com.cooked.app.feature.insights.InsightsRoute
 import com.cooked.app.feature.onboarding.OnboardingRoute
+import com.cooked.app.feature.paywall.PaywallRoute
 import com.cooked.app.feature.settings.DesignGalleryScreen
 import com.cooked.app.feature.settings.SettingsRoute
 import com.cooked.app.feature.settings.SettingsViewModel
@@ -255,7 +256,7 @@ fun CookedAppShell(
                             }
                         },
                         onNavigateToPaywall = {
-                            navController.navigate(PaywallNavRoute)
+                            navController.navigate(PaywallNavRoute())
                         }
                     )
                 }
@@ -264,7 +265,13 @@ fun CookedAppShell(
                     SettingsRoute(
                         onNavigateBack = { navController.popBackStack() },
                         onNavigateToReliability = { navController.navigate(ReliabilityNavRoute) },
-                        onNavigateToPaywall = { navController.navigate(PaywallNavRoute) }
+                        onNavigateToPaywall = { navController.navigate(PaywallNavRoute()) }
+                    )
+                }
+
+                composable<PaywallNavRoute> {
+                    PaywallRoute(
+                        onNavigateBack = { navController.popBackStack() }
                     )
                 }
 

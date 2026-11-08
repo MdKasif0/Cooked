@@ -17,8 +17,12 @@ fun PaywallRoute(
     PaywallScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onPlanSelected = viewModel::onPlanSelected,
         onPurchase = viewModel::onPurchase,
+        onRestore = viewModel::onRestorePurchases,
+        onClearMessages = viewModel::clearMessages,
+        onSetTermsVisible = viewModel::setTermsDialogVisible,
+        onSetPrivacyVisible = viewModel::setPrivacyDialogVisible,
         modifier = modifier
     )
 }
-
