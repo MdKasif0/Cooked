@@ -13,3 +13,4 @@ object FeatureFlags {
     var isPanicButtonEnabled: Boolean = true
     var isCalendarCapacityEnabled: Boolean = true
 }
+

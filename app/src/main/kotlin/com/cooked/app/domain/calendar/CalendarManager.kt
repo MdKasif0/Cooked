@@ -98,3 +98,4 @@ object CalendarManager {
         return blocks
     }
 }
+

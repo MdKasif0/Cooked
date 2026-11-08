@@ -54,3 +54,4 @@ class TemplateTest {
         assertEquals(30, call?.nagIntervalMinutes)
     }
 }
+

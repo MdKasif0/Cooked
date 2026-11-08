@@ -61,3 +61,4 @@ class SnitchManagerTest {
         assertTrue(message.contains("Your friend has snoozed 'Submit Assignment' 3 times"))
     }
 }
+

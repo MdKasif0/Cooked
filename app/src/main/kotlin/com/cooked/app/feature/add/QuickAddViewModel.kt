@@ -104,8 +104,8 @@ class QuickAddViewModel @Inject constructor(
             }
         }
         onTextChanged(text)
-        if (template.isCritical) {
-            onCriticalToggled()
+        if (template.isCritical && !_uiState.value.effectiveCritical) {
+            onToggleCritical()
         }
     }
 

@@ -242,3 +242,4 @@ object DatesheetParser {
         return noiseCount.toFloat() / words.size.toFloat() >= 0.7f
     }
 }
+

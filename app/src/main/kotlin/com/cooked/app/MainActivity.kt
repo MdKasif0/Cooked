@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = CookedTheme.colors.background
                 ) {
+                    val isOnboarding = userPrefs != null && !userPrefs!!.onboardingDone
                     val sharedImageUri = getSharedImageUri(intent)
                     val startDestination: Any = if (isOnboarding) {
                         com.cooked.app.ui.navigation.OnboardingNavRoute
