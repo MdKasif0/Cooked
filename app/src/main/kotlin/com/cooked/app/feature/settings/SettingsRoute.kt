@@ -9,8 +9,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun SettingsRoute(
     onNavigateBack: () -> Unit,
-    onNavigateToOemGuide: () -> Unit,
-    onNavigateToDesignGallery: () -> Unit,
+    onNavigateToReliability: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -19,13 +19,24 @@ fun SettingsRoute(
     SettingsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onNavigateToOemGuide = onNavigateToOemGuide,
-        onNavigateToDesignGallery = onNavigateToDesignGallery,
+        onNavigateToReliability = onNavigateToReliability,
+        onNavigateToPaywall = onNavigateToPaywall,
         onThemeModeSelected = viewModel::onThemeModeSelected,
+        onDynamicColorToggled = viewModel::onDynamicColorToggled,
         onNagIntervalSelected = viewModel::onNagIntervalSelected,
         onPersonalitySelected = viewModel::onPersonalitySelected,
-        onFireAlarmNow = viewModel::fireAlarmNow,
-        onRefreshAlarms = viewModel::refreshAlarms,
+        onDailyCapacityChanged = viewModel::onDailyCapacityChanged,
+        onWeekStartsOnChanged = viewModel::onWeekStartsOnChanged,
+        onExportBackup = viewModel::exportBackup,
+        onImportContent = viewModel::onImportContentReceived,
+        onConfirmImport = viewModel::confirmImport,
+        onDismissImportPreview = viewModel::dismissImportPreview,
+        onRequestDeleteAll = viewModel::requestDeleteAllData,
+        onConfirmFirstDelete = viewModel::confirmFirstDelete,
+        onConfirmFinalDelete = viewModel::confirmFinalDelete,
+        onDismissDeleteDialogs = viewModel::dismissDeleteDialogs,
+        onSetPrivacyVisible = viewModel::setPrivacyDialogVisible,
+        onClearSnackbar = viewModel::clearSnackbar,
         modifier = modifier
     )
 }

@@ -31,4 +31,10 @@ data class ReminderDetailNavRoute(
 object OemGuideNavRoute
 
 @Serializable
+object ReliabilityNavRoute
+
+@Serializable
+object OnboardingNavRoute
+
+@Serializable
 object PaywallNavRoute

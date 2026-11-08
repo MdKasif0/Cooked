@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun TodayRoute(
     onReminderClick: (String) -> Unit,
     onCookedScoreClick: () -> Unit,
+    onNavigateToReliability: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: TodayViewModel = hiltViewModel()
 ) {
@@ -30,6 +31,7 @@ fun TodayRoute(
         onBatchDelete = viewModel::onBatchDelete,
         onClearSelection = viewModel::clearSelection,
         onCookedScoreClick = onCookedScoreClick,
+        onNavigateToReliability = onNavigateToReliability,
         onDismissCelebration = viewModel::dismissCelebration,
         modifier = modifier
     )

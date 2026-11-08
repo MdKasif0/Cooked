@@ -75,6 +75,7 @@ fun TodayScreen(
     onBatchDelete: () -> Unit,
     onClearSelection: () -> Unit,
     onCookedScoreClick: () -> Unit,
+    onNavigateToReliability: () -> Unit = {},
     onDismissCelebration: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -116,6 +117,39 @@ fun TodayScreen(
                             style = CookedTheme.typography.bodyLarge,
                             color = CookedTheme.colors.onSurfaceVariant
                         )
+                    }
+                }
+
+                // Gentle Reliability Warning Banner
+                if (uiState.hasExactAlarmWarning) {
+                    item(key = "reliability_warning_banner") {
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onNavigateToReliability() },
+                            shape = RoundedCornerShape(12.dp),
+                            color = CookedTheme.colors.primaryContainer,
+                            border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.primary.copy(alpha = 0.5f))
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("🚨", fontSize = 18.sp)
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = "Cooked might stay silent. Tap to fix exact alarms & battery settings.",
+                                    style = CookedTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onPrimaryContainer,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Text(
+                                    text = "Fix →",
+                                    style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = CookedTheme.colors.primary
+                                )
+                            }
+                        }
                     }
                 }
 

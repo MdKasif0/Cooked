@@ -57,9 +57,11 @@ import com.cooked.app.feature.deadlines.DeadlinesRoute
 import com.cooked.app.feature.detail.ReminderDetailRoute
 import com.cooked.app.feature.home.TodayRoute
 import com.cooked.app.feature.insights.InsightsRoute
+import com.cooked.app.feature.onboarding.OnboardingRoute
 import com.cooked.app.feature.settings.DesignGalleryScreen
 import com.cooked.app.feature.settings.SettingsRoute
 import com.cooked.app.feature.settings.SettingsViewModel
+import com.cooked.app.feature.settings.reliability.ReliabilityCheckRoute
 import com.cooked.app.ui.addedit.AddEditReminderScreen
 import com.cooked.app.ui.addedit.AddEditReminderViewModel
 import com.cooked.app.ui.oem.OemGuideScreen
@@ -225,6 +227,9 @@ fun CookedAppShell(
                                 launchSingleTop = true
                                 restoreState = true
                             }
+                        },
+                        onNavigateToReliability = {
+                            navController.navigate(ReliabilityNavRoute)
                         }
                     )
                 }
@@ -257,8 +262,24 @@ fun CookedAppShell(
                 composable<SettingsNavRoute> {
                     SettingsRoute(
                         onNavigateBack = { navController.popBackStack() },
-                        onNavigateToOemGuide = { navController.navigate(OemGuideNavRoute) },
-                        onNavigateToDesignGallery = { navController.navigate(DesignGalleryNavRoute) }
+                        onNavigateToReliability = { navController.navigate(ReliabilityNavRoute) },
+                        onNavigateToPaywall = { navController.navigate(PaywallNavRoute) }
+                    )
+                }
+
+                composable<ReliabilityNavRoute> {
+                    ReliabilityCheckRoute(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable<OnboardingNavRoute> {
+                    OnboardingRoute(
+                        onComplete = {
+                            navController.navigate(TodayTabRoute) {
+                                popUpTo(OnboardingNavRoute) { inclusive = true }
+                            }
+                        }
                     )
                 }
 
