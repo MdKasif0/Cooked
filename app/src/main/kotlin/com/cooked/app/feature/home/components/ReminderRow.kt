@@ -339,6 +339,50 @@ fun ReminderRow(
                     }
                 }
             }
+
+            if (showSteamPuff) {
+                RowSteamPuff(
+                    modifier = Modifier
+                        .padding(start = 24.dp)
+                        .size(48.dp)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 4 steam puff particles expanding and dissipating on swipe completion (600ms)
+ */
+@Composable
+private fun RowSteamPuff(modifier: Modifier = Modifier) {
+    val progress = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        progress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
+        )
+    }
+
+    Canvas(modifier = modifier) {
+        val p = progress.value
+        val alpha = (1f - p).coerceIn(0f, 1f)
+        val particleColor = Color(0xFF10B981) // Done emerald tint
+
+        val offsets = listOf(
+            Offset(-12f * p, -16f * p),
+            Offset(6f * p, -22f * p),
+            Offset(14f * p, -12f * p),
+            Offset(-4f * p, -26f * p)
+        )
+
+        offsets.forEachIndexed { i, offset ->
+            drawCircle(
+                color = particleColor.copy(alpha = alpha * 0.7f),
+                radius = (4f + i * 1.5f) * (1f + p * 0.5f),
+                center = Offset(size.width / 2f + offset.x, size.height / 2f + offset.y)
+            )
         }
     }
 }

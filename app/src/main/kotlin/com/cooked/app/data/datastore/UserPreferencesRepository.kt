@@ -37,7 +37,13 @@ data class UserPrefs(
     val preferredNudgeTime: LocalTime = LocalTime.of(18, 0),
     val telemetryEnabled: Boolean = true,
     val toastyCompletionsCount: Int = 0,
-    val lastReviewPromptEpochDay: Long = 0L
+    val lastReviewPromptEpochDay: Long = 0L,
+    val hinglishVibes: Boolean = false,
+    val soundNormalNag: String = "sizzle_soft",
+    val soundEscalatedNag: String = "sizzle_loud",
+    val soundCritical: String = "kettle",
+    val inAppSoundsEnabled: Boolean = true,
+    val appIconChoice: String = "DEFAULT"
 )
 
 @Singleton
