@@ -3,7 +3,7 @@ package com.cooked.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cooked.app.core.oem.OemDetector
-import com.cooked.app.data.preferences.UserPreferencesRepository
+import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.repository.ReminderRepository
 import com.cooked.app.domain.usecase.CalculateCookedScoreUseCase
 import com.cooked.app.domain.usecase.CalculatePressureUseCase

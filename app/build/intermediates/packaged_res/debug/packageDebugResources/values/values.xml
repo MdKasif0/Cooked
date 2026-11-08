@@ -7,7 +7,7 @@
     <string name="action_snooze">Snooze</string>
     <string name="action_snooze_10m">+10m</string>
     <string name="add_reminder_title">New Reminder</string>
-    <string name="app_name">Cooked</string>
+    <string name="app_name" translatable="false">Cooked Debug</string>
     <string name="app_tagline">so you\'re not cooked.</string>
     <string name="cd_add_reminder">Add new reminder</string>
     <string name="cd_back">Navigate back</string>
@@ -89,5 +89,10 @@
     <style name="Theme.Cooked" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+    <style name="Theme.Cooked.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#F9F9F7</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.Cooked</item>
     </style>
 </resources>

@@ -47,12 +47,10 @@ android {
 
     buildFeatures {
         compose = true
+        resValues = true
     }
 }
 
-composeCompiler {
-    enableStrongSkippingMode = true
-}
 
 detekt {
     toolVersion = libs.versions.detekt.get()
@@ -98,7 +96,6 @@ dependencies {
     implementation(libs.androidx.glance.material3)
 
     // Charts (Vico)
-    implementation(libs.vico.compose)
     implementation(libs.vico.compose.m3)
 
     // RevenueCat

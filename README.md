@@ -1,51 +1,64 @@
-# Cooked
+# Cooked 🔥
 
-A modern mobile culinary companion and recipe management app.
+> **"so you're not cooked."**  
+> A reminder + deadline companion designed for students, freelancers, and ADHD adults.
 
-## Overview
+---
 
-**Cooked** helps you discover, organize, and prepare delicious recipes with ease. Designed for both casual home cooks and food enthusiasts, Cooked streamlines meal planning, grocery preparation, and step-by-step cooking.
+## What Cooked Solves
+- **Nag-Until-Done Reminders**: Swiping a reminder notification away does **NOT** complete it. Cooked persistently re-alerts you until you physically tap **Done**.
+- **Flagship Deadline Mode**: Tasks with hard deadlines get start-by dates, effort estimates, ramped urgency pressure, live countdowns, and a weekly **Cooked Score** (0–100) that shows your overload level.
+- **Fast Capture (< 3s)**: Ultra-quick input with smart time chips (`+15m`, `+1h`, `Tonight`, `Tomorrow`) from the in-app bottom sheet, Glance home widget, or Quick Settings tile.
+- **Aggressive OEM Defense**: Survives task killers (Xiaomi MIUI/HyperOS, Samsung OneUI, Oppo, Vivo, OnePlus) via `AlarmManager.setAlarmClock()`, boot receivers, and in-app whitelist guidance.
 
-## Features
+---
 
-- 🍳 **Recipe Discovery**: Browse and search curated recipes across various cuisines and dietary preferences.
-- 📖 **Step-by-Step Cooking Mode**: Distraction-free, guided cooking instructions with built-in timers.
-- 🛒 **Smart Grocery Lists**: Automatically generate shopping lists sorted by aisle or category.
-- ⭐ **Favorites & Collections**: Save your favorite meals and organize them into custom collections.
-- 📝 **Custom Recipes**: Create, edit, and personalize your own culinary creations.
+## Architecture & Tech Stack
 
-## Tech Stack
+Cooked follows clean architecture and unidirectional data flow (UDF) packaged for multi-module extraction:
 
-- **Platform**: Android
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Architecture**: Clean Architecture / MVVM
+```
+com.cooked.app
+├── core/        (designsystem, time/CookedClock, util/DispatcherProvider, di)
+├── data/        (db, dao, entity, repository, datastore)
+├── domain/      (model, repository interfaces, usecases)
+├── scheduling/  (alarm scheduler, receivers, notification builder)
+├── feature/     (home/today, deadlines, insights, add, detail, settings, onboarding, paywall)
+└── widget/      (Glance home widget, Quick Settings tile)
+```
 
-## Getting Started
+- **Language & Framework**: Kotlin 2.2, Jetpack Compose + Material 3, Single Activity.
+- **Navigation**: Navigation Compose with type-safe `@Serializable` routes.
+- **Dependency Injection**: Dagger Hilt.
+- **Local Persistence**: Room 2.7+ (KSP) + DataStore Preferences.
+- **Alarms**: `AlarmManager.setAlarmClock()` (bypasses Doze & OEM power saves).
+- **Widgets**: Jetpack Glance + `TileService`.
+- **Quality**: Detekt + JUnit + Truth + Turbine + MockK.
+
+---
+
+## How to Build
 
 ### Prerequisites
-
-- Android Studio Meerkat or newer
 - JDK 17+
-- Android SDK 34+
+- Android SDK 35 (`compileSdk 35`, `minSdk 26`)
 
-### Installation
+### Commands
+```bash
+# Run Unit Tests
+./gradlew testDebugUnitTest
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MdKasif0/Cooked.git
-   cd Cooked
-   ```
+# Run Detekt Static Analysis
+./gradlew detekt
 
-2. Open the project in Android Studio.
+# Build Debug APK
+./gradlew assembleDebug
 
-3. Sync Gradle and build the project.
+# Build Release APK (R8 Minified)
+./gradlew assembleRelease
+```
 
-## Contributing
+---
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
+## Documentation
+- Detailed architectural guidelines: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
