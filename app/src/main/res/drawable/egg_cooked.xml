@@ -1,0 +1,93 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Cooked Mascot: Burnt, smoking, funny/dramatic -->
+    <!-- Steam / Smoke Wisps -->
+    <path
+        android:strokeColor="#78716C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M38,18 C36,14 42,11 39,7" />
+    <path
+        android:strokeColor="#78716C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M48,15 C51,11 46,8 49,4" />
+    <path
+        android:strokeColor="#78716C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M58,19 C55,15 61,12 59,8" />
+
+    <!-- Charred Outer Crust (Burnt Black-Brown) -->
+    <path
+        android:fillColor="#1C1917"
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M31,27 C43,21 63,22 73,31 C83,40 87,59 80,71 C73,83 49,87 35,83 C21,79 11,63 15,47 C19,31 20,33 31,27 Z" />
+
+    <!-- Burnt Dark Albumin Body -->
+    <path
+        android:fillColor="#292524"
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M34,31 C43,26 60,27 69,35 C78,43 81,59 75,69 C69,79 48,82 37,78 C26,74 18,60 21,46 C24,33 26,35 34,31 Z" />
+
+    <!-- Sizzling Charred Marks -->
+    <path
+        android:strokeColor="#EA580C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M24,42 L28,45" />
+    <path
+        android:strokeColor="#EA580C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M72,62 L77,65" />
+    <path
+        android:strokeColor="#EA580C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M30,73 L35,71" />
+
+    <!-- Overheated Glowing Yolk (Dark Ember Red) -->
+    <path
+        android:fillColor="#B91C1C"
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2"
+        android:pathData="M34,53 A15,15 0 1 0 64,53 A15,15 0 1 0 34,53 Z" />
+
+    <!-- Funny Dramatic "X" Eyes -->
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M43,47 L49,53" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M49,47 L43,53" />
+
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M51,47 L57,53" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M57,47 L51,53" />
+
+    <!-- Wavy Stunned/Sizzled Mouth -->
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M44,59 Q47,56 50,59 T56,59" />
+</vector>

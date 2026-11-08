@@ -1,0 +1,59 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Done Mascot: Perfect egg, victorious "chef's kiss" pose -->
+    <!-- Egg White (Albumin) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M31,27 C43,21 63,23 73,31 C83,39 86,58 79,70 C72,82 50,86 36,82 C22,78 12,63 16,47 C20,31 19,33 31,27 Z" />
+
+    <!-- Golden Yolk -->
+    <path
+        android:fillColor="#F59E0B"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:pathData="M34,51 A15,15 0 1 0 64,51 A15,15 0 1 0 34,51 Z" />
+
+    <!-- Yolk Gloss -->
+    <path
+        android:fillColor="#FEF3C7"
+        android:pathData="M39,43 A4,3 0 1 0 47,43 A4,3 0 1 0 39,43 Z" />
+
+    <!-- Left Eye: Winking Arch -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M43,51 C45,49 48,49 50,51" />
+
+    <!-- Right Eye: Happy Open Dot -->
+    <path
+        android:fillColor="#1A1714"
+        android:pathData="M54,51 A2.2,2.2 0 1 0 58.4,51 A2.2,2.2 0 1 0 54,51 Z" />
+
+    <!-- Proud Confident Smile -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M46,57 C48,61 53,61 55,57" />
+
+    <!-- Chef's Kiss Hand Silhouette (Tiny 2dp stroke) -->
+    <!-- Fingers pinched together in Italian / Chef's kiss perfection -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M66,66 C68,63 72,61 74,63 C75,64 76,67 74,69 C73,70 70,72 67,71 Z" />
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M70,64 L72,66" />
+</vector>
