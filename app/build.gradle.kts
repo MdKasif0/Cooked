@@ -4,7 +4,11 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.detekt)
 }
+
+val enableFirebase = project.findProperty("cooked.enableFirebase")?.toString()?.toBoolean()
+    ?: file("google-services.json").exists()
 
 android {
     namespace = "com.cooked.app"
@@ -21,26 +25,45 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "Cooked Debug")
+        }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            resValue("string", "app_name", "Cooked")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         compose = true
     }
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+}
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.setFrom(file("../detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
 dependencies {
-    // AndroidX & Lifecycle
+    // AndroidX & Core
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -56,10 +79,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Navigation
+    // Navigation & Serialization
     implementation(libs.androidx.navigation.compose)
-
-    // Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // Room
@@ -67,16 +88,28 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // DataStore
+    // DataStore & WorkManager
     implementation(libs.androidx.datastore.preferences)
-
-    // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
 
-    // Glance
+    // Glance Widget
     implementation(libs.androidx.glance)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
+
+    // Charts (Vico)
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
+
+    // RevenueCat
+    implementation(libs.revenuecat.purchases)
+
+    // Firebase (only attached if google-services.json exists or flag is set)
+    if (enableFirebase) {
+        implementation(platform(libs.firebase.bom))
+        implementation(libs.firebase.analytics)
+        implementation(libs.firebase.crashlytics)
+    }
 
     // Hilt
     implementation(libs.hilt.android)
