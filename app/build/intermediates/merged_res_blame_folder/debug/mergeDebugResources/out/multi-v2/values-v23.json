@@ -4,17 +4,7 @@
             "outputFile": "com.cooked.app-mergeDebugResources-72:/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/8ab2c1c4e280bdd1003522c7fdfe08fe/transformed/work-runtime-2.10.0/res/values-v23/values-v23.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,121",
-                        "endColumns": "65,62",
-                        "endOffsets": "116,179"
-                    }
-                },
-                {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/34ea8c8296883bcc5618b9e43f5ed88c/transformed/glance-appwidget-1.1.1/res/values-v23/values-v23.xml",
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/a88caa09c1d0549300a277637ef7c034/transformed/glance-appwidget-1.1.1/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -28,6 +18,16 @@
                         "startOffsets": "184",
                         "endColumns": "55",
                         "endOffsets": "235"
+                    }
+                },
+                {
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/73dcd85d7a68b6fddc87ca615ceff861/transformed/work-runtime-2.10.0/res/values-v23/values-v23.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,121",
+                        "endColumns": "65,62",
+                        "endOffsets": "116,179"
                     }
                 }
             ]

@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.cooked.app.ui.home.HomeViewModel
