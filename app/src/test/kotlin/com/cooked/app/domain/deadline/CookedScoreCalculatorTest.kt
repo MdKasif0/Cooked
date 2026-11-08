@@ -125,3 +125,4 @@ class CookedScoreCalculatorTest {
         assertTrue(result.simulatedScoreAfterAction != null && result.simulatedScoreAfterAction!! < result.score)
     }
 }
+

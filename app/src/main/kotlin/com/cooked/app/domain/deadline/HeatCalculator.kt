@@ -314,3 +314,4 @@ object HeatCalculator {
         }
     }
 }
+

@@ -190,3 +190,4 @@ object CookedScoreCalculator {
         return if (hours % 1.0 == 0.0) "${hours.toInt()}h" else String.format(java.util.Locale.US, "%.1fh", hours)
     }
 }
+
