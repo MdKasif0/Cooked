@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Bulb contour -->
+    <path
+        android:strokeColor="#FF8533"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9,18 C9,18.55 9.45,19 10,19 L14,19 C14.55,19 15,18.55 15,18 L15,17 C16.85,15.65 18,13.48 18,11 C18,7.69 15.31,5 12,5 C8.69,5 6,7.69 6,11 C6,13.48 7.15,15.65 9,17 L9,18 Z" />
+    <!-- Screw Base -->
+    <path
+        android:strokeColor="#FF6B00"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M10,22 L14,22" />
+    <path
+        android:strokeColor="#FFB380"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M12,2 L12,3 M4,6 L5,7 M20,6 L19,7" />
+</vector>

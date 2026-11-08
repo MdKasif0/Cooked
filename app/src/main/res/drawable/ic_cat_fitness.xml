@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Barbell / Dumbbell Diagonal -->
+    <path
+        android:strokeColor="#FF8533"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M6.5,17.5 L17.5,6.5" />
+    <path
+        android:strokeColor="#FF6B00"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M3,18 L6,21 M18,3 L21,6" />
+    <path
+        android:strokeColor="#FF8533"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M4.5,13.5 L10.5,19.5 M13.5,4.5 L19.5,10.5" />
+</vector>

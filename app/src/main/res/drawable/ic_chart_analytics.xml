@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Chart Bars -->
+    <path
+        android:strokeColor="#FF8533"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M18,20 L18,10 M12,20 L12,4 M6,20 L6,14" />
+    <path
+        android:strokeColor="#FF6B00"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M2,20 L22,20" />
+</vector>

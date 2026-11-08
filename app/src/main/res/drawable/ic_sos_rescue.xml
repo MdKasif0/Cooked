@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Outer Ring -->
+    <path
+        android:strokeColor="#FF4D4D"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M12,2 A10,10 0 1 0 22,12 A10,10 0 0 0 12,2" />
+    <!-- Center Hole -->
+    <path
+        android:strokeColor="#FF4D4D"
+        android:strokeWidth="2"
+        android:pathData="M12,8 A4,4 0 1 0 16,12 A4,4 0 0 0 12,8" />
+    <!-- Straps -->
+    <path
+        android:strokeColor="#FF8533"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M4.93,4.93 L7.76,7.76 M16.24,16.24 L19.07,19.07 M4.93,19.07 L7.76,16.24 M16.24,7.76 L19.07,4.93" />
+</vector>
