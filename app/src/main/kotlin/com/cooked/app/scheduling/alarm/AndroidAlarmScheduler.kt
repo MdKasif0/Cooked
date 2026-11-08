@@ -32,12 +32,14 @@ class AndroidAlarmScheduler @Inject constructor(
         val now = clock.now()
         val prefs = userPreferencesRepository.userPrefs.first()
         val count = nagCount ?: itemRepository.getNagCount(item.id)
+        val hasStarted = itemRepository.hasStartedRecently(item.id)
 
         val nextAlarm = AlarmPlanner.plan(
             item = item,
             now = now,
             prefs = prefs,
-            nagCount = count
+            nagCount = count,
+            hasStartedRecently = hasStarted
         )
 
         if (nextAlarm == null) {

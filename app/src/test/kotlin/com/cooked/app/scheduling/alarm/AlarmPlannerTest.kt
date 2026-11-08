@@ -32,6 +32,8 @@ class AlarmPlannerTest {
         status: ItemStatus = ItemStatus.ACTIVE,
         snoozedUntil: Instant? = null,
         startBy: Instant? = null,
+        effortMinutes: Int? = null,
+        progress: Int = 0,
         nag: NagPolicy = NagPolicy(intervalMinutes = 10, escalate = true, maxNags = null, respectQuietHours = true),
         critical: Boolean = false,
         isDeleted: Boolean = false,
@@ -45,6 +47,8 @@ class AlarmPlannerTest {
             status = status,
             snoozedUntil = snoozedUntil,
             startBy = startBy,
+            effortMinutes = effortMinutes,
+            progress = progress,
             nag = nag,
             critical = critical,
             deletedAt = if (isDeleted) baseNow else null,
@@ -169,7 +173,7 @@ class AlarmPlannerTest {
     @Test
     fun `deadline item with startBy plans PRE_START if now is before startBy`() {
         val startBy = baseNow.plus(Duration.ofHours(1))
-        val dueAt = baseNow.plus(Duration.ofDays(2))
+        val dueAt = baseNow.plus(Duration.ofDays(10)) // Chill urgency level
         val item = testItem(
             kind = ItemKind.DEADLINE,
             startBy = startBy,
@@ -182,4 +186,42 @@ class AlarmPlannerTest {
         assertEquals(startBy, plan?.time)
         assertEquals(AlarmType.PRE_START, plan?.type)
     }
+
+    @Test
+    fun `deadline in Cooked level plans FINAL_CALL 2h before dueAt`() {
+        // Due in 12 hours (within 24h -> Cooked level)
+        val dueAt = baseNow.plus(Duration.ofHours(12))
+        val item = testItem(
+            kind = ItemKind.DEADLINE,
+            dueAt = dueAt
+        )
+
+        val plan = AlarmPlanner.plan(item = item, now = baseNow, prefs = defaultPrefs, nagCount = 0)
+
+        assertNotNull(plan)
+        assertEquals(dueAt.minus(Duration.ofHours(2)), plan?.time)
+        assertEquals(AlarmType.FINAL_CALL, plan?.type)
+    }
+
+    @Test
+    fun `deadline with recent STARTED relaxes urgency`() {
+        val dueAt = baseNow.plus(Duration.ofHours(48)) // 2 days
+        val item = testItem(
+            kind = ItemKind.DEADLINE,
+            dueAt = dueAt,
+            effortMinutes = 200 // high effort
+        )
+
+        // When started recently, pressure relaxes
+        val plan = AlarmPlanner.plan(
+            item = item,
+            now = baseNow,
+            prefs = defaultPrefs,
+            nagCount = 0,
+            hasStartedRecently = true
+        )
+
+        assertNotNull(plan)
+    }
 }
+

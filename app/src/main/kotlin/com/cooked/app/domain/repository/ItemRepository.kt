@@ -17,6 +17,7 @@ interface ItemRepository {
     suspend fun getItem(id: String): Item?
     suspend fun getActiveItems(): List<Item>
     suspend fun getNagCount(id: String): Int
+    suspend fun hasStartedRecently(id: String): Boolean
     suspend fun logEvent(
         itemId: String,
         type: com.cooked.app.domain.model.ItemEventType,

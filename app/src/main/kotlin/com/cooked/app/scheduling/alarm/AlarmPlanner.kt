@@ -1,6 +1,8 @@
 package com.cooked.app.scheduling.alarm
 
+import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.data.datastore.UserPrefs
+import com.cooked.app.domain.deadline.HeatCalculator
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.ItemKind
 import com.cooked.app.domain.model.ItemStatus
@@ -28,10 +30,11 @@ object AlarmPlanner {
         item: Item,
         now: Instant,
         prefs: UserPrefs,
-        nagCount: Int = 0
+        nagCount: Int = 0,
+        hasStartedRecently: Boolean = false
     ): NextAlarm? {
         // 1. Soft-deleted, completed, or archived items do not receive alarms
-        if (item.isDeleted || item.status != ItemStatus.ACTIVE) {
+        if (item.isDeleted || item.status != ItemStatus.ACTIVE || item.progress >= 100) {
             return null
         }
 
@@ -45,30 +48,31 @@ object AlarmPlanner {
             return null
         }
 
-        // 4. Pre-due date checks
-        if (now.isBefore(item.dueAt)) {
-            // Deadline pre-start alert (Step 5 feature hook)
-            if (item.kind == ItemKind.DEADLINE && item.startBy != null && now.isBefore(item.startBy)) {
-                return NextAlarm(time = item.startBy, type = AlarmType.PRE_START)
-            }
-            // Standard first alert at dueAt
-            return NextAlarm(time = item.dueAt, type = AlarmType.FIRST)
-        }
-
-        // 5. Nagging Phase (now >= dueAt)
-        val intervalMinutes = item.nag.intervalMinutes.toLong().coerceAtLeast(1L)
-        val baseNextTime = if (nagCount == 0 && now.isAfter(item.dueAt)) {
-            now.plus(Duration.ofMinutes(intervalMinutes))
-        } else {
-            now.plus(Duration.ofMinutes(intervalMinutes))
-        }
-
-        // Resolve item timezone for quiet hours evaluation
         val zone = try {
             ZoneId.of(item.timeZoneId)
         } catch (_: Exception) {
             ZoneId.systemDefault()
         }
+
+        // 4. Pre-due date scheduling
+        if (now.isBefore(item.dueAt)) {
+            if (item.kind == ItemKind.DEADLINE) {
+                return planDeadlinePreAlert(
+                    item = item,
+                    now = now,
+                    prefs = prefs,
+                    zone = zone,
+                    hasStartedRecently = hasStartedRecently
+                )
+            } else {
+                // Standard reminder first alert at dueAt
+                return NextAlarm(time = item.dueAt, type = AlarmType.FIRST)
+            }
+        }
+
+        // 5. Nagging Phase (now >= dueAt)
+        val intervalMinutes = item.nag.intervalMinutes.toLong().coerceAtLeast(1L)
+        val baseNextTime = now.plus(Duration.ofMinutes(intervalMinutes))
 
         // 6. Quiet Hours Evaluation
         val fireTime = if (item.nag.respectQuietHours && !item.critical) {
@@ -89,6 +93,98 @@ object AlarmPlanner {
         }
 
         return NextAlarm(time = fireTime, type = type)
+    }
+
+    private fun planDeadlinePreAlert(
+        item: Item,
+        now: Instant,
+        prefs: UserPrefs,
+        zone: ZoneId,
+        hasStartedRecently: Boolean
+    ): NextAlarm {
+        val heatResult = HeatCalculator.calculate(
+            item = item,
+            now = now,
+            dailyCapacityMinutes = prefs.dailyCapacityMinutes,
+            quietHoursStart = prefs.quietHoursStart,
+            quietHoursEnd = prefs.quietHoursEnd
+        )
+
+        val isRelaxed = hasStartedRecently || item.progress > 0
+        val effectiveHeat = if (isRelaxed) HeatCalculator.relaxHeatLevel(heatResult.heatLevel) else heatResult.heatLevel
+
+        val finalCallTime = item.dueAt.minus(Duration.ofHours(2))
+        val isWithin24h = Duration.between(now, item.dueAt).toHours() <= 24
+
+        // Cooked or within last 24h: FINAL_CALL 2h before dueAt
+        if (effectiveHeat == HeatLevel.COOKED || isWithin24h) {
+            if (now.isBefore(finalCallTime)) {
+                return NextAlarm(time = finalCallTime, type = AlarmType.FINAL_CALL)
+            }
+            return NextAlarm(time = item.dueAt, type = AlarmType.FINAL_CALL)
+        }
+
+        val nudgeTime = prefs.preferredNudgeTime
+        val nowZdt = now.atZone(zone)
+        val today = nowZdt.toLocalDate()
+
+        return when (effectiveHeat) {
+            HeatLevel.TOASTY -> {
+                // Two nudges per day: 3h earlier and at nudgeTime
+                val earlyTime = nudgeTime.minusHours(3)
+                val earlyToday = today.atTime(earlyTime).atZone(zone).toInstant()
+                val nudgeToday = today.atTime(nudgeTime).atZone(zone).toInstant()
+
+                val nextCandidate = when {
+                    now.isBefore(earlyToday) -> earlyToday
+                    now.isBefore(nudgeToday) -> nudgeToday
+                    else -> today.plusDays(1).atTime(earlyTime).atZone(zone).toInstant()
+                }
+
+                if (nextCandidate.isBefore(item.dueAt)) {
+                    NextAlarm(time = nextCandidate, type = AlarmType.PRE_START)
+                } else {
+                    NextAlarm(time = item.dueAt, type = AlarmType.FIRST)
+                }
+            }
+
+            HeatLevel.WARM -> {
+                // One nudge per day at nudge time
+                val nudgeToday = today.atTime(nudgeTime).atZone(zone).toInstant()
+                val nextCandidate = if (now.isBefore(nudgeToday)) {
+                    nudgeToday
+                } else {
+                    today.plusDays(1).atTime(nudgeTime).atZone(zone).toInstant()
+                }
+
+                if (nextCandidate.isBefore(item.dueAt)) {
+                    NextAlarm(time = nextCandidate, type = AlarmType.PRE_START)
+                } else {
+                    NextAlarm(time = item.dueAt, type = AlarmType.FIRST)
+                }
+            }
+
+            HeatLevel.CHILL, HeatLevel.DONE -> {
+                // Nudge at startBy if in the future, otherwise first alert at dueAt
+                val effectiveStartBy = item.startBy ?: HeatCalculator.suggestStartBy(
+                    item = item,
+                    now = now,
+                    dailyCapacityMinutes = prefs.dailyCapacityMinutes,
+                    preferredNudgeTime = prefs.preferredNudgeTime,
+                    zone = zone
+                )
+
+                if (now.isBefore(effectiveStartBy)) {
+                    NextAlarm(time = effectiveStartBy, type = AlarmType.PRE_START)
+                } else {
+                    NextAlarm(time = item.dueAt, type = AlarmType.FIRST)
+                }
+            }
+
+            HeatLevel.COOKED -> {
+                NextAlarm(time = item.dueAt, type = AlarmType.FINAL_CALL)
+            }
+        }
     }
 
     /**

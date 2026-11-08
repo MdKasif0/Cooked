@@ -18,11 +18,15 @@ fun ReminderDetailRoute(
     ReminderDetailScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onEditClick = onEditClick,
-        onDoneClick = viewModel::onDoneClick,
-        onSnoozeClick = viewModel::onSnoozeClick,
-        onDeleteClick = viewModel::onDeleteClick,
+        onProgressChanged = viewModel::onProgressChanged,
+        onEffortSelected = viewModel::onEffortSelected,
+        onToggleChecklistStep = viewModel::onToggleChecklistStep,
+        onAddChecklistStep = viewModel::onAddChecklistStep,
+        onDeleteChecklistStep = viewModel::onDeleteChecklistStep,
+        onPushDeadline = viewModel::onPushDeadline,
+        onShowRescheduleSheet = viewModel::setShowRescheduleSheet,
+        onMarkDone = viewModel::onMarkDone,
+        onDelete = viewModel::onDelete,
         modifier = modifier
     )
 }
-

@@ -37,3 +37,4 @@ class ReliabilityCheckerTest {
         assertTrue(intents.any { it.component?.packageName?.contains("vivo") == true })
     }
 }
+

@@ -90,6 +90,12 @@ class ItemRepositoryImpl @Inject constructor(
         return itemEventDao.getNagCountFor(id)
     }
 
+    override suspend fun hasStartedRecently(id: String): Boolean {
+        val event = itemEventDao.getLatestEventFor(id, ItemEventType.STARTED) ?: return false
+        val now = clock.now()
+        return Duration.between(event.at, now).toHours() < 24
+    }
+
     override suspend fun logEvent(
         itemId: String,
         type: ItemEventType,

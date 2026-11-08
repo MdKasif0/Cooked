@@ -1,19 +1,20 @@
 package com.cooked.app.feature.deadlines
 
-import com.cooked.app.domain.model.CookedScore
-import com.cooked.app.domain.model.PressureLevel
-import com.cooked.app.domain.model.Reminder
+import com.cooked.app.domain.deadline.CookedScoreResult
+import com.cooked.app.domain.deadline.HeatResult
+import com.cooked.app.domain.model.Item
+import java.time.Instant
 
-data class DeadlineItem(
-    val reminder: Reminder,
-    val pressureLevel: PressureLevel,
-    val remainingMillis: Long
+data class DeadlineCardUiModel(
+    val item: Item,
+    val heatResult: HeatResult,
+    val suggestedStartBy: Instant,
+    val hasStartedRecently: Boolean
 )
 
 data class DeadlinesUiState(
-    val deadlines: List<DeadlineItem> = emptyList(),
-    val cookedScore: CookedScore? = null,
+    val scoreResult: CookedScoreResult? = null,
+    val deadlines: List<DeadlineCardUiModel> = emptyList(),
     val isLoading: Boolean = false,
-    val emptyMessage: String = "Zero hard deadlines on the radar. Don't jinx it."
+    val emptyMessage: String = "No deadlines. Either you're on top of life or you haven't added them yet."
 )
-

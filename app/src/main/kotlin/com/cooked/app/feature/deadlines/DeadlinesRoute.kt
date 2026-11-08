@@ -17,8 +17,8 @@ fun DeadlinesRoute(
     DeadlinesScreen(
         uiState = uiState,
         onDeadlineClick = onDeadlineClick,
+        onImOnItClick = viewModel::onImOnItClick,
         onDoneClick = viewModel::onDoneClick,
         modifier = modifier
     )
 }
-

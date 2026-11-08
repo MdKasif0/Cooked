@@ -1,12 +1,15 @@
 package com.cooked.app.feature.detail
 
-import com.cooked.app.domain.model.PressureLevel
-import com.cooked.app.domain.model.Reminder
+import com.cooked.app.domain.deadline.HeatResult
+import com.cooked.app.domain.model.Item
+import java.time.Instant
 
 data class ReminderDetailUiState(
-    val reminder: Reminder? = null,
-    val pressureLevel: PressureLevel = PressureLevel.CHILL,
+    val item: Item? = null,
+    val heatResult: HeatResult? = null,
+    val suggestedStartBy: Instant? = null,
     val isLoading: Boolean = true,
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
+    val isProgressManuallyOverridden: Boolean = false,
+    val showRescheduleSheet: Boolean = false
 )
-

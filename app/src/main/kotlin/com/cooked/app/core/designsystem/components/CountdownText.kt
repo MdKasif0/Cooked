@@ -52,6 +52,21 @@ fun formatCountdown(targetEpochMillis: Long, currentEpochMillis: Long = System.c
  */
 @Composable
 fun CountdownText(
+    targetInstant: Instant,
+    modifier: Modifier = Modifier,
+    style: TextStyle = CookedTheme.typography.titleMedium,
+    color: Color = CookedTheme.colors.onSurface
+) {
+    CountdownText(
+        targetEpochMillis = targetInstant.toEpochMilli(),
+        modifier = modifier,
+        style = style,
+        color = color
+    )
+}
+
+@Composable
+fun CountdownText(
     targetEpochMillis: Long,
     modifier: Modifier = Modifier,
     style: TextStyle = CookedTheme.typography.titleMedium,

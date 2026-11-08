@@ -32,7 +32,9 @@ data class UserPrefs(
     val personality: Personality = Personality.SPICY,
     val hapticsOn: Boolean = true,
     val firstDayUsed: LocalDate? = null,
-    val isPro: Boolean = false
+    val isPro: Boolean = false,
+    val dailyCapacityMinutes: Int = 120,
+    val preferredNudgeTime: LocalTime = LocalTime.of(18, 0)
 )
 
 @Singleton
@@ -52,6 +54,8 @@ class UserPreferencesRepository @Inject constructor(
         val FIRST_DAY_USED = stringPreferencesKey("first_day_used")
         val IS_PRO = booleanPreferencesKey("is_pro")
         val OEM_WARNING_DISMISSED = booleanPreferencesKey("oem_warning_dismissed")
+        val DAILY_CAPACITY_MINUTES = intPreferencesKey("daily_capacity_minutes")
+        val PREFERRED_NUDGE_TIME = stringPreferencesKey("preferred_nudge_time")
     }
 
     val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
@@ -66,7 +70,9 @@ class UserPreferencesRepository @Inject constructor(
             personality = parseEnum(preferences[PreferencesKeys.PERSONALITY], Personality.SPICY),
             hapticsOn = preferences[PreferencesKeys.HAPTICS_ON] ?: true,
             firstDayUsed = parseDate(preferences[PreferencesKeys.FIRST_DAY_USED]),
-            isPro = preferences[PreferencesKeys.IS_PRO] ?: false
+            isPro = preferences[PreferencesKeys.IS_PRO] ?: false,
+            dailyCapacityMinutes = preferences[PreferencesKeys.DAILY_CAPACITY_MINUTES] ?: 120,
+            preferredNudgeTime = parseTime(preferences[PreferencesKeys.PREFERRED_NUDGE_TIME], LocalTime.of(18, 0))
         )
     }
 
@@ -74,6 +80,8 @@ class UserPreferencesRepository @Inject constructor(
     val dynamicColor: Flow<Boolean> = userPrefs.map { it.dynamicColor }
     val defaultNagInterval: Flow<Int> = userPrefs.map { it.defaultNagInterval }
     val defaultNagIntervalMinutes: Flow<Int> = defaultNagInterval
+    val dailyCapacityMinutes: Flow<Int> = userPrefs.map { it.dailyCapacityMinutes }
+    val preferredNudgeTime: Flow<LocalTime> = userPrefs.map { it.preferredNudgeTime }
     val isOemWarningDismissed: Flow<Boolean> = context.dataStore.data.map {
         it[PreferencesKeys.OEM_WARNING_DISMISSED] ?: false
     }
@@ -130,6 +138,14 @@ class UserPreferencesRepository @Inject constructor(
 
     suspend fun setOemWarningDismissed(dismissed: Boolean) {
         context.dataStore.edit { it[PreferencesKeys.OEM_WARNING_DISMISSED] = dismissed }
+    }
+
+    suspend fun setDailyCapacityMinutes(minutes: Int) {
+        context.dataStore.edit { it[PreferencesKeys.DAILY_CAPACITY_MINUTES] = minutes }
+    }
+
+    suspend fun setPreferredNudgeTime(time: LocalTime) {
+        context.dataStore.edit { it[PreferencesKeys.PREFERRED_NUDGE_TIME] = time.toString() }
     }
 
     private companion object {
