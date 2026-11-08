@@ -1,1 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.cooked.app.feature.home.TodayViewModel

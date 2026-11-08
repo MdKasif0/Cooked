@@ -1,1 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.cooked.app.ui.deadline.DeadlineDashboardViewModel
