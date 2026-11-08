@@ -8,8 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CameraAlt
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
+import com.cooked.app.core.config.FeatureFlags
 import com.cooked.app.core.designsystem.components.ShimmerPlaceholder
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +39,8 @@ fun DeadlinesScreen(
     onImOnItClick: (String) -> Unit,
     onDoneClick: (String) -> Unit,
     onQuickAddClick: () -> Unit = {},
+    onScanDatesheetClick: (() -> Unit)? = null,
+    onTriggerRescuePlan: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     if (uiState.isLoading) {
