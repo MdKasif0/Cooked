@@ -104,7 +104,15 @@ fun DeadlinesScreen(
                             if (topItem != null) {
                                 onDeadlineClick(topItem.id)
                             }
-                        }
+                        },
+                        onSaveMeClick = if (FeatureFlags.isPanicButtonEnabled && onTriggerRescuePlan != null) {
+                            {
+                                val topItem = uiState.scoreResult.topContributors.firstOrNull()?.item
+                                if (topItem != null) {
+                                    onTriggerRescuePlan(topItem.id)
+                                }
+                            }
+                        } else null
                     )
                 }
             }
@@ -123,11 +131,32 @@ fun DeadlinesScreen(
         // Empty State or Deadline Cards
         if (uiState.deadlines.isEmpty()) {
             item(key = "empty_state") {
-                EmptyState(
-                    title = "All clear!",
-                    message = uiState.emptyMessage,
-                    modifier = Modifier.padding(top = 24.dp)
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    EmptyState(
+                        title = "All clear!",
+                        message = uiState.emptyMessage
+                    )
+                    if (FeatureFlags.isDatesheetScanEnabled && onScanDatesheetClick != null) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        OutlinedButton(
+                            onClick = onScanDatesheetClick,
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.CameraAlt,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Scan datesheet or timetable 📷", style = CookedTheme.typography.labelLarge)
+                        }
+                    }
+                }
             }
         } else {
             items(

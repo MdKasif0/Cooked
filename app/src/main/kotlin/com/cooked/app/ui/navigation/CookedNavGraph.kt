@@ -1,5 +1,8 @@
 package com.cooked.app.ui.navigation
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -53,12 +56,15 @@ import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.components.AvatarBubble
 import com.cooked.app.feature.add.QuickAddBottomSheet
 import com.cooked.app.feature.add.QuickAddViewModel
+import com.cooked.app.feature.cook.CookSessionRoute
 import com.cooked.app.feature.deadlines.DeadlinesRoute
 import com.cooked.app.feature.detail.ReminderDetailRoute
 import com.cooked.app.feature.home.TodayRoute
 import com.cooked.app.feature.insights.InsightsRoute
 import com.cooked.app.feature.onboarding.OnboardingRoute
 import com.cooked.app.feature.paywall.PaywallRoute
+import com.cooked.app.feature.rescue.RescuePlanRoute
+import com.cooked.app.feature.scan.DatesheetReviewRoute
 import com.cooked.app.feature.settings.DesignGalleryScreen
 import com.cooked.app.feature.settings.SettingsRoute
 import com.cooked.app.feature.settings.SettingsViewModel
@@ -98,6 +104,15 @@ fun CookedAppShell(
     val quickAddViewModel: QuickAddViewModel = hiltViewModel()
     val snackbarHostState = androidx.compose.runtime.remember { androidx.compose.material3.SnackbarHostState() }
     val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
+
+    val scanLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            showQuickAddSheet = false
+            navController.navigate(DatesheetReviewNavRoute(imageUri = it.toString()))
+        }
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -240,6 +255,12 @@ fun CookedAppShell(
                     DeadlinesRoute(
                         onDeadlineClick = { id ->
                             navController.navigate(ReminderDetailNavRoute(reminderId = id))
+                        },
+                        onScanDatesheetClick = {
+                            scanLauncher.launch("image/*")
+                        },
+                        onTriggerRescuePlan = { id ->
+                            navController.navigate(RescuePlanNavRoute(targetItemId = id))
                         }
                     )
                 }
@@ -316,12 +337,36 @@ fun CookedAppShell(
                         onNavigateBack = { navController.popBackStack() },
                         onEditClick = { id ->
                             navController.navigate(AddEditReminderRoute(reminderId = id))
+                        },
+                        onStartCookSession = { id ->
+                            navController.navigate(CookSessionNavRoute(itemId = id))
+                        },
+                        onTriggerRescuePlan = { id ->
+                            navController.navigate(RescuePlanNavRoute(targetItemId = id))
                         }
                     )
                 }
 
                 composable<OemGuideNavRoute> {
                     OemGuideScreen(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable<DatesheetReviewNavRoute> {
+                    DatesheetReviewRoute(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable<CookSessionNavRoute> {
+                    CookSessionRoute(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable<RescuePlanNavRoute> {
+                    RescuePlanRoute(
                         onNavigateBack = { navController.popBackStack() }
                     )
                 }
@@ -334,6 +379,10 @@ fun CookedAppShell(
             sheetState = sheetState,
             onDismissRequest = { showQuickAddSheet = false },
             viewModel = quickAddViewModel,
+            onLaunchScan = {
+                showQuickAddSheet = false
+                scanLauncher.launch("image/*")
+            },
             onShowSnackbar = { message, onUndo ->
                 coroutineScope.launch {
                     val result = snackbarHostState.showSnackbar(
