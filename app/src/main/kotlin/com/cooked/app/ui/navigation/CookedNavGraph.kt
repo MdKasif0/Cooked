@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.BarChart
@@ -191,7 +191,7 @@ fun CookedAppShell(
                     onClick = { showQuickAddSheet = true },
                     containerColor = CookedTheme.colors.primary,
                     contentColor = CookedTheme.colors.onPrimary,
-                    shape = CircleShape
+                    shape = RoundedCornerShape(18.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Add,

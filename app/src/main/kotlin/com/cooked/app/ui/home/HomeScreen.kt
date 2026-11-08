@@ -118,9 +118,9 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToAddReminder,
-                containerColor = FlameOrange,
+                containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape
+                shape = RoundedCornerShape(18.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
