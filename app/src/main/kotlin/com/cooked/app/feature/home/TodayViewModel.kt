@@ -35,6 +35,7 @@ class TodayViewModel @Inject constructor(
     private val _selectedItemIds = MutableStateFlow<Set<String>>(emptySet())
     private val _showSnoozeSheetForItemId = MutableStateFlow<String?>(null)
     private val _showBatchSnoozeSheet = MutableStateFlow(false)
+    private val _showCelebration = MutableStateFlow(false)
 
     val uiState: StateFlow<TodayUiState> = combine(
         itemRepository.observeToday(),
@@ -44,7 +45,8 @@ class TodayViewModel @Inject constructor(
         userPreferencesRepository.userPrefs,
         _selectedItemIds,
         _showSnoozeSheetForItemId,
-        _showBatchSnoozeSheet
+        _showBatchSnoozeSheet,
+        _showCelebration
     ) { args ->
         @Suppress("UNCHECKED_CAST")
         val todayItems = args[0] as List<Item>
@@ -59,6 +61,7 @@ class TodayViewModel @Inject constructor(
         val selectedIds = args[5] as Set<String>
         val snoozeItemId = args[6] as String?
         val showBatchSnooze = args[7] as Boolean
+        val showCelebration = args[8] as Boolean
 
         val now = clock.now()
         val zone = clock.zone()
@@ -140,6 +143,7 @@ class TodayViewModel @Inject constructor(
             showSnoozeSheetForItemId = snoozeItemId,
             showBatchSnoozeSheet = showBatchSnooze,
             hasExactAlarmWarning = !canScheduleExact,
+            showCelebration = showCelebration,
             isLoading = false
         )
     }.stateIn(
@@ -150,8 +154,21 @@ class TodayViewModel @Inject constructor(
 
     fun onDone(itemId: String) {
         viewModelScope.launch {
+            val item = itemRepository.getItem(itemId)
+            if (item != null) {
+                val now = clock.now()
+                val isUrgent = item.isOverdue || item.critical ||
+                    (item.kind == ItemKind.DEADLINE && com.cooked.app.domain.deadline.HeatCalculator.calculate(item, now).level in listOf(HeatLevel.TOASTY, HeatLevel.COOKED))
+                if (isUrgent) {
+                    _showCelebration.value = true
+                }
+            }
             itemRepository.markDone(itemId, clock.now())
         }
+    }
+
+    fun dismissCelebration() {
+        _showCelebration.value = false
     }
 
     fun onSnooze(itemId: String, until: Instant) {

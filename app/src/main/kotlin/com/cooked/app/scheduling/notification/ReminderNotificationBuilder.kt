@@ -35,9 +35,10 @@ class ReminderNotificationBuilder @Inject constructor(
             else -> NagStage.FINAL_CALL
         }
 
+        val effectivePersonality = item.nag.personalityOverride ?: personality
         val channelId = selectChannelId(item, nagCount)
         val copyText = NotificationCopy.getCopy(
-            personality = personality,
+            personality = effectivePersonality,
             stage = stage,
             title = item.title,
             nagCount = nagCount
@@ -122,6 +123,15 @@ class ReminderNotificationBuilder @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val doneAction = NotificationCompat.Action.Builder(0, "Done", donePendingIntent).build()
+        val snooze10Action = NotificationCompat.Action.Builder(0, "+10m", snooze10PendingIntent).build()
+        val snoozeTomorrowAction = NotificationCompat.Action.Builder(0, "Tomorrow", snoozeTomorrowPendingIntent).build()
+
+        val wearableExtender = NotificationCompat.WearableExtender()
+            .addAction(doneAction)
+            .addAction(snooze10Action)
+            .addAction(snoozeTomorrowAction)
+
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(displayTitle)
@@ -136,10 +146,32 @@ class ReminderNotificationBuilder @Inject constructor(
             .setGroup(GROUP_COOKED_REMINDERS)
             .setContentIntent(openPendingIntent)
             .setDeleteIntent(deletePendingIntent)
-            .addAction(0, "Done", donePendingIntent)
-            .addAction(0, "+10m", snooze10PendingIntent)
-            .addAction(0, "+1h", snooze1hPendingIntent)
-            .addAction(0, "Tomorrow 9am", snoozeTomorrowPendingIntent)
+            .addAction(doneAction)
+            .addAction(snooze10Action)
+            .addAction(snoozeTomorrowAction)
+            .extend(wearableExtender)
+
+        // Emoji large icon
+        val emojiChar = item.emoji ?: if (item.kind == com.cooked.app.domain.model.ItemKind.DEADLINE) "🎯" else "🔥"
+        try {
+            val emojiBitmap = EmojiBitmapHelper.createEmojiBitmap(emojiChar)
+            builder.setLargeIcon(emojiBitmap)
+        } catch (_: Exception) {}
+
+        // Deadline countdown / heat line
+        if (item.kind == com.cooked.app.domain.model.ItemKind.DEADLINE) {
+            val now = java.time.Instant.now()
+            val subText = if (now.isAfter(item.dueAt)) {
+                "Overdue · Cooked 🔥"
+            } else {
+                val duration = java.time.Duration.between(now, item.dueAt)
+                val hours = duration.toHours()
+                val mins = duration.toMinutes() % 60
+                val timeStr = if (hours >= 24) "${duration.toDays()}d ${hours % 24}h" else "${hours}h ${mins}m"
+                "Due in $timeStr"
+            }
+            builder.setSubText(subText)
+        }
 
         // Full-screen alarm intent for critical items or high nags (5+)
         if (shouldUseFullScreenIntent(item, nagCount)) {

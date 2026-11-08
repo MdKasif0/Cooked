@@ -17,6 +17,7 @@ data class TodayUiState(
     val showSnoozeSheetForItemId: String? = null,
     val showBatchSnoozeSheet: Boolean = false,
     val hasExactAlarmWarning: Boolean = false,
+    val showCelebration: Boolean = false,
     val isLoading: Boolean = false
 ) {
     val totalTodayCount: Int

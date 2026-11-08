@@ -30,6 +30,7 @@ fun TodayRoute(
         onBatchDelete = viewModel::onBatchDelete,
         onClearSelection = viewModel::clearSelection,
         onCookedScoreClick = onCookedScoreClick,
+        onDismissCelebration = viewModel::dismissCelebration,
         modifier = modifier
     )
 }
