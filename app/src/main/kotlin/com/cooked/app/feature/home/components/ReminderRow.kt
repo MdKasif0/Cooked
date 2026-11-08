@@ -92,28 +92,61 @@ fun ReminderRow(
     onSnooze: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val soundManager = remember(context) { SoundManager(context.applicationContext) }
     val haptic = LocalHapticFeedback.current
+    val view = LocalView.current
+    val haptics = remember(haptic, view) { CookedHaptics(haptic, view) }
+    val coroutineScope = rememberCoroutineScope()
+
     var isDismissed by remember { mutableStateOf(false) }
+    var showSteamPuff by remember { mutableStateOf(false) }
+    var hasTickedThreshold by remember { mutableStateOf(false) }
 
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             when (value) {
                 SwipeToDismissBoxValue.StartToEnd -> {
-                    // Swiped Right -> Mark Done
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    isDismissed = true
-                    onDone()
-                    true
+                    // Swiped Right -> Mark Done with sound + steam puff + spring collapse
+                    coroutineScope.launch {
+                        showSteamPuff = true
+                        soundManager.playDonePop()
+                        haptics.confirmDone()
+                        delay(120)
+                        isDismissed = true
+                        delay(480)
+                        onDone()
+                    }
+                    false
                 }
                 SwipeToDismissBoxValue.EndToStart -> {
                     // Swiped Left -> Snooze
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    haptics.lightTick()
                     onSnooze()
                     false
                 }
                 SwipeToDismissBoxValue.Settled -> false
             }
         }
+    )
+
+    // Dynamic icon scale based on drag progress
+    val progress = dismissState.progress
+    val isSwipingToDone = dismissState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
+
+    LaunchedEffect(progress, isSwipingToDone) {
+        if (isSwipingToDone && progress > 0.38f && !hasTickedThreshold) {
+            haptics.lightTick()
+            hasTickedThreshold = true
+        } else if (!isSwipingToDone || progress <= 0.30f) {
+            hasTickedThreshold = false
+        }
+    }
+
+    val iconScale by animateFloatAsState(
+        targetValue = if (isSwipingToDone && progress > 0.38f) 1.25f else 0.9f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow),
+        label = "DoneIconScale"
     )
 
     AnimatedVisibility(
@@ -154,7 +187,9 @@ fun ReminderRow(
                                 imageVector = Icons.Rounded.Check,
                                 contentDescription = "Done",
                                 tint = CookedTheme.colors.heatFor(HeatLevel.CHILL).onColor,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .scale(iconScale)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
