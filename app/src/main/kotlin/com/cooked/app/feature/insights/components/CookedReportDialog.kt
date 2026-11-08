@@ -60,6 +60,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.FileProvider
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.designsystem.components.HeatChip
 import com.cooked.app.domain.insights.model.AnalyticsSummary
@@ -259,7 +260,11 @@ private fun ReportPageOnTime(summary: AnalyticsSummary) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "⏱️", fontSize = 64.sp)
+        CookedCategoryIcon(
+            keyOrEmoji = "routine",
+            size = 64.dp,
+            tint = CookedTheme.colors.primary
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Delay Reality Check",
@@ -290,7 +295,10 @@ private fun ReportPageSnooze(summary: AnalyticsSummary, hideTitles: Boolean) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "😴", fontSize = 64.sp)
+        EggMascot(
+            level = HeatLevel.WARM,
+            size = 72.dp
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Top Snoozed Champion",
@@ -331,7 +339,10 @@ private fun ReportPageForecastAndShare(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "🔮", fontSize = 48.sp)
+        EggMascot(
+            level = forecastLevel,
+            size = 64.dp
+        )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Next Week Forecast",

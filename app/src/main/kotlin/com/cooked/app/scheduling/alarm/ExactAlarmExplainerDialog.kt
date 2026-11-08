@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 
 @Composable
 fun ExactAlarmExplainerDialog(
@@ -25,9 +26,16 @@ fun ExactAlarmExplainerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         shape = RoundedCornerShape(20.dp),
+        icon = {
+            CookedCategoryIcon(
+                keyOrEmoji = "routine",
+                size = 32.dp,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
         title = {
             Text(
-                text = "⏰ Don't Get Cooked By Android",
+                text = "Don't Get Cooked By Android",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )

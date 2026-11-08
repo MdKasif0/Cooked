@@ -59,12 +59,14 @@ import com.cooked.app.MainActivity
 import com.cooked.app.core.designsystem.DarkBackground
 import com.cooked.app.core.designsystem.DarkOnBackground
 import com.cooked.app.core.designsystem.DarkOnPrimary
+import com.cooked.app.core.designsystem.DarkOnPrimaryContainer
 import com.cooked.app.core.designsystem.DarkOnSurfaceVariant
 import com.cooked.app.core.designsystem.DarkOutline
 import com.cooked.app.core.designsystem.DarkPrimary
 import com.cooked.app.core.designsystem.DarkPrimaryContainer
 import com.cooked.app.core.designsystem.DarkSurfaceContainer
 import com.cooked.app.core.designsystem.HeatCookedDark
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.Personality
@@ -215,10 +217,10 @@ class AlarmActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = currentItem?.emoji ?: "🔥",
-                        fontSize = 80.sp,
-                        textAlign = TextAlign.Center
+                    CookedCategoryIcon(
+                        keyOrEmoji = currentItem?.emoji ?: "flame",
+                        size = 80.dp,
+                        tint = DarkPrimary
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -390,7 +392,11 @@ class AlarmActivity : ComponentActivity() {
                                 .background(DarkPrimaryContainer, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("⏳", fontSize = 20.sp)
+                            CookedCategoryIcon(
+                                keyOrEmoji = "routine",
+                                size = 22.dp,
+                                tint = DarkOnPrimaryContainer
+                            )
                         }
                     }
 

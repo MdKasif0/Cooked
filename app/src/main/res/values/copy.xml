@@ -17,82 +17,82 @@
     <!-- Option 1: "{title} is due now. 🍳" -->
     <!-- Option 2: "time for {title}." -->
     <!-- Option 3: "starting {title} now." -->
-    <string name="notif_mild_first">{title} is due now. 🍳</string>
+    <string name="notif_mild_first">{title} is due now.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "Clock's ticking on {title}. 🔥" -->
+    <!-- Option 1: "Clock's ticking on {title}." -->
     <!-- Option 2: "alright, it's go time: {title}." -->
     <!-- Option 3: "you said you'd do {title}." -->
-    <string name="notif_spicy_first">Clock\'s ticking on {title}. 🔥</string>
+    <string name="notif_spicy_first">Clock\'s ticking on {title}.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "THE EGG DEMANDS: {title}. 🥚" -->
-    <!-- Option 2: "wake up bestie, {title} is due. 💀" -->
+    <!-- Option 1: "THE EGG DEMANDS: {title}." -->
+    <!-- Option 2: "wake up bestie, {title} is due." -->
     <!-- Option 3: "drop everything, {title} is here." -->
-    <string name="notif_unhinged_first">THE EGG DEMANDS: {title}. 🥚</string>
+    <string name="notif_unhinged_first">THE EGG DEMANDS: {title}.</string>
 
     <!-- =================================================================== -->
     <!-- SURFACE: NOTIFICATIONS (STAGE 2: NAG EARLY - NAGS 1-2)              -->
     <!-- =================================================================== -->
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
     <!-- Option 1: "still on your list: {title}." -->
-    <!-- Option 2: "friendly check-in on {title}. 🥚" -->
+    <!-- Option 2: "friendly check-in on {title}." -->
     <!-- Option 3: "waiting on {title}." -->
     <string name="notif_mild_early">still on your list: {title}.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "me again. {title} isn't doing itself. 👀" -->
+    <!-- Option 1: "me again. {title} isn't doing itself." -->
     <!-- Option 2: "swiping me away won't finish {title}." -->
     <!-- Option 3: "still yapping about {title}." -->
-    <string name="notif_spicy_early">me again. {title} isn\'t doing itself. 👀</string>
+    <string name="notif_spicy_early">me again. {title} isn\'t doing itself.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "I LIVE IN YOUR NOTIFICATION SHADE: {title}. 💀" -->
-    <!-- Option 2: "swiping only makes me stronger: {title}. 🔥" -->
-    <!-- Option 3: "you cannot escape {title}. 🥚" -->
-    <string name="notif_unhinged_early">I LIVE IN YOUR NOTIFICATION SHADE: {title}. 💀</string>
+    <!-- Option 1: "I LIVE IN YOUR NOTIFICATION SHADE: {title}." -->
+    <!-- Option 2: "swiping only makes me stronger: {title}." -->
+    <!-- Option 3: "you cannot escape {title}." -->
+    <string name="notif_unhinged_early">I LIVE IN YOUR NOTIFICATION SHADE: {title}.</string>
 
     <!-- =================================================================== -->
     <!-- SURFACE: NOTIFICATIONS (STAGE 3: NAG PERSISTENT - NAGS 3-4)         -->
     <!-- =================================================================== -->
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "keeping {title} on your radar. 🍳" -->
+    <!-- Option 1: "keeping {title} on your radar." -->
     <!-- Option 2: "please take a moment for {title}." -->
     <!-- Option 3: "second follow-up for {title}." -->
-    <string name="notif_mild_persistent">keeping {title} on your radar. 🍳</string>
+    <string name="notif_mild_persistent">keeping {title} on your radar.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "bro, do {title} already. 🔥" -->
+    <!-- Option 1: "bro, do {title} already." -->
     <!-- Option 2: "the skillet is getting hot: {title}." -->
     <!-- Option 3: "just tap Done on {title} and I leave." -->
-    <string name="notif_spicy_persistent">bro, do {title} already. 🔥</string>
+    <string name="notif_spicy_persistent">bro, do {title} already.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "ARE WE SPIRITUALLY ALLERGIC TO {title}? 💀" -->
-    <!-- Option 2: "I WILL VIBRATE YOUR POCKET TO ASHES: {title}. 🔥" -->
-    <!-- Option 3: "THE COOKED SCORE IS SIZZLING. DO {title}. 🥚" -->
-    <string name="notif_unhinged_persistent">ARE WE SPIRITUALLY ALLERGIC TO {title}? 💀</string>
+    <!-- Option 1: "ARE WE SPIRITUALLY ALLERGIC TO {title}?" -->
+    <!-- Option 2: "I WILL VIBRATE YOUR POCKET TO ASHES: {title}." -->
+    <!-- Option 3: "THE COOKED SCORE IS SIZZLING. DO {title}." -->
+    <string name="notif_unhinged_persistent">ARE WE SPIRITUALLY ALLERGIC TO {title}?</string>
 
     <!-- =================================================================== -->
     <!-- SURFACE: NOTIFICATIONS (STAGE 4: FINAL CALL / CRITICAL)             -->
     <!-- =================================================================== -->
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
     <!-- Option 1: "Important: {title} is now overdue." -->
-    <!-- Option 2: "Final call for {title}. 🫡" -->
+    <!-- Option 2: "Final call for {title}." -->
     <!-- Option 3: "Urgent commitment: {title}." -->
     <string name="notif_mild_final">Important: {title} is now overdue.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "DEFCON 1: {title} is officially burning. 🔥" -->
+    <!-- Option 1: "DEFCON 1: {title} is officially burning." -->
     <!-- Option 2: "You are getting cooked by {title}." -->
     <!-- Option 3: "Lock in right now. {title}." -->
-    <string name="notif_spicy_final">DEFCON 1: {title} is officially burning. 🔥</string>
+    <string name="notif_spicy_final">DEFCON 1: {title} is officially burning.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}. 💀" -->
-    <!-- Option 2: "FULL CODE RED CRISPY MELTDOWN: {title}. 🔥" -->
-    <!-- Option 3: "DO {title} OR I LEARN HOW TO WALK. 🥚" -->
-    <string name="notif_unhinged_final">ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}. 💀</string>
+    <!-- Option 1: "ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}." -->
+    <!-- Option 2: "FULL CODE RED CRISPY MELTDOWN: {title}." -->
+    <!-- Option 3: "DO {title} OR I LEARN HOW TO WALK." -->
+    <string name="notif_unhinged_final">ABSOLUTE MAXIMUM OVERHEAT: COMPLETE {title}.</string>
 
     <!-- =================================================================== -->
     <!-- SURFACE: EMPTY STATES                                               -->
@@ -152,7 +152,7 @@
     <!-- Option 1: "Snoozed for {duration}. I will be back. 👀" -->
     <!-- Option 2: "Borrowed time. See you in {duration}." -->
     <!-- Option 3: "Pushed by {duration}. Don't get comfortable." -->
-    <string name="toast_item_snoozed">Snoozed for {duration}. I will be back. 👀</string>
+    <string name="toast_item_snoozed">Snoozed for {duration}. I will be back.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
     <!-- Option 1: "Restored {title}." -->
@@ -230,28 +230,28 @@
     <!-- SURFACE: HINGLISH VIBES (values-hi-rLatn / In-app Toggle)           -->
     <!-- =================================================================== -->
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "bhai, {title} ka time ho gaya. nipta le! 🍳" -->
+    <!-- Option 1: "bhai, {title} ka time ho gaya. nipta le!" -->
     <!-- Option 2: "sun bhai: {title} abhi baaki hai." -->
     <!-- Option 3: "time aa gaya: {title}." -->
-    <string name="hinglish_notif_first">bhai, {title} ka time ho gaya. nipta le! 🍳</string>
+    <string name="hinglish_notif_first">bhai, {title} ka time ho gaya. nipta le!</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "abhi bhi pending? {title} khud nahi hone wala. 👀" -->
+    <!-- Option 1: "abhi bhi pending? {title} khud nahi hone wala." -->
     <!-- Option 2: "swipe karne se {title} khatam nahi hoga bhai." -->
     <!-- Option 3: "wapas aa gaya: {title}." -->
-    <string name="hinglish_notif_early">abhi bhi pending? {title} khud nahi hone wala. 👀</string>
+    <string name="hinglish_notif_early">abhi bhi pending? {title} khud nahi hone wala.</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "kuch toh sharam kar, {title} kab karega? 💀" -->
+    <!-- Option 1: "kuch toh sharam kar, {title} kab karega?" -->
     <!-- Option 2: "bohot procrastination ho gaya: {title} nipta." -->
     <!-- Option 3: "skillet garam ho raha hai: {title}." -->
-    <string name="hinglish_notif_persistent">kuch toh sharam kar, {title} kab karega? 💀</string>
+    <string name="hinglish_notif_persistent">kuch toh sharam kar, {title} kab karega?</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
-    <!-- Option 1: "FULL COOKED! abhi ke abhi {title} khatam kar! 🔥" -->
+    <!-- Option 1: "FULL COOKED! abhi ke abhi {title} khatam kar!" -->
     <!-- Option 2: "aakhri mauka bhai, {title} jal raha hai." -->
     <!-- Option 3: "phone rakh aur {title} karle pehle." -->
-    <string name="hinglish_notif_final">FULL COOKED! abhi ke abhi {title} khatam kar! 🔥</string>
+    <string name="hinglish_notif_final">FULL COOKED! abhi ke abhi {title} khatam kar!</string>
 
     <!-- TODO: Pick Option 1 (active), Option 2, or Option 3 -->
     <!-- Option 1: "kuch pending nahi hai. shaanti hi shaanti." -->
