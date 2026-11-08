@@ -75,6 +75,7 @@ fun TodayScreen(
     onBatchDelete: () -> Unit,
     onClearSelection: () -> Unit,
     onCookedScoreClick: () -> Unit,
+    onDismissCelebration: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var isTomorrowExpanded by remember { mutableStateOf(false) }
@@ -464,5 +465,12 @@ fun TodayScreen(
                 onSnoozeSelected = onBatchSnoozeSelected
             )
         }
+
+        // Confetti-free steam puff celebration on completing a hot/toasty/cooked item (<800ms)
+        com.cooked.app.core.designsystem.components.SteamPuffCelebration(
+            visible = uiState.showCelebration,
+            message = "Not cooked today.",
+            onFinished = onDismissCelebration
+        )
     }
 }

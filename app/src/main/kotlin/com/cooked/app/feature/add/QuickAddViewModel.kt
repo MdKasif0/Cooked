@@ -126,6 +126,10 @@ class QuickAddViewModel @Inject constructor(
         }
     }
 
+    fun onSetKind(kind: ItemKind) {
+        _uiState.update { it.copy(overrideKind = kind) }
+    }
+
     fun onToggleCritical() {
         _uiState.update {
             it.copy(overrideCritical = !it.effectiveCritical)

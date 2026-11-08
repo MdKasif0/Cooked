@@ -7,6 +7,7 @@ import com.cooked.app.core.time.CookedClock
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.domain.deadline.HeatCalculator
 import com.cooked.app.domain.model.Item
+import com.cooked.app.domain.model.ItemKind
 import com.cooked.app.domain.model.ItemStatus
 import com.cooked.app.domain.repository.ItemRepository
 import com.cooked.app.scheduling.battery.ReliabilityChecker
@@ -158,7 +159,7 @@ class TodayViewModel @Inject constructor(
             if (item != null) {
                 val now = clock.now()
                 val isUrgent = item.isOverdue || item.critical ||
-                    (item.kind == ItemKind.DEADLINE && com.cooked.app.domain.deadline.HeatCalculator.calculate(item, now).level in listOf(HeatLevel.TOASTY, HeatLevel.COOKED))
+                    (item.kind == ItemKind.DEADLINE && HeatCalculator.calculate(item, now).heatLevel in listOf(HeatLevel.TOASTY, HeatLevel.COOKED))
                 if (isUrgent) {
                     _showCelebration.value = true
                 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="new_reminder"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:shortcutShortLabel="@string/shortcut_new_reminder"
+        android:shortcutLongLabel="@string/shortcut_new_reminder_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.cooked.app"
+            android:targetClass="com.cooked.app.feature.add.QuickAddActivity">
+            <extra android:name="extra_force_kind" android:value="REMINDER" />
+        </intent>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="new_deadline"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:shortcutShortLabel="@string/shortcut_new_deadline"
+        android:shortcutLongLabel="@string/shortcut_new_deadline_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.cooked.app"
+            android:targetClass="com.cooked.app.feature.add.QuickAddActivity">
+            <extra android:name="extra_force_kind" android:value="DEADLINE" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="today_view"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:shortcutShortLabel="@string/shortcut_today"
+        android:shortcutLongLabel="@string/shortcut_today_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.cooked.app"
+            android:targetClass="com.cooked.app.MainActivity">
+            <extra android:name="navigate_to" android:value="today" />
+        </intent>
+    </shortcut>
+</shortcuts>

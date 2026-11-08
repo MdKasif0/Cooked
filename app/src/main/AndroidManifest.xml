@@ -27,6 +27,25 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity
+            android:name=".feature.add.QuickAddActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Cooked.Translucent"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.cooked.app.action.QUICK_ADD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -66,17 +85,64 @@
             </intent-filter>
         </receiver>
 
-        <!-- Jetpack Glance Widget Receiver -->
+        <activity
+            android:name=".widget.CountdownConfigActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Cooked">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <!-- Glance Widget Receivers -->
         <receiver
-            android:name=".widget.CookedGlanceReceiver"
+            android:name=".widget.QuickAddWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/cooked_widget_info" />
+                android:resource="@xml/quick_add_widget_info" />
         </receiver>
+
+        <receiver
+            android:name=".widget.NextUpWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/next_up_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.CountdownWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/countdown_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.CookedScoreWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/cooked_score_widget_info" />
+        </receiver>
+
+        <!-- Widget Minute-Aligned Refresh Receiver -->
+        <receiver
+            android:name=".widget.WidgetMinuteReceiver"
+            android:exported="false" />
 
         <!-- Quick Settings Tile Service -->
         <service

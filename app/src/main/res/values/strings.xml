@@ -1,6 +1,24 @@
 <resources>
     <string name="app_tagline">so you\'re not cooked.</string>
 
+    <!-- App Shortcuts -->
+    <string name="shortcut_new_reminder">New reminder</string>
+    <string name="shortcut_new_reminder_long">Create a new reminder</string>
+    <string name="shortcut_new_deadline">New deadline</string>
+    <string name="shortcut_new_deadline_long">Create a new deadline</string>
+    <string name="shortcut_today">Today</string>
+    <string name="shortcut_today_long">View today\'s agenda</string>
+
+    <!-- Widgets -->
+    <string name="widget_quick_add_title">Cooked: Quick Add</string>
+    <string name="widget_quick_add_description">Add a reminder or deadline in under 3 seconds.</string>
+    <string name="widget_next_up_title">Cooked: Next Up</string>
+    <string name="widget_next_up_description">Your next items with one-tap completion.</string>
+    <string name="widget_countdown_title">Cooked: Countdown</string>
+    <string name="widget_countdown_description">Live tabular countdown for your most pressing deadline.</string>
+    <string name="widget_score_title">Cooked: Score</string>
+    <string name="widget_score_description">Mini workload gauge showing if you\'re cooked.</string>
+
     <!-- Navigation -->
     <string name="nav_reminders">Reminders</string>
     <string name="nav_deadlines">Deadlines</string>
