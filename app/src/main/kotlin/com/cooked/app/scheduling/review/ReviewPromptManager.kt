@@ -1,8 +1,8 @@
 package com.cooked.app.scheduling.review
 
 import android.app.Activity
+import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.data.datastore.UserPreferencesRepository
-import com.cooked.app.domain.model.HeatLevel
 import com.cooked.app.domain.model.Item
 import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.coroutines.flow.first

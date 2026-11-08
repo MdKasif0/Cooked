@@ -154,9 +154,9 @@ class RevenueCatBillingManager @Inject constructor(
 
         return suspendCancellableCoroutine { continuation ->
             try {
-                Purchases.sharedInstance.purchasePackage(
-                    activity,
-                    pkg,
+                val params = com.revenuecat.purchases.PurchaseParams.Builder(activity, pkg).build()
+                Purchases.sharedInstance.purchase(
+                    params,
                     object : PurchaseCallback {
                         override fun onCompleted(
                             storeTransaction: StoreTransaction,

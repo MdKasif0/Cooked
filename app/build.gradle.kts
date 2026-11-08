@@ -24,6 +24,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreFile = file("../release.keystore")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("COOKED_KEYSTORE_PASSWORD") ?: "cooked_keystore_pass"
+                keyAlias = System.getenv("COOKED_KEY_ALIAS") ?: "cooked_key"
+                keyPassword = System.getenv("COOKED_KEY_PASSWORD") ?: "cooked_key_pass"
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -33,6 +45,8 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             resValue("string", "app_name", "Cooked")
+            val releaseSigning = signingConfigs.getByName("release")
+            signingConfig = if (releaseSigning.storeFile?.exists() == true) releaseSigning else signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -48,6 +62,7 @@ android {
     buildFeatures {
         compose = true
         resValues = true
+        buildConfig = true
     }
 
     sourceSets {

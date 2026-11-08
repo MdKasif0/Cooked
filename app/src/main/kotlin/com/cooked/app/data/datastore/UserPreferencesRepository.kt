@@ -175,6 +175,10 @@ class UserPreferencesRepository @Inject constructor(
         context.dataStore.edit { it[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] = epochDay }
     }
 
+    suspend fun resetForTesting() {
+        context.dataStore.edit { it.clear() }
+    }
+
     private companion object {
         inline fun <reified T : Enum<T>> parseEnum(value: String?, default: T): T {
             if (value == null) return default

@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.core.telemetry.TelemetryImpl
 import com.cooked.app.core.util.SampleDataSeeder
+import com.cooked.app.data.billing.EntitlementRepositoryImpl
 import com.cooked.app.data.datastore.UserPreferencesRepository
 import com.cooked.app.data.db.CookedDatabase
 import com.cooked.app.domain.backup.BackupManager
@@ -85,12 +87,17 @@ class SettingsViewModelTest {
             itemEventDao = database.itemEventDao()
         )
 
+        val entitlementRepo = EntitlementRepositoryImpl(userPrefsRepo)
+        val telemetry = TelemetryImpl(userPrefsRepo, database.itemEventDao())
+
         viewModel = SettingsViewModel(
             preferencesRepository = userPrefsRepo,
             backupManager = backupManager,
             alarmScheduler = alarmScheduler,
             reliabilityChecker = reliabilityChecker,
-            sampleDataSeeder = sampleDataSeeder
+            sampleDataSeeder = sampleDataSeeder,
+            entitlementRepository = entitlementRepo,
+            telemetry = telemetry
         )
     }
 

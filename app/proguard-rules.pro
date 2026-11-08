@@ -1,12 +1,43 @@
-# Room Proguard Rules
+# -----------------------------------------------------------------------------
+# Cooked R8 / ProGuard Optimization Rules
+# Ensures R8 minification preserves Room, Serialization, Glance, Alarms & Billing
+# -----------------------------------------------------------------------------
+
+# 1. Android Manifest Entry Points (Alarms, Boot, Receivers, Widgets)
+-keep class com.cooked.app.scheduling.receivers.** { *; }
+-keep class com.cooked.app.scheduling.alarm.** { *; }
+-keep class com.cooked.app.widget.** { *; }
+-keep class com.cooked.app.ui.quickadd.** { *; }
+-keep class com.cooked.app.CookedApplication { *; }
+-keep class com.cooked.app.MainActivity { *; }
+
+# 2. Glance AppWidgets
+-keep class androidx.glance.** { *; }
+-keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
+-keep class * extends androidx.glance.appwidget.GlanceAppWidgetReceiver { *; }
+-keep class * implements androidx.glance.appwidget.action.ActionCallback { *; }
+
+# 3. WorkManager
+-keep class * extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+-keep class * extends androidx.work.CoroutineWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+-keep class com.cooked.app.scheduling.work.** { *; }
+
+# 4. Room Database & SQLite
 -keepclassmembers class * extends androidx.room.RoomDatabase {
     public void clearAllTables();
 }
 -keep class * extends androidx.room.RoomDatabase
+-keep class com.cooked.app.data.db.** { *; }
+-keep class com.cooked.app.data.entity.** { *; }
+-keep interface com.cooked.app.data.dao.** { *; }
 -dontwarn androidx.room.paging.**
 
-# KotlinX Serialization
--keepattributes *Annotation*,InnerClasses
+# 5. KotlinX Serialization
+-keepattributes *Annotation*,InnerClasses,Signature
 -dontnote kotlinx.serialization.SerializationKt
 -keepclassmembers class * {
     *** Companion;
@@ -17,10 +48,20 @@
 -keepclassmembers class * implements kotlinx.serialization.KSerializer {
     *** Companion;
 }
--keep,allowobfuscation,allowshrinking class * {
-    <fields>;
-}
+-keep class com.cooked.app.domain.model.** { *; }
+-keep class com.cooked.app.domain.backup.** { *; }
 
-# RevenueCat
+# 6. RevenueCat & Google Play Billing
 -keep class com.revenuecat.purchases.** { *; }
 -dontwarn com.revenuecat.purchases.**
+-keep class com.android.billingclient.api.** { *; }
+-dontwarn com.android.billingclient.api.**
+
+# 7. Google Play In-App Review & App Updates
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
+
+# 8. Hilt Dependency Injection
+-keep class * extends dagger.hilt.internal.GeneratedComponent { *; }
+-keep class * implements dagger.hilt.internal.GeneratedComponent { *; }
+-keep class * implements dagger.hilt.internal.GeneratedComponentManager { *; }
