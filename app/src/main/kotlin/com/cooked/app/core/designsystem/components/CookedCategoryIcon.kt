@@ -15,7 +15,7 @@ import com.cooked.app.core.designsystem.CookedTheme
 data class CategoryIconOption(
     val key: String,
     val label: String,
-    @DrawableRes val iconRes: Int
+    @get:DrawableRes val iconRes: Int
 )
 
 object CategoryIcons {
@@ -91,3 +91,4 @@ fun CookedCategoryIcon(
         modifier = modifier.size(size)
     )
 }
+

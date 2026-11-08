@@ -56,9 +56,9 @@ import com.cooked.app.core.designsystem.FlameOrange
 import com.cooked.app.core.designsystem.PressureChill
 import com.cooked.app.core.designsystem.PressureCrispy
 import com.cooked.app.core.time.TimeUtils
-import com.cooked.app.domain.deadline.HeatLevel
+import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.domain.model.CookedLevel
-import com.cooked.app.feature.egg.EggMascot
 import com.cooked.app.ui.components.CountdownTimerText
 import com.cooked.app.ui.components.PressureBadge
 

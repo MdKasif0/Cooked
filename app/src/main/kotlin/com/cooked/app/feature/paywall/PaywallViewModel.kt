@@ -43,7 +43,6 @@ class PaywallViewModel @Inject constructor(
         val benefits = listOf(
             PaywallBenefit(
                 id = "critical_alarm",
-                iconEmoji = "",
                 iconRes = R.drawable.ic_emergency_siren,
                 title = "Critical Alarm Alerts",
                 description = "Full-screen waking alarms that bypass silent mode until explicitly acknowledged.",
@@ -51,7 +50,6 @@ class PaywallViewModel @Inject constructor(
             ),
             PaywallBenefit(
                 id = "custom_nag",
-                iconEmoji = "",
                 iconRes = R.drawable.ic_cat_bell,
                 title = "Custom Nag Intervals & Rules",
                 description = "Set per-item 1m to 60m custom nagging frequency and max-nag safety limits.",
@@ -59,7 +57,6 @@ class PaywallViewModel @Inject constructor(
             ),
             PaywallBenefit(
                 id = "insights_range",
-                iconEmoji = "",
                 iconRes = R.drawable.ic_chart_analytics,
                 title = "Deep Insights & All History",
                 description = "Unlock 30d/90d/All productivity charts, snooze heatmaps, and latency trends.",
@@ -67,7 +64,6 @@ class PaywallViewModel @Inject constructor(
             ),
             PaywallBenefit(
                 id = "live_widgets",
-                iconEmoji = "",
                 iconRes = R.drawable.ic_cat_routine,
                 title = "Countdown & Score Widgets",
                 description = "Live urgency countdowns and Cooked Score gauges directly on your home screen.",

@@ -78,7 +78,6 @@ import androidx.compose.ui.unit.sp
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.components.CookedCategoryIcon
-import com.cooked.app.R
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.core.util.AppIconStyle

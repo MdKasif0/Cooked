@@ -57,8 +57,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cooked.app.R
 import com.cooked.app.core.designsystem.FlameOrange
 import com.cooked.app.core.designsystem.PressureCrispy
-import com.cooked.app.domain.deadline.HeatLevel
-import com.cooked.app.feature.egg.EggMascot
+import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.EggMascot
 import com.cooked.app.ui.components.CookedScoreCard
 import com.cooked.app.ui.components.ReminderCard
 

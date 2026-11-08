@@ -9,7 +9,6 @@ import androidx.core.graphics.drawable.IconCompat
 import com.cooked.app.MainActivity
 import com.cooked.app.R
 import com.cooked.app.domain.model.Item
-import com.cooked.app.scheduling.notification.EmojiBitmapHelper
 
 object ShortcutHelper {
 

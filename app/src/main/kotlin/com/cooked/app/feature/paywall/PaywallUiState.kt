@@ -6,8 +6,7 @@ import com.cooked.app.domain.billing.SubscriptionPlan
 
 data class PaywallBenefit(
     val id: String,
-    val iconEmoji: String = "",
-    @DrawableRes val iconRes: Int = R.drawable.ic_premium_crown,
+    @get:DrawableRes val iconRes: Int = R.drawable.ic_premium_crown,
     val title: String,
     val description: String,
     val isHighlighted: Boolean = false
