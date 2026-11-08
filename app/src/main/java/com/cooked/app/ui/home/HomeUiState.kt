@@ -33,3 +33,4 @@ data class HomeUiState(
     val isOemWarningVisible: Boolean = false,
     val isLoading: Boolean = true
 )
+

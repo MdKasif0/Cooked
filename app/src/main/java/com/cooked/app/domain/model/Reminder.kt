@@ -25,3 +25,4 @@ data class Reminder(
     val isNagging: Boolean
         get() = !isCompleted && (isNaggingActive || isOverdue)
 }
+

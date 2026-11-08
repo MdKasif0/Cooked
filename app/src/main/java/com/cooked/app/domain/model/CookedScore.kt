@@ -15,3 +15,4 @@ data class CookedScore(
     val headline: String,
     val advice: String
 )
+

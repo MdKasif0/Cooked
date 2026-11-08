@@ -13,3 +13,4 @@ import com.cooked.app.data.local.entity.ReminderEntity
 abstract class CookedDatabase : RoomDatabase() {
     abstract fun reminderDao(): ReminderDao
 }
+

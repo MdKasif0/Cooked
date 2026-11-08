@@ -59,3 +59,4 @@ class CalculateCookedScoreUseCaseTest {
         assertThat(result.score).isGreaterThan(10)
     }
 }
+

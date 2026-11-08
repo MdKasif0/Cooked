@@ -29,3 +29,4 @@ val PressureChill = Color(0xFF00B0FF)      // Blue / Chilling
 val PressureSimmer = Color(0xFFFFB300)     // Amber / Simmering
 val PressureCooked = Color(0xFFFF5722)     // Orange / Cooked
 val PressureCrispy = Color(0xFFFF1744)     // Crimson / Deep Fried
+

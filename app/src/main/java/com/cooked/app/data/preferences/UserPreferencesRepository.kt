@@ -44,3 +44,4 @@ class UserPreferencesRepository @Inject constructor(
         }
     }
 }
+

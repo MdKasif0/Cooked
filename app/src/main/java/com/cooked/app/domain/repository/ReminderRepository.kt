@@ -15,3 +15,4 @@ interface ReminderRepository {
     suspend fun setNaggingActive(id: String, isNagging: Boolean, incrementNagCount: Boolean = false)
     suspend fun deleteReminder(id: String)
 }
+

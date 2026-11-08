@@ -13,3 +13,4 @@ data class AddEditUiState(
     val canSave: Boolean = false,
     val isDeleteVisible: Boolean = false
 )
+

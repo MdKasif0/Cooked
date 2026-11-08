@@ -66,3 +66,4 @@ class CalculatePressureUseCaseTest {
         assertThat(result).isEqualTo(PressureLevel.CHILL)
     }
 }
+

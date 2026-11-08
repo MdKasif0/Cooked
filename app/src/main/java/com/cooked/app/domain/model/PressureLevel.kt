@@ -6,3 +6,4 @@ enum class PressureLevel {
     HIGH_HEAT,
     CRISPY
 }
+

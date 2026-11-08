@@ -85,3 +85,4 @@ class CookedGlanceWidget : GlanceAppWidget() {
 class CookedGlanceReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = CookedGlanceWidget()
 }
+

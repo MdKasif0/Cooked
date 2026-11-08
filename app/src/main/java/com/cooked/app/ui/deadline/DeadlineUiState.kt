@@ -24,3 +24,4 @@ data class DeadlineUiState(
     ),
     val isLoading: Boolean = true
 )
+
