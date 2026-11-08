@@ -68,6 +68,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.core.designsystem.CookedTheme
+import com.cooked.app.R
+import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.EggMascot
+import com.cooked.app.core.util.AppIconStyle
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Translate
+import androidx.compose.material.icons.rounded.VolumeUp
 import com.cooked.app.core.designsystem.ThemeMode
 import com.cooked.app.core.designsystem.components.CookedCard
 import com.cooked.app.core.designsystem.components.CookedSwitch
@@ -93,6 +100,10 @@ fun SettingsScreen(
     onDynamicColorToggled: (Boolean) -> Unit,
     onNagIntervalSelected: (Int) -> Unit,
     onPersonalitySelected: (Personality) -> Unit,
+    onHinglishVibesToggled: (Boolean) -> Unit = {},
+    onInAppSoundsToggled: (Boolean) -> Unit = {},
+    onAppIconSelected: (AppIconStyle) -> Unit = {},
+    onPreviewSound: (Int) -> Unit = {},
     onDailyCapacityChanged: (Int) -> Unit,
     onWeekStartsOnChanged: (DayOfWeek) -> Unit,
     onExportBackup: ((String) -> Unit) -> Unit,
@@ -500,6 +511,241 @@ fun SettingsScreen(
                             personality = uiState.personality,
                             sampleTitle = "Submit tax audit"
                         )
+                    }
+                }
+            }
+
+            // 5b. HINGLISH VIBES
+            item {
+                SectionHeader(title = "Hinglish Vibes", subtitle = "Roasts in casual, affectionate Indian peer phrasing.")
+                CookedCard(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Translate,
+                            contentDescription = null,
+                            tint = CookedTheme.colors.primary
+                        )
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Hinglish Notifications & Empty States",
+                                style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                color = CookedTheme.colors.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "e.g. \"bhai, {title} abhi bhi pending? 👀\" (UI labels remain in English)",
+                                style = CookedTheme.typography.bodySmall,
+                                color = CookedTheme.colors.onSurfaceVariant
+                            )
+                        }
+                        CookedSwitch(
+                            checked = uiState.hinglishVibes,
+                            onCheckedChange = onHinglishVibesToggled
+                        )
+                    }
+                }
+            }
+
+            // 5c. SOUNDS SPEC
+            item {
+                SectionHeader(title = "Audible Heat & Sounds", subtitle = "Custom cues per urgency stage. Silent when phone is muted.")
+                CookedCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        // Sound row 1: Normal Nag (sizzle_soft)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Rounded.VolumeUp, contentDescription = null, tint = CookedTheme.colors.primary)
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Normal Nag Sound",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "sizzle_soft (gentle warm sizzle)",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            IconButton(onClick = { onPreviewSound(R.raw.sizzle_soft) }) {
+                                Icon(Icons.Rounded.PlayArrow, contentDescription = "Preview sizzle_soft", tint = CookedTheme.colors.primary)
+                            }
+                        }
+
+                        // Sound row 2: Escalated Nag (sizzle_loud)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Rounded.VolumeUp, contentDescription = null, tint = CookedTheme.colors.heatFor(HeatLevel.WARM).color)
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Escalated Nag Sound",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "sizzle_loud (crisp pan burst)",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            IconButton(onClick = { onPreviewSound(R.raw.sizzle_loud) }) {
+                                Icon(Icons.Rounded.PlayArrow, contentDescription = "Preview sizzle_loud", tint = CookedTheme.colors.primary)
+                            }
+                        }
+
+                        // Sound row 3: Critical Final Call (kettle)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Rounded.VolumeUp, contentDescription = null, tint = CookedTheme.colors.heatFor(HeatLevel.COOKED).color)
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Critical Final Call",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "kettle (harmonic whistle tone)",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            IconButton(onClick = { onPreviewSound(R.raw.kettle) }) {
+                                Icon(Icons.Rounded.PlayArrow, contentDescription = "Preview kettle", tint = CookedTheme.colors.primary)
+                            }
+                        }
+
+                        // Sound row 4: In-app Done Pop Toggle
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "In-App \"done_pop\" Audio Cue",
+                                    style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    color = CookedTheme.colors.onSurface
+                                )
+                                Text(
+                                    text = "Quiet bubble pop when completing a task.",
+                                    style = CookedTheme.typography.bodySmall,
+                                    color = CookedTheme.colors.onSurfaceVariant
+                                )
+                            }
+                            IconButton(onClick = { onPreviewSound(R.raw.done_pop) }) {
+                                Icon(Icons.Rounded.PlayArrow, contentDescription = "Preview done_pop", tint = CookedTheme.colors.primary)
+                            }
+                            CookedSwitch(
+                                checked = uiState.inAppSoundsEnabled,
+                                onCheckedChange = onInAppSoundsToggled
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 5d. APP ICON STYLE (PRO)
+            item {
+                SectionHeader(title = "App Icon Style", subtitle = "Choose your signature mascot icon.")
+                CookedCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        AppIconStyle.entries.forEach { iconStyle ->
+                            val isSelected = uiState.appIconChoice == iconStyle.name
+                            val isLocked = iconStyle.proOnly && !uiState.isPro
+
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (isLocked) {
+                                            onNavigateToPaywall()
+                                        } else {
+                                            onAppIconSelected(iconStyle)
+                                        }
+                                    },
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (isSelected) CookedTheme.colors.surfaceContainerHigh else CookedTheme.colors.surfaceContainerLow,
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp,
+                                    if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.outlineVariant
+                                )
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    EggMascot(
+                                        level = when (iconStyle) {
+                                            AppIconStyle.DEFAULT -> HeatLevel.WARM
+                                            AppIconStyle.BURNT -> HeatLevel.COOKED
+                                            AppIconStyle.MIDNIGHT -> HeatLevel.CHILL
+                                        },
+                                        size = 36.dp,
+                                        animated = false
+                                    )
+
+                                    Spacer(modifier = Modifier.width(12.dp))
+
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(
+                                                text = iconStyle.title,
+                                                style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                                                color = CookedTheme.colors.onSurface
+                                            )
+                                            if (iconStyle.proOnly) {
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                Surface(
+                                                    shape = RoundedCornerShape(4.dp),
+                                                    color = CookedTheme.colors.primary
+                                                ) {
+                                                    Text(
+                                                        text = "PRO",
+                                                        style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.ExtraBold),
+                                                        color = Color.White,
+                                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (isSelected) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.Check,
+                                            contentDescription = "Selected",
+                                            tint = CookedTheme.colors.primary
+                                        )
+                                    } else if (isLocked) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.Lock,
+                                            contentDescription = "Locked",
+                                            tint = CookedTheme.colors.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
