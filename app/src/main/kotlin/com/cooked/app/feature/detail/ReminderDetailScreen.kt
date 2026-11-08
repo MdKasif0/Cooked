@@ -72,6 +72,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -81,7 +82,9 @@ import com.cooked.app.R
 import com.cooked.app.core.config.FeatureFlags
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.CategoryIcons
 import com.cooked.app.core.designsystem.components.CookedCard
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.components.CookedTopBar
 import com.cooked.app.core.designsystem.components.CountdownText
 import com.cooked.app.core.designsystem.components.HeatBar
@@ -215,7 +218,7 @@ fun ReminderDetailScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            // Emoji trigger button
+                            // Custom SVG Icon trigger button
                             Surface(
                                 shape = CircleShape,
                                 color = CookedTheme.colors.surfaceContainerHigh,
@@ -224,9 +227,10 @@ fun ReminderDetailScreen(
                                     .clickable { onShowEmojiPicker(true) }
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
-                                    Text(
-                                        text = item.emoji ?: "🎯",
-                                        fontSize = 26.sp
+                                    CookedCategoryIcon(
+                                        keyOrEmoji = item.emoji,
+                                        size = 28.dp,
+                                        tint = CookedTheme.colors.primary
                                     )
                                 }
                             }
@@ -256,7 +260,7 @@ fun ReminderDetailScreen(
                             )
                         }
 
-                        // Emoji Picker Row (if expanded)
+                        // Premium SVG Icon Picker Row (if expanded)
                         AnimatedVisibility(visible = uiState.showEmojiPicker) {
                             Column(
                                 modifier = Modifier
@@ -265,7 +269,7 @@ fun ReminderDetailScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Choose Emoji Icon:",
+                                    text = "Choose Category Icon:",
                                     style = CookedTheme.typography.labelSmall,
                                     color = CookedTheme.colors.onSurfaceVariant
                                 )
@@ -275,20 +279,26 @@ fun ReminderDetailScreen(
                                         .horizontalScroll(rememberScrollState()),
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    emojis.forEach { emoji ->
+                                    CategoryIcons.all.forEach { option ->
+                                        val isSelected = item.emoji == option.key || item.emoji == option.label
                                         Surface(
                                             shape = CircleShape,
-                                            color = if (item.emoji == emoji) CookedTheme.colors.primaryContainer else CookedTheme.colors.surfaceContainerLow,
+                                            color = if (isSelected) CookedTheme.colors.primaryContainer else CookedTheme.colors.surfaceContainerLow,
                                             modifier = Modifier
-                                                .size(40.dp)
-                                                .clickable { onEmojiSelected(emoji) }
+                                                .size(42.dp)
+                                                .clickable { onEmojiSelected(option.key) }
                                         ) {
                                             Box(contentAlignment = Alignment.Center) {
-                                                Text(text = emoji, fontSize = 20.sp)
+                                                Icon(
+                                                    painter = painterResource(id = option.iconRes),
+                                                    contentDescription = option.label,
+                                                    tint = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.onSurfaceVariant,
+                                                    modifier = Modifier.size(22.dp)
+                                                )
                                             }
                                         }
                                     }
-                                    // Option to remove emoji
+                                    // Option to remove icon
                                     TextButton(onClick = { onEmojiSelected(null) }) {
                                         Text("None", color = CookedTheme.colors.primary)
                                     }
@@ -371,7 +381,13 @@ fun ReminderDetailScreen(
                                             shape = RoundedCornerShape(12.dp),
                                             modifier = Modifier.weight(1f)
                                         ) {
-                                            Text("Start cooking 🍳", style = CookedTheme.typography.labelLarge)
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_cat_focus),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("Start cooking", style = CookedTheme.typography.labelLarge)
                                         }
                                     }
 
@@ -387,7 +403,14 @@ fun ReminderDetailScreen(
                                             shape = RoundedCornerShape(12.dp),
                                             modifier = Modifier.weight(1f)
                                         ) {
-                                            Text("Save me 🆘", style = CookedTheme.typography.labelLarge)
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_sos_rescue),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(18.dp),
+                                                tint = CookedTheme.colors.cooked.color
+                                            )
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("Save me", style = CookedTheme.typography.labelLarge)
                                         }
                                     }
                                 }
@@ -1064,7 +1087,7 @@ private fun TimelineEventRow(
             Triple("Work session ($progress% done)", Icons.Rounded.Whatshot, CookedTheme.colors.primary)
         }
         ItemEventType.SNITCH_OFFERED -> Triple("Snitch prompt shown", Icons.Rounded.NotificationsActive, CookedTheme.colors.heatFor(HeatLevel.WARM).color)
-        ItemEventType.SNITCH_SENT -> Triple("Snitched to accountability buddy 💬", Icons.Rounded.NotificationsActive, CookedTheme.colors.heatFor(HeatLevel.TOASTY).color)
+        ItemEventType.SNITCH_SENT -> Triple("Snitched to accountability buddy", Icons.Rounded.NotificationsActive, CookedTheme.colors.heatFor(HeatLevel.TOASTY).color)
     }
 
     CookedCard(modifier = modifier.fillMaxWidth()) {

@@ -72,6 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.components.HeatChip
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.ItemKind
@@ -264,13 +265,18 @@ fun ReminderRow(
                         Spacer(modifier = Modifier.width(8.dp))
                     }
 
-                    // Emoji or subtle indicator
-                    if (item.emoji != null) {
-                        Text(
-                            text = item.emoji!!,
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(end = 10.dp)
-                        )
+                    // Custom SVG category icon
+                    if (!item.emoji.isNullOrBlank()) {
+                        Box(
+                            modifier = Modifier.padding(end = 10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CookedCategoryIcon(
+                                keyOrEmoji = item.emoji,
+                                size = 20.dp,
+                                tint = CookedTheme.colors.primary
+                            )
+                        }
                     }
 
                     // Title & Metadata

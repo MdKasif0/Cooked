@@ -91,7 +91,7 @@ fun RescuePlanScreen(
                     .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
                 PrimaryButton(
-                    text = "Lock It In (${plan.sessions.size} Sessions) 🔒",
+                    text = "Lock It In (${plan.sessions.size} Sessions)",
                     onClick = onLockItIn,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -175,7 +175,7 @@ fun RescuePlanScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "👉 ${push.reason}",
+                                        text = push.reason,
                                         style = CookedTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
                                         color = CookedTheme.colors.onSurface
                                     )

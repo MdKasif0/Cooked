@@ -20,9 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
 
@@ -99,7 +101,14 @@ fun WorkloadWarningBanner(
                         contentColor = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
                     )
                 ) {
-                    Text("Save me 🆘", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_sos_rescue),
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = CookedTheme.colors.heatFor(HeatLevel.COOKED).color
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Save me", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }

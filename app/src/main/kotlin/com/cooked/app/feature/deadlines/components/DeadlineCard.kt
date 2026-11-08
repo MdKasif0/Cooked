@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.core.designsystem.components.CookedCard
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.core.designsystem.components.CountdownText
 import com.cooked.app.core.designsystem.components.HeatBar
 import com.cooked.app.core.designsystem.components.HeatChip
@@ -80,11 +81,16 @@ fun DeadlineCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = item.emoji ?: "🎯",
-                        fontSize = 22.sp,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
+                    Box(
+                        modifier = Modifier.padding(end = 10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CookedCategoryIcon(
+                            keyOrEmoji = item.emoji,
+                            size = 22.dp,
+                            tint = CookedTheme.colors.primary
+                        )
+                    }
                     Text(
                         text = item.title,
                         style = CookedTheme.typography.titleMedium,

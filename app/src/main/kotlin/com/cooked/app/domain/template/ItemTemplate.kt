@@ -26,7 +26,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_assignment",
             name = "Assignment",
-            emoji = "📝",
+            emoji = "assignment",
             kind = ItemKind.DEADLINE,
             defaultTitle = "Assignment submission",
             effortMinutes = 180, // 3h
@@ -36,7 +36,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_exam",
             name = "Exam",
-            emoji = "🎓",
+            emoji = "exam",
             kind = ItemKind.DEADLINE,
             defaultTitle = "Exam preparation",
             effortMinutes = 600, // 10h
@@ -46,7 +46,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_bill_rent",
             name = "Bill / Rent",
-            emoji = "💳",
+            emoji = "bill",
             kind = ItemKind.REMINDER,
             defaultTitle = "Pay rent / utility bill",
             recurrence = Recurrence.Monthly(dayOfMonth = 1),
@@ -55,7 +55,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_renewal",
             name = "Renewal",
-            emoji = "🔄",
+            emoji = "renewal",
             kind = ItemKind.REMINDER,
             defaultTitle = "Annual subscription renewal",
             recurrence = Recurrence.Yearly
@@ -63,7 +63,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_recharge",
             name = "Mobile Recharge",
-            emoji = "📱",
+            emoji = "mobile",
             kind = ItemKind.REMINDER,
             defaultTitle = "Recharge mobile plan",
             recurrence = Recurrence.EveryNDays(28)
@@ -71,7 +71,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_routine",
             name = "Daily Routine",
-            emoji = "⏰",
+            emoji = "routine",
             kind = ItemKind.REMINDER,
             defaultTitle = "Daily scheduled routine",
             recurrence = Recurrence.Daily,
@@ -80,7 +80,7 @@ object BuiltInTemplates {
         ItemTemplate(
             id = "template_call",
             name = "Call someone",
-            emoji = "📞",
+            emoji = "call",
             kind = ItemKind.REMINDER,
             defaultTitle = "Call ",
             nagIntervalMinutes = 30

@@ -47,6 +47,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import com.cooked.app.core.config.FeatureFlags
+import com.cooked.app.core.designsystem.components.CookedCategoryIcon
 import com.cooked.app.domain.template.BuiltInTemplates
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -265,7 +266,10 @@ fun QuickAddBottomSheet(
                         FilterChip(
                             selected = false,
                             onClick = { viewModel.applyTemplate(template) },
-                            label = { Text("${template.emoji} ${template.name}") },
+                            leadingIcon = {
+                                CookedCategoryIcon(keyOrEmoji = template.emoji, size = 16.dp)
+                            },
+                            label = { Text(template.name) },
                             colors = FilterChipDefaults.filterChipColors(
                                 containerColor = CookedTheme.colors.surfaceContainer,
                                 labelColor = CookedTheme.colors.onSurface
@@ -609,17 +613,17 @@ private fun buildPreviewText(uiState: QuickAddUiState): String {
     }
 
     when (val rec = uiState.effectiveRecurrence) {
-        Recurrence.Daily -> parts.add("🔁 Daily")
-        Recurrence.Weekdays -> parts.add("🔁 Weekdays")
-        is Recurrence.Weekly -> parts.add("🔁 Weekly")
-        is Recurrence.Monthly -> parts.add("🔁 Monthly")
-        is Recurrence.EveryNDays -> parts.add("🔁 Every ${rec.n}d")
-        Recurrence.Yearly -> parts.add("🔁 Yearly")
+        Recurrence.Daily -> parts.add("Daily")
+        Recurrence.Weekdays -> parts.add("Weekdays")
+        is Recurrence.Weekly -> parts.add("Weekly")
+        is Recurrence.Monthly -> parts.add("Monthly")
+        is Recurrence.EveryNDays -> parts.add("Every ${rec.n}d")
+        Recurrence.Yearly -> parts.add("Yearly")
         null -> {}
     }
 
     if (uiState.effectiveCritical) {
-        parts.add("🚨 Urgent")
+        parts.add("Urgent")
     }
 
     return parts.joinToString(" • ")

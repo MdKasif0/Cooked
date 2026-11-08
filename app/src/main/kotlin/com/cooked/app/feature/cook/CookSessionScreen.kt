@@ -243,7 +243,7 @@ fun CookSessionScreen(
             ) {
                 if (!isRunning) {
                     PrimaryButton(
-                        text = "Start Cooking ($selectedMinutes min) 🔥",
+                        text = "Start Cooking ($selectedMinutes min)",
                         onClick = {
                             secondsRemaining = selectedMinutes * 60
                             isRunning = true
@@ -283,7 +283,7 @@ fun CookSessionScreen(
 
                         // Stop / Finish
                         PrimaryButton(
-                            text = "Finish Early 🏁",
+                            text = "Finish Early",
                             onClick = {
                                 isRunning = false
                                 showFinishSheet = true
@@ -369,7 +369,7 @@ fun CookSessionScreen(
                     }
 
                     PrimaryButton(
-                        text = "Save Progress & Drop Heat 📉",
+                        text = "Save Progress & Drop Heat",
                         onClick = {
                             showFinishSheet = false
                             onFinishSession(completedMinutes, progressSliderValue.toInt())
