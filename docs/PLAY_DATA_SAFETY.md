@@ -55,3 +55,4 @@ This document contains the exact responses to enter into the Google Play Console
 ## 3. Privacy Policy URL
 
 - When publishing on Google Play Console, supply the public URL hosting `docs/PRIVACY_POLICY.md` (e.g., `https://cooked.app/privacy` or your raw GitHub repository privacy link).
+

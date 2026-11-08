@@ -37,4 +37,7 @@ object ReliabilityNavRoute
 object OnboardingNavRoute
 
 @Serializable
-object PaywallNavRoute
+data class PaywallNavRoute(
+    val entryPoint: String = "generic",
+    val featureHint: String? = null
+)

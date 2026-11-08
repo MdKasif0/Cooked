@@ -6,3 +6,4 @@
     <include domain="file" path="datastore/cooked_user_prefs.preferences_pb" />
     <exclude domain="root" path="cache" />
 </full-backup-content>
+

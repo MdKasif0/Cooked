@@ -1,9 +1,26 @@
 package com.cooked.app.feature.paywall
 
-data class PaywallUiState(
-    val title: String = "Cooked Pro 🔥",
-    val description: String = "Unlock unlimited deadline items, custom nag sounds, and deep stats.",
-    val price: String = "$1.99 / month",
-    val isPurchasing: Boolean = false
+import com.cooked.app.domain.billing.SubscriptionPlan
+
+data class PaywallBenefit(
+    val id: String,
+    val iconEmoji: String,
+    val title: String,
+    val description: String,
+    val isHighlighted: Boolean = false
 )
 
+data class PaywallUiState(
+    val headline: String = "Never be cooked again.",
+    val subheadline: String = "Everything in Free forever, plus full-screen alarm escalation, deep insights, and live countdown widgets.",
+    val benefits: List<PaywallBenefit> = emptyList(),
+    val availablePlans: List<SubscriptionPlan> = emptyList(),
+    val selectedPlanId: String = "",
+    val isPurchasing: Boolean = false,
+    val isRestoring: Boolean = false,
+    val isPro: Boolean = false,
+    val errorMessage: String? = null,
+    val successMessage: String? = null,
+    val showTermsDialog: Boolean = false,
+    val showPrivacyDialog: Boolean = false
+)

@@ -34,7 +34,10 @@ data class UserPrefs(
     val firstDayUsed: LocalDate? = null,
     val isPro: Boolean = false,
     val dailyCapacityMinutes: Int = 120,
-    val preferredNudgeTime: LocalTime = LocalTime.of(18, 0)
+    val preferredNudgeTime: LocalTime = LocalTime.of(18, 0),
+    val telemetryEnabled: Boolean = true,
+    val toastyCompletionsCount: Int = 0,
+    val lastReviewPromptEpochDay: Long = 0L
 )
 
 @Singleton
@@ -56,6 +59,9 @@ class UserPreferencesRepository @Inject constructor(
         val OEM_WARNING_DISMISSED = booleanPreferencesKey("oem_warning_dismissed")
         val DAILY_CAPACITY_MINUTES = intPreferencesKey("daily_capacity_minutes")
         val PREFERRED_NUDGE_TIME = stringPreferencesKey("preferred_nudge_time")
+        val TELEMETRY_ENABLED = booleanPreferencesKey("telemetry_enabled")
+        val TOASTY_COMPLETIONS_COUNT = intPreferencesKey("toasty_completions_count")
+        val LAST_REVIEW_PROMPT_EPOCH_DAY = androidx.datastore.preferences.core.longPreferencesKey("last_review_prompt_epoch_day")
     }
 
     val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
@@ -72,7 +78,10 @@ class UserPreferencesRepository @Inject constructor(
             firstDayUsed = parseDate(preferences[PreferencesKeys.FIRST_DAY_USED]),
             isPro = preferences[PreferencesKeys.IS_PRO] ?: false,
             dailyCapacityMinutes = preferences[PreferencesKeys.DAILY_CAPACITY_MINUTES] ?: 120,
-            preferredNudgeTime = parseTime(preferences[PreferencesKeys.PREFERRED_NUDGE_TIME], LocalTime.of(18, 0))
+            preferredNudgeTime = parseTime(preferences[PreferencesKeys.PREFERRED_NUDGE_TIME], LocalTime.of(18, 0)),
+            telemetryEnabled = preferences[PreferencesKeys.TELEMETRY_ENABLED] ?: true,
+            toastyCompletionsCount = preferences[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] ?: 0,
+            lastReviewPromptEpochDay = preferences[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] ?: 0L
         )
     }
 
@@ -146,6 +155,24 @@ class UserPreferencesRepository @Inject constructor(
 
     suspend fun setPreferredNudgeTime(time: LocalTime) {
         context.dataStore.edit { it[PreferencesKeys.PREFERRED_NUDGE_TIME] = time.toString() }
+    }
+
+    suspend fun setTelemetryEnabled(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.TELEMETRY_ENABLED] = enabled }
+    }
+
+    suspend fun incrementToastyCompletions(): Int {
+        var newCount = 0
+        context.dataStore.edit { prefs ->
+            val current = prefs[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] ?: 0
+            newCount = current + 1
+            prefs[PreferencesKeys.TOASTY_COMPLETIONS_COUNT] = newCount
+        }
+        return newCount
+    }
+
+    suspend fun setLastReviewPromptEpochDay(epochDay: Long) {
+        context.dataStore.edit { it[PreferencesKeys.LAST_REVIEW_PROMPT_EPOCH_DAY] = epochDay }
     }
 
     private companion object {

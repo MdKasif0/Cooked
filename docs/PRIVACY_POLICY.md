@@ -60,3 +60,4 @@ You have complete control over your data:
 
 If you have questions about this Privacy Policy or Cooked's offline architecture, please email us at:
 **privacy@cooked.app**
+

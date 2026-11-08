@@ -9,3 +9,4 @@ data class ReliabilityUiState(
     val testResultMessage: String? = null,
     val isLoading: Boolean = false
 )
+

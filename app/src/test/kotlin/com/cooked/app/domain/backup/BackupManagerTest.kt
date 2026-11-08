@@ -225,3 +225,4 @@ class BackupManagerTest {
         assertThat(alarmScheduler.rescheduleCount).isAtLeast(1)
     }
 }
+

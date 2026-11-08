@@ -14,3 +14,4 @@
         <include domain="file" path="datastore/cooked_user_prefs.preferences_pb" />
     </device-transfer>
 </data-extraction-rules>
+

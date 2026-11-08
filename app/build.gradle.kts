@@ -113,6 +113,13 @@ dependencies {
     // RevenueCat
     implementation(libs.revenuecat.purchases)
 
+    // Google Play In-App Review & Flexible Update
+    implementation(libs.play.review)
+    implementation(libs.play.app.update)
+
+    // LeakCanary (debug only)
+    debugImplementation(libs.leakcanary.android)
+
     // Firebase (only attached if google-services.json exists or flag is set)
     if (enableFirebase) {
         implementation(platform(libs.firebase.bom))
