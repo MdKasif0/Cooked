@@ -64,42 +64,44 @@ object WidgetUpdater {
      */
     fun checkAndScheduleMinuteUpdates(context: Context) {
         updaterScope.launch {
-            val entryPoint = EntryPointAccessors.fromApplication(
-                context.applicationContext,
-                WidgetUpdaterEntryPoint::class.java
-            )
-            val repo = entryPoint.itemRepository()
-            val now = Instant.now()
-            val nextHour = now.plus(Duration.ofHours(1))
+            try {
+                val entryPoint = EntryPointAccessors.fromApplication(
+                    context.applicationContext,
+                    WidgetUpdaterEntryPoint::class.java
+                )
+                val repo = entryPoint.itemRepository()
+                val now = Instant.now()
+                val nextHour = now.plus(Duration.ofHours(1))
 
-            val hasUrgentCountdown = repo.getActiveItems().any { item ->
-                item.kind == ItemKind.DEADLINE && item.dueAt.isAfter(now) && item.dueAt.isBefore(nextHour)
-            }
+                val hasUrgentCountdown = repo.getActiveItems().any { item ->
+                    item.kind == ItemKind.DEADLINE && item.dueAt.isAfter(now) && item.dueAt.isBefore(nextHour)
+                }
 
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-            val intent = Intent(context, WidgetMinuteReceiver::class.java).apply {
-                action = ACTION_MINUTE_TICK
-            }
-            val pendingIntent = PendingIntent.getBroadcast(
-                context,
-                REQUEST_CODE_MINUTE_TICK,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
+                val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+                val intent = Intent(context, WidgetMinuteReceiver::class.java).apply {
+                    action = ACTION_MINUTE_TICK
+                }
+                val pendingIntent = PendingIntent.getBroadcast(
+                    context,
+                    REQUEST_CODE_MINUTE_TICK,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
 
-            if (hasUrgentCountdown && alarmManager != null) {
-                // Next minute-aligned tick (e.g. aligned to the start of the next minute)
-                val nextMinuteEpochMillis = ((System.currentTimeMillis() / 60000L) + 1) * 60000L
-                try {
-                    alarmManager.setAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP,
-                        nextMinuteEpochMillis,
-                        pendingIntent
-                    )
-                } catch (_: SecurityException) {}
-            } else {
-                alarmManager?.cancel(pendingIntent)
-            }
+                if (hasUrgentCountdown && alarmManager != null) {
+                    // Next minute-aligned tick (e.g. aligned to the start of the next minute)
+                    val nextMinuteEpochMillis = ((System.currentTimeMillis() / 60000L) + 1) * 60000L
+                    try {
+                        alarmManager.setAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            nextMinuteEpochMillis,
+                            pendingIntent
+                        )
+                    } catch (_: SecurityException) {}
+                } else {
+                    alarmManager?.cancel(pendingIntent)
+                }
+            } catch (_: Exception) {}
         }
     }
 }
