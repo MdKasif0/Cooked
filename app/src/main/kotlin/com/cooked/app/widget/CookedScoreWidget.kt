@@ -8,6 +8,8 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -32,6 +34,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.cooked.app.MainActivity
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.HeatLevel
 import com.cooked.app.domain.deadline.CookedScoreCalculator
 import com.cooked.app.domain.repository.ItemRepository
@@ -68,12 +71,12 @@ class CookedScoreWidget : GlanceAppWidget() {
         )
 
         val score = scoreResult.score
-        val heatColor = when (scoreResult.heatLevel) {
-            HeatLevel.CHILL -> CookedGlanceColors.Chill
-            HeatLevel.WARM -> CookedGlanceColors.Warm
-            HeatLevel.TOASTY -> CookedGlanceColors.Toasty
-            HeatLevel.COOKED -> CookedGlanceColors.Cooked
-            HeatLevel.DONE -> CookedGlanceColors.Chill
+        val (heatColor, eggRes) = when (scoreResult.heatLevel) {
+            HeatLevel.CHILL -> CookedGlanceColors.Chill to R.drawable.egg_chill
+            HeatLevel.WARM -> CookedGlanceColors.Warm to R.drawable.egg_warm
+            HeatLevel.TOASTY -> CookedGlanceColors.Toasty to R.drawable.egg_toasty
+            HeatLevel.COOKED -> CookedGlanceColors.Cooked to R.drawable.egg_cooked
+            HeatLevel.DONE -> CookedGlanceColors.Chill to R.drawable.egg_done
         }
 
         provideContent {
@@ -88,10 +91,19 @@ class CookedScoreWidget : GlanceAppWidget() {
                         .clickable(actionStartActivity<MainActivity>()),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Mascot Egg
+                    Image(
+                        provider = ImageProvider(eggRes),
+                        contentDescription = "Cooked Mascot",
+                        modifier = GlanceModifier.size(38.dp)
+                    )
+
+                    Spacer(modifier = GlanceModifier.width(10.dp))
+
                     // Mini Gauge: Rounded box with big score number
                     Box(
                         modifier = GlanceModifier
-                            .size(46.dp)
+                            .size(44.dp)
                             .background(CookedGlanceColors.SurfaceContainer)
                             .cornerRadius(12.dp),
                         contentAlignment = Alignment.Center
@@ -100,13 +112,13 @@ class CookedScoreWidget : GlanceAppWidget() {
                             text = "$score",
                             style = TextStyle(
                                 color = heatColor,
-                                fontSize = 20.sp,
+                                fontSize = 19.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
                     }
 
-                    Spacer(modifier = GlanceModifier.width(12.dp))
+                    Spacer(modifier = GlanceModifier.width(10.dp))
 
                     // Labels
                     Column(
