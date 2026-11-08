@@ -11,43 +11,29 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.rememberNavController
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.cooked.app.core.designsystem.CookedTheme
-import com.cooked.app.ui.navigation.AddEditReminderRoute
-import com.cooked.app.ui.navigation.CookedNavGraph
-import com.cooked.app.ui.navigation.HomeRoute
+import com.cooked.app.ui.navigation.CookedAppShell
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val requestNotificationPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
-            // Notification permission handled
-        }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         checkNotificationPermission()
 
-        val openQuickAdd = intent?.getBooleanExtra("OPEN_QUICK_ADD", false) == true
-
         setContent {
             CookedTheme {
-                val navController = rememberNavController()
-
-                LaunchedEffect(openQuickAdd) {
-                    if (openQuickAdd) {
-                        navController.navigate(AddEditReminderRoute())
-                    }
-                }
-
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    CookedNavGraph(navController = navController)
+                    CookedAppShell()
                 }
             }
         }
@@ -67,4 +53,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
