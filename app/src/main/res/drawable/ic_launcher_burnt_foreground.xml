@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Burnt Mascot Egg Foreground -->
+    <!-- Burnt Crust -->
+    <path
+        android:fillColor="#292524"
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2.5"
+        android:strokeLineJoin="round"
+        android:pathData="M37,33 C47,27 63,28 71,35 C79,42 81,56 76,66 C70,76 52,79 41,76 C30,73 22,62 25,49 C28,36 29,38 37,33 Z" />
+
+    <!-- Dark Ember Yolk -->
+    <path
+        android:fillColor="#B91C1C"
+        android:strokeColor="#0C0A09"
+        android:strokeWidth="2.5"
+        android:pathData="M41,54 A13,13 0 1 0 67,54 A13,13 0 1 0 41,54 Z" />
+
+    <!-- Charred Smoke Wisps -->
+    <path
+        android:strokeColor="#78716C"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M52,22 C50,18 55,16 53,12" />
+
+    <!-- Dramatic X Eyes -->
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M48,51 L54,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M54,51 L48,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M57,51 L63,57" />
+    <path
+        android:strokeColor="#FEF08A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M63,51 L57,57" />
+</vector>
