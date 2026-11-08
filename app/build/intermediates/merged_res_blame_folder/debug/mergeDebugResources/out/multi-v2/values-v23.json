@@ -4,7 +4,7 @@
             "outputFile": "com.cooked.app-mergeDebugResources-72:/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/a88caa09c1d0549300a277637ef7c034/transformed/glance-appwidget-1.1.1/res/values-v23/values-v23.xml",
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/a5598ea1b3cbfdcb2bb6e3f9e59da41b/transformed/glance-appwidget-1.1.1/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/73dcd85d7a68b6fddc87ca615ceff861/transformed/work-runtime-2.10.0/res/values-v23/values-v23.xml",
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/b2cc8dc001ac7caaf163c02f1a6d86eb/transformed/work-runtime-2.10.0/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

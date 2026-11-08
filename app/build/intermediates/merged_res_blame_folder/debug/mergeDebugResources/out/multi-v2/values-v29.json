@@ -4,7 +4,7 @@
             "outputFile": "com.cooked.app-mergeDebugResources-72:/values-v29/values-v29.xml",
             "map": [
                 {
-                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/a88caa09c1d0549300a277637ef7c034/transformed/glance-appwidget-1.1.1/res/values-v29/values-v29.xml",
+                    "source": "/Users/mdkasifuddin/.gradle/caches/9.5.0/transforms/a5598ea1b3cbfdcb2bb6e3f9e59da41b/transformed/glance-appwidget-1.1.1/res/values-v29/values-v29.xml",
                     "from": {
                         "startLines": "2,5,19,22,25,26,27",
                         "startColumns": "4,4,4,4,4,4,4",

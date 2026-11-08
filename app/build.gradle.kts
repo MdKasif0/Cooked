@@ -59,6 +59,9 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
