@@ -128,6 +128,9 @@ dependencies {
     // RevenueCat
     implementation(libs.revenuecat.purchases)
 
+    // ML Kit Text Recognition
+    implementation(libs.mlkit.text.recognition)
+
     // Google Play In-App Review & Flexible Update
     implementation(libs.play.review)
     implementation(libs.play.app.update)

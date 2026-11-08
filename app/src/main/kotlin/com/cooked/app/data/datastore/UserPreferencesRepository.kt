@@ -43,7 +43,13 @@ data class UserPrefs(
     val soundEscalatedNag: String = "sizzle_loud",
     val soundCritical: String = "kettle",
     val inAppSoundsEnabled: Boolean = true,
-    val appIconChoice: String = "DEFAULT"
+    val appIconChoice: String = "DEFAULT",
+    val snitchSnoozeThreshold: Int = 3,
+    val snitchContactName: String = "",
+    val snitchPreferredApp: String = "whatsapp",
+    val liveCountdownEnabled: Boolean = true,
+    val calendarCapacityEnabled: Boolean = false,
+    val selectedCalendarIds: Set<String> = emptySet()
 )
 
 @Singleton
