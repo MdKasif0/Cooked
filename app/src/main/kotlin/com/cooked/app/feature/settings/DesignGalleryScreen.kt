@@ -76,6 +76,7 @@ fun DesignGalleryScreen(
     currentThemeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit,
     onNavigateBack: () -> Unit,
+    onSeedData: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -445,6 +446,25 @@ fun DesignGalleryScreen(
                 PrimaryButton(
                     text = "Open Sample Bottom Sheet",
                     onClick = { showSheet = true },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            // Debug Data Seeder Section
+            item {
+                SectionHeader(title = "Debug Seed Data")
+                Text(
+                    text = "Seed 30 realistic items across past 60 days and next 30 days with events, checklists, and stats for charts.",
+                    style = CookedTheme.typography.bodySmall,
+                    color = CookedTheme.colors.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                PrimaryButton(
+                    text = "Seed 30 Realistic Items 🔥",
+                    onClick = {
+                        onSeedData?.invoke()
+                        snackbarMessage = "Successfully seeded 30 items with events!"
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

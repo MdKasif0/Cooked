@@ -2,6 +2,10 @@ package com.cooked.app.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.cooked.app.data.dao.AnalyticsDao
+import com.cooked.app.data.dao.ChecklistStepDao
+import com.cooked.app.data.dao.ItemDao
+import com.cooked.app.data.dao.ItemEventDao
 import com.cooked.app.data.dao.ReminderDao
 import com.cooked.app.data.db.CookedDatabase
 import dagger.Module
@@ -29,8 +33,27 @@ object DatabaseModule {
     }
 
     @Provides
+    fun provideItemDao(database: CookedDatabase): ItemDao {
+        return database.itemDao()
+    }
+
+    @Provides
+    fun provideChecklistStepDao(database: CookedDatabase): ChecklistStepDao {
+        return database.checklistStepDao()
+    }
+
+    @Provides
+    fun provideItemEventDao(database: CookedDatabase): ItemEventDao {
+        return database.itemEventDao()
+    }
+
+    @Provides
+    fun provideAnalyticsDao(database: CookedDatabase): AnalyticsDao {
+        return database.analyticsDao()
+    }
+
+    @Provides
     fun provideReminderDao(database: CookedDatabase): ReminderDao {
         return database.reminderDao()
     }
 }
-

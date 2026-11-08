@@ -259,7 +259,8 @@ fun CookedAppShell(
                     DesignGalleryScreen(
                         currentThemeMode = settingsUiState.themeMode,
                         onThemeModeChange = settingsViewModel::onThemeModeSelected,
-                        onNavigateBack = { navController.popBackStack() }
+                        onNavigateBack = { navController.popBackStack() },
+                        onSeedData = settingsViewModel::seedSampleData
                     )
                 }
 

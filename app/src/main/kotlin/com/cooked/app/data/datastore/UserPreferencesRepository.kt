@@ -9,56 +9,155 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.cooked.app.core.designsystem.ThemeMode
+import com.cooked.app.domain.model.Personality
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "cooked_user_prefs")
+
+data class UserPrefs(
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val dynamicColor: Boolean = false,
+    val defaultNagInterval: Int = 10,
+    val quietHoursStart: LocalTime = LocalTime.of(22, 0),
+    val quietHoursEnd: LocalTime = LocalTime.of(8, 0),
+    val weekStartsOn: DayOfWeek = DayOfWeek.MONDAY,
+    val onboardingDone: Boolean = false,
+    val personality: Personality = Personality.SPICY,
+    val hapticsOn: Boolean = true,
+    val firstDayUsed: LocalDate? = null,
+    val isPro: Boolean = false
+)
 
 @Singleton
 class UserPreferencesRepository @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
     private object PreferencesKeys {
-        val OEM_WARNING_DISMISSED = booleanPreferencesKey("oem_warning_dismissed")
-        val DEFAULT_NAG_INTERVAL_MINUTES = intPreferencesKey("default_nag_interval_minutes")
         val THEME_MODE = stringPreferencesKey("theme_mode")
+        val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+        val DEFAULT_NAG_INTERVAL = intPreferencesKey("default_nag_interval")
+        val QUIET_HOURS_START = stringPreferencesKey("quiet_hours_start")
+        val QUIET_HOURS_END = stringPreferencesKey("quiet_hours_end")
+        val WEEK_STARTS_ON = stringPreferencesKey("week_starts_on")
+        val ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
+        val PERSONALITY = stringPreferencesKey("personality")
+        val HAPTICS_ON = booleanPreferencesKey("haptics_on")
+        val FIRST_DAY_USED = stringPreferencesKey("first_day_used")
+        val IS_PRO = booleanPreferencesKey("is_pro")
+        val OEM_WARNING_DISMISSED = booleanPreferencesKey("oem_warning_dismissed")
     }
 
-    val isOemWarningDismissed: Flow<Boolean> = context.dataStore.data.map { preferences ->
-        preferences[PreferencesKeys.OEM_WARNING_DISMISSED] ?: false
+    val userPrefs: Flow<UserPrefs> = context.dataStore.data.map { preferences ->
+        UserPrefs(
+            themeMode = parseEnum(preferences[PreferencesKeys.THEME_MODE], ThemeMode.SYSTEM),
+            dynamicColor = preferences[PreferencesKeys.DYNAMIC_COLOR] ?: false,
+            defaultNagInterval = preferences[PreferencesKeys.DEFAULT_NAG_INTERVAL] ?: 10,
+            quietHoursStart = parseTime(preferences[PreferencesKeys.QUIET_HOURS_START], LocalTime.of(22, 0)),
+            quietHoursEnd = parseTime(preferences[PreferencesKeys.QUIET_HOURS_END], LocalTime.of(8, 0)),
+            weekStartsOn = parseEnum(preferences[PreferencesKeys.WEEK_STARTS_ON], DayOfWeek.MONDAY),
+            onboardingDone = preferences[PreferencesKeys.ONBOARDING_DONE] ?: false,
+            personality = parseEnum(preferences[PreferencesKeys.PERSONALITY], Personality.SPICY),
+            hapticsOn = preferences[PreferencesKeys.HAPTICS_ON] ?: true,
+            firstDayUsed = parseDate(preferences[PreferencesKeys.FIRST_DAY_USED]),
+            isPro = preferences[PreferencesKeys.IS_PRO] ?: false
+        )
     }
 
-    val defaultNagIntervalMinutes: Flow<Int> = context.dataStore.data.map { preferences ->
-        preferences[PreferencesKeys.DEFAULT_NAG_INTERVAL_MINUTES] ?: 10
+    val themeMode: Flow<ThemeMode> = userPrefs.map { it.themeMode }
+    val dynamicColor: Flow<Boolean> = userPrefs.map { it.dynamicColor }
+    val defaultNagInterval: Flow<Int> = userPrefs.map { it.defaultNagInterval }
+    val defaultNagIntervalMinutes: Flow<Int> = defaultNagInterval
+    val isOemWarningDismissed: Flow<Boolean> = context.dataStore.data.map {
+        it[PreferencesKeys.OEM_WARNING_DISMISSED] ?: false
+    }
+    val personality: Flow<Personality> = userPrefs.map { it.personality }
+    val isPro: Flow<Boolean> = userPrefs.map { it.isPro }
+    val hapticsOn: Flow<Boolean> = userPrefs.map { it.hapticsOn }
+
+    suspend fun setThemeMode(mode: ThemeMode) {
+        context.dataStore.edit { it[PreferencesKeys.THEME_MODE] = mode.name }
     }
 
-    val themeMode: Flow<ThemeMode> = context.dataStore.data.map { preferences ->
-        val raw = preferences[PreferencesKeys.THEME_MODE] ?: ThemeMode.SYSTEM.name
-        try {
-            ThemeMode.valueOf(raw)
-        } catch (_: Exception) {
-            ThemeMode.SYSTEM
-        }
+    suspend fun setDynamicColor(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.DYNAMIC_COLOR] = enabled }
     }
 
-    suspend fun setOemWarningDismissed(dismissed: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.OEM_WARNING_DISMISSED] = dismissed
-        }
+    suspend fun setDefaultNagInterval(minutes: Int) {
+        context.dataStore.edit { it[PreferencesKeys.DEFAULT_NAG_INTERVAL] = minutes }
     }
 
     suspend fun setDefaultNagIntervalMinutes(minutes: Int) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.DEFAULT_NAG_INTERVAL_MINUTES] = minutes
+        setDefaultNagInterval(minutes)
+    }
+
+    suspend fun setQuietHours(start: LocalTime, end: LocalTime) {
+        context.dataStore.edit {
+            it[PreferencesKeys.QUIET_HOURS_START] = start.toString()
+            it[PreferencesKeys.QUIET_HOURS_END] = end.toString()
         }
     }
 
-    suspend fun setThemeMode(mode: ThemeMode) {
-        context.dataStore.edit { preferences ->
-            preferences[PreferencesKeys.THEME_MODE] = mode.name
+    suspend fun setWeekStartsOn(dayOfWeek: DayOfWeek) {
+        context.dataStore.edit { it[PreferencesKeys.WEEK_STARTS_ON] = dayOfWeek.name }
+    }
+
+    suspend fun setOnboardingDone(done: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.ONBOARDING_DONE] = done }
+    }
+
+    suspend fun setPersonality(personality: Personality) {
+        context.dataStore.edit { it[PreferencesKeys.PERSONALITY] = personality.name }
+    }
+
+    suspend fun setHapticsOn(enabled: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.HAPTICS_ON] = enabled }
+    }
+
+    suspend fun setFirstDayUsed(date: LocalDate) {
+        context.dataStore.edit { it[PreferencesKeys.FIRST_DAY_USED] = date.toString() }
+    }
+
+    suspend fun setIsPro(isPro: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.IS_PRO] = isPro }
+    }
+
+    suspend fun setOemWarningDismissed(dismissed: Boolean) {
+        context.dataStore.edit { it[PreferencesKeys.OEM_WARNING_DISMISSED] = dismissed }
+    }
+
+    private companion object {
+        inline fun <reified T : Enum<T>> parseEnum(value: String?, default: T): T {
+            if (value == null) return default
+            return try {
+                java.lang.Enum.valueOf(T::class.java, value)
+            } catch (_: Exception) {
+                default
+            }
+        }
+
+        fun parseTime(value: String?, default: LocalTime): LocalTime {
+            if (value == null) return default
+            return try {
+                LocalTime.parse(value)
+            } catch (_: Exception) {
+                default
+            }
+        }
+
+        fun parseDate(value: String?): LocalDate? {
+            if (value == null) return null
+            return try {
+                LocalDate.parse(value)
+            } catch (_: Exception) {
+                null
+            }
         }
     }
 }

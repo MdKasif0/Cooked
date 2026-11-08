@@ -49,6 +49,14 @@ android {
         compose = true
         resValues = true
     }
+
+    sourceSets {
+        getByName("test").assets.srcDirs("$projectDir/schemas")
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 
@@ -130,4 +138,19 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.room.testing)
+    testImplementation("org.ow2.asm:asm:9.11.1")
+    testImplementation("org.ow2.asm:asm-commons:9.11.1")
+    testImplementation("org.ow2.asm:asm-util:9.11.1")
+    testImplementation("org.ow2.asm:asm-tree:9.11.1")
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.ow2.asm:asm:9.11.1")
+        force("org.ow2.asm:asm-commons:9.11.1")
+        force("org.ow2.asm:asm-util:9.11.1")
+        force("org.ow2.asm:asm-tree:9.11.1")
+    }
 }

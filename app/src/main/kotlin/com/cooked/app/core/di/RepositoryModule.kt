@@ -1,6 +1,8 @@
 package com.cooked.app.core.di
 
+import com.cooked.app.data.repository.ItemRepositoryImpl
 import com.cooked.app.data.repository.OfflineReminderRepository
+import com.cooked.app.domain.repository.ItemRepository
 import com.cooked.app.domain.repository.ReminderRepository
 import dagger.Binds
 import dagger.Module
@@ -14,8 +16,13 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
+    abstract fun bindItemRepository(
+        impl: ItemRepositoryImpl
+    ): ItemRepository
+
+    @Binds
+    @Singleton
     abstract fun bindReminderRepository(
         impl: OfflineReminderRepository
     ): ReminderRepository
 }
-
