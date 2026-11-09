@@ -22,8 +22,13 @@ fun OnboardingRoute(
         onFirstWinInputChanged = viewModel::onFirstWinInputChanged,
         onSaveFirstWin = viewModel::saveFirstWin,
         onRefreshPermissions = viewModel::refreshPermissions,
+        onPlanSelected = viewModel::onPlanSelected,
+        onPurchase = viewModel::purchaseSelectedPlan,
+        onRestore = viewModel::restorePurchases,
+        onClearBillingMessages = viewModel::clearBillingMessages,
+        onSetTermsVisible = viewModel::setTermsVisible,
+        onSetPrivacyVisible = viewModel::setPrivacyVisible,
         onComplete = onComplete,
         modifier = modifier
     )
 }
-
