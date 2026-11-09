@@ -7,6 +7,8 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
@@ -35,6 +37,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.cooked.app.MainActivity
+import com.cooked.app.R
 import com.cooked.app.domain.deadline.HeatCalculator
 import com.cooked.app.domain.model.Item
 import com.cooked.app.domain.model.ItemKind
@@ -219,13 +222,10 @@ private fun NextUpItemRow(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "✓",
-                style = TextStyle(
-                    color = CookedGlanceColors.Primary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            Image(
+                provider = ImageProvider(R.drawable.ic_widget_check),
+                contentDescription = "Mark done",
+                modifier = GlanceModifier.size(16.dp)
             )
         }
     }

@@ -173,10 +173,12 @@ class CountdownWidget : GlanceAppWidget() {
                                 modifier = GlanceModifier.defaultWeight()
                             )
                             if (!deadline.emoji.isNullOrBlank()) {
-                                Spacer(modifier = GlanceModifier.width(4.dp))
-                                Text(
-                                    text = deadline.emoji,
-                                    style = TextStyle(fontSize = 14.sp)
+                                val catRes = com.cooked.app.core.designsystem.components.CategoryIcons.resolve(deadline.emoji)
+                                Spacer(modifier = GlanceModifier.width(6.dp))
+                                Image(
+                                    provider = ImageProvider(catRes),
+                                    contentDescription = "Category",
+                                    modifier = GlanceModifier.size(16.dp)
                                 )
                             }
                         }

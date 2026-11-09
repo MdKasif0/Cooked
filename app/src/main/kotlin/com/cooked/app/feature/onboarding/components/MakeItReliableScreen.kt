@@ -145,7 +145,7 @@ fun ReliabilityOverviewCard(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPOSABLE: REUSABLE PERMISSION STATUS BADGE ([✓ Enabled])
+// COMPOSABLE: REUSABLE PERMISSION STATUS BADGE ([Enabled])
 // ─────────────────────────────────────────────────────────────────────────────
 @Composable
 fun PermissionStatusBadge(

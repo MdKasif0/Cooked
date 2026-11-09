@@ -124,11 +124,11 @@ fun TodayScreen(
             ) {
                 // 1. Editorial Greeting Section
                 item(key = "today_header") {
-                    val timeIcon = when (uiState.timeOfDayGreeting) {
-                        "Morning" -> "☀️"
-                        "Afternoon" -> "🌤️"
-                        "Evening" -> "🌇"
-                        else -> "🌙"
+                    val timeIconRes = when (uiState.timeOfDayGreeting) {
+                        "Morning" -> R.drawable.ic_time_morning
+                        "Afternoon" -> R.drawable.ic_time_afternoon
+                        "Evening" -> R.drawable.ic_time_evening
+                        else -> R.drawable.ic_time_night
                     }
 
                     val mascotHeat = when {
@@ -152,7 +152,12 @@ fun TodayScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text(text = timeIcon, fontSize = 13.sp)
+                                Icon(
+                                    painter = painterResource(timeIconRes),
+                                    contentDescription = uiState.timeOfDayGreeting,
+                                    tint = CookedTheme.colors.onSurfaceVariant,
+                                    modifier = Modifier.size(15.dp)
+                                )
                                 Text(
                                     text = "${uiState.timeOfDayGreeting} · ${uiState.dateTitle}",
                                     style = CookedTheme.typography.bodyMedium.copy(

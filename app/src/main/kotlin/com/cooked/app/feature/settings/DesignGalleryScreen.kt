@@ -423,7 +423,7 @@ fun DesignGalleryScreen(
             item {
                 SectionHeader(title = "Interactive Reminder Rows (Swipe L/R)")
                 Text(
-                    text = "Swipe right ➔ Done (green reveal) | Swipe left ➔ Snooze (warm reveal)",
+                    text = "Swipe right → Done (green reveal) | Swipe left → Snooze (warm reveal)",
                     style = CookedTheme.typography.bodySmall,
                     color = CookedTheme.colors.onSurfaceVariant
                 )

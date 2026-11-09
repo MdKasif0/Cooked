@@ -468,13 +468,14 @@ private fun ProHeroSection() {
             contentAlignment = Alignment.Center
         ) {
             // Little decorative sparkle in top-right
-            Text(
-                text = "✦",
-                color = ProDesignTokens.AccentVolt,
-                fontSize = 14.sp,
+            Icon(
+                painter = painterResource(R.drawable.ic_sparkle_celebration),
+                contentDescription = null,
+                tint = ProDesignTokens.AccentVolt,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .offset(x = (-12).dp, y = 8.dp)
+                    .size(14.dp)
             )
 
             // Crown Badge Container
@@ -842,8 +843,16 @@ private fun ProPlanSelectorSection(
                         .border(1.dp, ProDesignTokens.BorderSubtle, RoundedCornerShape(ProDesignTokens.RadiusPill))
                         .padding(horizontal = 9.dp, vertical = 4.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🎁 ", fontSize = 11.sp)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_gift_box),
+                            contentDescription = null,
+                            tint = ProDesignTokens.AccentVolt,
+                            modifier = Modifier.size(13.dp)
+                        )
                         Text(
                             text = "$trialDays-day free trial",
                             style = CookedTheme.typography.labelSmall.copy(

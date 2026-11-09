@@ -363,7 +363,7 @@ fun SmartInterpretationPreviewCard(
                 ) {
                     // Date Chip
                     if (dateLabel != null) {
-                        ExtractedChip(text = "📅 $dateLabel")
+                        ExtractedChip(text = dateLabel, iconRes = R.drawable.ic_chip_calendar)
                     }
 
                     // Separator dot
@@ -377,12 +377,12 @@ fun SmartInterpretationPreviewCard(
 
                     // Time Chip
                     if (timeLabel != null && !parsed.allDay) {
-                        ExtractedChip(text = "⏰ $timeLabel")
+                        ExtractedChip(text = timeLabel, iconRes = R.drawable.ic_chip_clock)
                     }
 
                     // Recurrence Chip
                     if (recurrenceLabel != null) {
-                        ExtractedChip(text = "🔄 $recurrenceLabel")
+                        ExtractedChip(text = recurrenceLabel, iconRes = R.drawable.ic_recurrence_repeat)
                     }
                 }
 
@@ -420,15 +420,26 @@ fun SmartInterpretationPreviewCard(
 @Composable
 private fun ExtractedChip(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @androidx.annotation.DrawableRes iconRes: Int? = null
 ) {
-    Box(
+    Row(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFF202A0E))
             .border(BorderStroke(1.dp, Color(0xFF2E3D12)), RoundedCornerShape(8.dp))
-            .padding(horizontal = 7.dp, vertical = 3.dp)
+            .padding(horizontal = 7.dp, vertical = 3.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        if (iconRes != null) {
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                tint = VibeTokens.PrimaryAccent,
+                modifier = Modifier.size(12.dp)
+            )
+        }
         Text(
             text = text,
             style = CookedTheme.typography.labelSmall.copy(
