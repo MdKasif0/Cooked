@@ -16,6 +16,7 @@
   <a href="https://developer.android.com/about/versions/15"><img src="https://img.shields.io/badge/Android-API%2026%2B%20(Target%2035)-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android" /></a>
   <a href="https://developer.android.com/training/data-storage/room"><img src="https://img.shields.io/badge/Room-SQLite%20(100%25%20Offline)-FF7043?style=flat-square" alt="Room" /></a>
   <a href="https://detekt.dev"><img src="https://img.shields.io/badge/Detekt-Passing-brightgreen?style=flat-square" alt="Detekt" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License: MIT" /></a>
 </p>
 
 ---
@@ -240,3 +241,10 @@ Generated APKs are located at:
 - [Accessibility & Performance Guide](docs/ACCESSIBILITY_AND_PERFORMANCE.md)
 - [Play Store Listing Details](docs/STORE_LISTING.md)
 - [Privacy Policy](docs/PRIVACY_POLICY.md)
+
+---
+
+## 📜 License
+
+Cooked is open-source software licensed under the **[MIT License](LICENSE)**.  
+Copyright © 2026 Md Kasif Uddin. All rights reserved.
