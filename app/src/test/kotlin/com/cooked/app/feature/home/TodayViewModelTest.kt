@@ -187,4 +187,25 @@ class TodayViewModelTest {
         assertFalse(viewModel.uiState.value.isMultiSelectMode)
         assertEquals(0, repository.getActiveItems().size)
     }
+
+    @Test
+    fun `clear all overdue marks overdue items as completed and updates headline`() = runTest(testDispatcher) {
+        backgroundScope.launch { viewModel.uiState.collect() }
+        val now = clock.now()
+        val overdue1 = createItem("Overdue 1", now.minus(Duration.ofHours(2)))
+        val overdue2 = createItem("Overdue 2", now.minus(Duration.ofHours(1)))
+        repository.create(overdue1)
+        repository.create(overdue2)
+        advanceUntilIdle()
+
+        assertEquals(2, viewModel.uiState.value.overdueItems.size)
+        assertEquals("overdue.", viewModel.uiState.value.greetingHighlight)
+
+        viewModel.onClearAllOverdue()
+        advanceUntilIdle()
+
+        assertEquals(0, viewModel.uiState.value.overdueItems.size)
+        assertEquals(2, viewModel.uiState.value.completedTodayCount)
+        assertEquals(100, viewModel.uiState.value.donePercentage)
+    }
 }

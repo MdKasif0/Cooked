@@ -54,6 +54,18 @@ class ItemRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun observeCompletedToday(): Flow<List<Item>> {
+        val now = clock.now()
+        val zone = clock.zone()
+        val today = now.atZone(zone).toLocalDate()
+        val startOfDay = today.atStartOfDay(zone).toInstant()
+        val endOfDay = today.plusDays(1).atStartOfDay(zone).toInstant().minus(1, ChronoUnit.MILLIS)
+
+        return itemDao.observeCompletedToday(startOfDay, endOfDay).map { list ->
+            list.map { it.toDomain() }
+        }
+    }
+
     override fun observeUpcoming(limit: Int): Flow<List<Item>> {
         val now = clock.now()
         return itemDao.observeUpcoming(now, limit).map { list ->

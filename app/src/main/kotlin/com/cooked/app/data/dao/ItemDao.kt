@@ -27,6 +27,10 @@ interface ItemDao {
     fun observeToday(startOfDay: Instant, endOfDay: Instant): Flow<List<ItemWithChecklist>>
 
     @Transaction
+    @Query("SELECT * FROM items WHERE deletedAt IS NULL AND status = 'DONE' AND completedAt >= :startOfDay AND completedAt <= :endOfDay ORDER BY completedAt DESC")
+    fun observeCompletedToday(startOfDay: Instant, endOfDay: Instant): Flow<List<ItemWithChecklist>>
+
+    @Transaction
     @Query("SELECT * FROM items WHERE deletedAt IS NULL AND status = 'ACTIVE' AND dueAt < :now ORDER BY dueAt ASC")
     fun observeOverdue(now: Instant): Flow<List<ItemWithChecklist>>
 

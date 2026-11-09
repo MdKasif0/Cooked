@@ -9,6 +9,7 @@ interface ItemRepository {
     val itemChanged: SharedFlow<String>
 
     fun observeToday(): Flow<List<Item>>
+    fun observeCompletedToday(): Flow<List<Item>>
     fun observeUpcoming(limit: Int = 50): Flow<List<Item>>
     fun observeOverdue(): Flow<List<Item>>
     fun observeDeadlines(): Flow<List<Item>>

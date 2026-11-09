@@ -71,7 +71,7 @@ fun EggMascot(
         isDone -> R.drawable.egg_done
         level == HeatLevel.WARM -> R.drawable.egg_warm
         level == HeatLevel.TOASTY -> R.drawable.egg_toasty
-        level == HeatLevel.COOKED -> R.drawable.egg_cooked
+        level == HeatLevel.COOKED -> R.drawable.egg_focused
         else -> R.drawable.egg_chill
     }
 

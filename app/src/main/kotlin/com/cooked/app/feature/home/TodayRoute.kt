@@ -30,6 +30,7 @@ fun TodayRoute(
         onDismissBatchSnooze = viewModel::dismissBatchSnoozeSheet,
         onBatchDelete = viewModel::onBatchDelete,
         onClearSelection = viewModel::clearSelection,
+        onClearAllOverdue = viewModel::onClearAllOverdue,
         onCookedScoreClick = onCookedScoreClick,
         onNavigateToReliability = onNavigateToReliability,
         onDismissCelebration = viewModel::dismissCelebration,

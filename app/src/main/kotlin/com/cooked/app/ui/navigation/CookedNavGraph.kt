@@ -7,13 +7,20 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.PersonOutline
 import androidx.compose.ui.Alignment
@@ -185,10 +192,19 @@ fun CookedAppShell(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val hasReliabilityWarning = androidx.compose.runtime.remember(context) {
+                    try {
+                        !com.cooked.app.scheduling.battery.ReliabilityChecker(context).check().canScheduleExactAlarms
+                    } catch (_: Exception) {
+                        false
+                    }
+                }
                 BrandHeader(
                     subtitle = currentTab?.subtitle ?: "",
-                    onReliabilityClick = { navController.navigate(OemGuideNavRoute) },
-                    onProfileClick = { navigateToTab(SettingsNavRoute) }
+                    hasReliabilityWarning = hasReliabilityWarning,
+                    onReliabilityClick = { navController.navigate(ReliabilityNavRoute) },
+                    onPersonalityClick = { navigateToTab(SettingsNavRoute) }
                 )
             }
         }
@@ -442,47 +458,94 @@ private fun isTabSwitch(
     return isTab(from) && isTab(to)
 }
 
-/** Brand row in the spirit of the references: mark + name + context line, round actions on the right. */
+/** Top Brand Header with app logo, subtitle, Reliability Center button, and Cooked Personality button. */
 @Composable
 private fun BrandHeader(
     subtitle: String,
+    hasReliabilityWarning: Boolean = false,
     onReliabilityClick: () -> Unit,
-    onProfileClick: () -> Unit
+    onPersonalityClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(CookedTheme.colors.background)
             .statusBarsPadding()
-            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 6.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        com.cooked.app.core.designsystem.components.CookedAppLogo(size = 44.dp)
+        com.cooked.app.core.designsystem.components.CookedAppLogo(size = 40.dp)
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "Cooked",
-                style = CookedTheme.typography.titleLarge,
+                style = CookedTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp),
                 color = CookedTheme.colors.onBackground
             )
             androidx.compose.animation.AnimatedContent(
-                targetState = subtitle,
+                targetState = subtitle.ifEmpty { "Your day, handled." },
                 transitionSpec = { fadeIn(tween(180)) togetherWith fadeOut(tween(120)) },
                 label = "brandSubtitle"
             ) { text ->
                 Text(
                     text = text,
-                    style = CookedTheme.typography.labelMedium,
+                    style = CookedTheme.typography.bodySmall.copy(fontSize = 12.sp),
                     color = CookedTheme.colors.onSurfaceVariant
                 )
             }
         }
-        CircleIconButton(
-            icon = Icons.Rounded.BatteryAlert,
-            contentDescription = stringResource(R.string.nav_oem_guide),
-            onClick = onReliabilityClick
-        )
+
+        // Reliability Center (battery icon + subtle amber indicator if permissions missing)
+        Box(contentAlignment = Alignment.TopEnd) {
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .background(if (CookedTheme.colors.isDark) CookedTheme.colors.surfaceContainer else Color.White)
+                    .border(
+                        1.dp,
+                        if (CookedTheme.colors.isDark) CookedTheme.colors.outlineVariant else Color(0xFFE1DFD5),
+                        CircleShape
+                    )
+                    .clickable(onClick = onReliabilityClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_battery_bolt),
+                    contentDescription = "Reliability Center",
+                    tint = CookedTheme.colors.onSurface,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+            if (hasReliabilityWarning) {
+                Box(
+                    modifier = Modifier
+                        .offset(x = 1.dp, y = (-1).dp)
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFFC28B36))
+                        .border(1.5.dp, CookedTheme.colors.background, CircleShape)
+                )
+            }
+        }
+
         Spacer(Modifier.width(10.dp))
-        AvatarBubble(size = 44.dp, onClick = onProfileClick)
+
+        // Cooked Personality (dark circular button with lime flame icon)
+        Box(
+            modifier = Modifier
+                .size(42.dp)
+                .clip(CircleShape)
+                .background(if (CookedTheme.colors.isDark) Color(0xFF1B1D17) else Color(0xFF11120F))
+                .clickable(onClick = onPersonalityClick),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_vibe_spicy),
+                contentDescription = "Personality Settings",
+                tint = Color(0xFFC6FF3D),
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 }

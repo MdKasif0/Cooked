@@ -43,6 +43,7 @@ class TodayViewModel @Inject constructor(
         itemRepository.observeOverdue(),
         itemRepository.observeUpcoming(limit = 20),
         itemRepository.observeDeadlines(),
+        itemRepository.observeCompletedToday(),
         userPreferencesRepository.userPrefs,
         _selectedItemIds,
         _showSnoozeSheetForItemId,
@@ -54,20 +55,30 @@ class TodayViewModel @Inject constructor(
         @Suppress("UNCHECKED_CAST")
         val overdueItemsRaw = args[1] as List<Item>
         @Suppress("UNCHECKED_CAST")
-        val upcomingItems = args[2] as List<Item>
+        val upcomingItemsRaw = args[2] as List<Item>
         @Suppress("UNCHECKED_CAST")
         val allDeadlines = args[3] as List<Item>
-        val prefs = args[4] as com.cooked.app.data.datastore.UserPrefs
         @Suppress("UNCHECKED_CAST")
-        val selectedIds = args[5] as Set<String>
-        val snoozeItemId = args[6] as String?
-        val showBatchSnooze = args[7] as Boolean
-        val showCelebration = args[8] as Boolean
+        val completedItems = args[4] as List<Item>
+        val prefs = args[5] as com.cooked.app.data.datastore.UserPrefs
+        @Suppress("UNCHECKED_CAST")
+        val selectedIds = args[6] as Set<String>
+        val snoozeItemId = args[7] as String?
+        val showBatchSnooze = args[8] as Boolean
+        val showCelebration = args[9] as Boolean
 
         val now = clock.now()
         val zone = clock.zone()
         val zdt = now.atZone(zone)
         val today = zdt.toLocalDate()
+        val hour = zdt.hour
+
+        val timeOfDayGreeting = when (hour) {
+            in 5..11 -> "Morning"
+            in 12..16 -> "Afternoon"
+            in 17..21 -> "Evening"
+            else -> "Late night"
+        }
 
         val dateTitle = DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.getDefault()).format(zdt)
         val endOfToday = today.plusDays(1).atStartOfDay(zone).toInstant().minusMillis(1)
@@ -92,14 +103,19 @@ class TodayViewModel @Inject constructor(
                     !it.dueAt.isAfter(endOfToday)
         }
 
-        // 4. Tomorrow Peek Items (max 3)
-        val tomorrowPeekItems = upcomingItems.filter {
+        // 4. Upcoming Items (after today, non-overdue)
+        val upcomingItems = upcomingItemsRaw.filter {
+            it.status == ItemStatus.ACTIVE && it.dueAt.isAfter(endOfToday)
+        }
+
+        // 5. Tomorrow Peek Items (max 3)
+        val tomorrowPeekItems = upcomingItemsRaw.filter {
             it.status == ItemStatus.ACTIVE &&
                     it.dueAt.isAfter(startOfTomorrow) &&
                     !it.dueAt.isAfter(endOfTomorrow)
         }.take(3)
 
-        // 5. Top 2 Hottest Deadlines
+        // 6. Top 2 Hottest Deadlines
         val activeDeadlines = allDeadlines.filter { it.status == ItemStatus.ACTIVE }
         val hottestDeadlines = activeDeadlines.map { deadline ->
             val heat = HeatCalculator.calculate(
@@ -113,8 +129,21 @@ class TodayViewModel @Inject constructor(
         }.sortedByDescending { it.second.ordinal }
             .take(2)
 
-        // 6. Voice Status Line
+        // 7. Contextual Greeting Headline & Highlight
         val totalTodayCount = overdueItems.size + nowItems.size + laterTodayItems.size
+        val completedCount = completedItems.size
+
+        val (greetingHeadline, greetingHighlight) = when {
+            overdueItems.size == 1 -> Pair("One overdue.\nDeep breath,\nknock it out.", "overdue.")
+            overdueItems.size > 1 -> Pair("${overdueItems.size} overdue.\nDeep breath,\nknock it out.", "overdue.")
+            totalTodayCount == 0 && completedCount > 0 -> Pair("Look at you,\ngetting things done.", "getting things done.")
+            totalTodayCount == 0 -> Pair("Nothing on fire today.\nEnjoy it.", "Enjoy it.")
+            hottestDeadlines.any { it.second in listOf(HeatLevel.COOKED, HeatLevel.TOASTY) } ->
+                Pair("Your deadlines are\napproaching. Stay ahead.", "Stay ahead.")
+            totalTodayCount in 1..2 -> Pair("Got things to do?\nLet's handle them.", "handle them.")
+            else -> Pair("You’re on a roll.\nKeep cooking.", "Keep cooking.")
+        }
+
         val voiceStatus = when {
             overdueItems.size == 1 -> "1 overdue. Deep breath, knock it out."
             overdueItems.size > 1 -> "${overdueItems.size} items overdue. Don't panic, just pick one."
@@ -124,7 +153,7 @@ class TodayViewModel @Inject constructor(
             else -> "$totalTodayCount items today. Pace yourself, you got this."
         }
 
-        // 7. Exact Alarm Check
+        // 8. Exact Alarm & Battery Reliability Check
         val canScheduleExact = try {
             reliabilityChecker.check().canScheduleExactAlarms
         } catch (_: Exception) {
@@ -132,12 +161,18 @@ class TodayViewModel @Inject constructor(
         }
 
         TodayUiState(
+            timeOfDayGreeting = timeOfDayGreeting,
             dateTitle = dateTitle,
+            greetingHeadline = greetingHeadline,
+            greetingHighlight = greetingHighlight,
             voiceStatus = voiceStatus,
             overdueItems = overdueItems,
             nowItems = nowItems,
             laterTodayItems = laterTodayItems,
+            upcomingItems = upcomingItems,
             tomorrowPeekItems = tomorrowPeekItems,
+            completedTodayItems = completedItems,
+            completedTodayCount = completedCount,
             hottestDeadlines = hottestDeadlines,
             selectedItemIds = selectedIds,
             isMultiSelectMode = selectedIds.isNotEmpty(),
@@ -165,6 +200,12 @@ class TodayViewModel @Inject constructor(
                 }
             }
             itemRepository.markDone(itemId, clock.now())
+        }
+    }
+
+    fun onUndoDone(itemId: String) {
+        viewModelScope.launch {
+            itemRepository.undoDone(itemId)
         }
     }
 
@@ -233,6 +274,16 @@ class TodayViewModel @Inject constructor(
         viewModelScope.launch {
             ids.forEach { itemRepository.delete(it) }
             clearSelection()
+        }
+    }
+
+    fun onClearAllOverdue() {
+        val overdue = uiState.value.overdueItems
+        if (overdue.isEmpty()) return
+        viewModelScope.launch {
+            val now = clock.now()
+            overdue.forEach { itemRepository.markDone(it.id, now) }
+            _showCelebration.value = true
         }
     }
 }

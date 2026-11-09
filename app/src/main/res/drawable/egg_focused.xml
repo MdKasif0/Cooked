@@ -1,0 +1,70 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Soft shadow oval on ground -->
+    <path
+        android:fillColor="#E1DFD5"
+        android:pathData="M24,84 C24,80 72,80 72,84 C72,88 24,88 24,84 Z" />
+
+    <!-- Egg Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:pathData="M48,16 C33,16 23,36 23,58 C23,76 35,84 48,84 C61,84 73,76 73,58 C73,36 63,16 48,16 Z" />
+
+    <!-- Determined Eyebrows -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M34,47 L43,51" />
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M62,47 L53,51" />
+
+    <!-- Focused Eyes -->
+    <path
+        android:fillColor="#1A1714"
+        android:pathData="M38,53 A2,2 0 1 0 42,53 A2,2 0 1 0 38,53 Z" />
+    <path
+        android:fillColor="#1A1714"
+        android:pathData="M54,53 A2,2 0 1 0 58,53 A2,2 0 1 0 54,53 Z" />
+
+    <!-- Cute Blush Dots -->
+    <path
+        android:fillColor="#FFD3C4"
+        android:pathData="M30,57 A3.5,2.5 0 1 0 37,57 A3.5,2.5 0 1 0 30,57 Z" />
+    <path
+        android:fillColor="#FFD3C4"
+        android:pathData="M59,57 A3.5,2.5 0 1 0 66,57 A3.5,2.5 0 1 0 59,57 Z" />
+
+    <!-- Determined Mouth -->
+    <path
+        android:strokeColor="#1A1714"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M45,60 L51,60" />
+
+    <!-- 3 Lime Energy Rays in Top Right -->
+    <path
+        android:strokeColor="#C6FF3D"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M68,22 L76,15" />
+    <path
+        android:strokeColor="#C6FF3D"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M73,29 L83,25" />
+    <path
+        android:strokeColor="#C6FF3D"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M75,37 L85,37" />
+</vector>
