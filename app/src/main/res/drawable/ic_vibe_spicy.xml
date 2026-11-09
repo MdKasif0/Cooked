@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <!-- Spicy Vibe Mascot: Cool sunglasses with confident smirk -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M16,3 C8.82,3 3,8.82 3,16 C3,23.18 8.82,29 16,29 C23.18,29 29,23.18 29,16 C29,8.82 23.18,3 16,3 Z" />
+    <!-- Modern Wayfarer / Wrap Sunglasses Frame & Lenses -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M8,12 L15,12 C15,12 14.8,16.5 12,16.5 C9.5,16.5 8.2,14.5 8,12 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M17,12 L24,12 C23.8,14.5 22.5,16.5 20,16.5 C17.2,16.5 17,12 17,12 Z" />
+    <!-- Sunglasses bridge -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M14.5,13 L17.5,13" />
+    <!-- Sunglasses glint / reflection on left lens -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M9.5,13 L12,15.5" />
+    <!-- Playful Confident Smirk (asymmetrical curve) -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M12.5,20.5 C14.5,22.5 18.5,22.5 21,19.5" />
+</vector>

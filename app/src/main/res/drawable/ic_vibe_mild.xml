@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <!-- Mild Vibe Mascot: Calm, serene, peaceful smiling face -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M16,3 C8.82,3 3,8.82 3,16 C3,23.18 8.82,29 16,29 C23.18,29 29,23.18 29,16 C29,8.82 23.18,3 16,3 Z" />
+    <!-- Serene closed eyes (curved arcs) -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M9.5,14 C11,16 13,16 14.5,14" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M17.5,14 C19,16 21,16 22.5,14" />
+    <!-- Gentle happy smile -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M11,19.5 C13,22.5 19,22.5 21,19.5" />
+    <!-- Soft blush marks -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillAlpha="0.35"
+        android:pathData="M7.5,17 A1.5,1.2 0 1 0 10.5,17 A1.5,1.2 0 1 0 7.5,17 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillAlpha="0.35"
+        android:pathData="M21.5,17 A1.5,1.2 0 1 0 24.5,17 A1.5,1.2 0 1 0 21.5,17 Z" />
+</vector>

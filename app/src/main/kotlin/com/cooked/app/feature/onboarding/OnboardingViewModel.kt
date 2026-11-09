@@ -59,19 +59,34 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun onFirstWinInputChanged(text: String) {
-        _uiState.update { it.copy(firstWinInput = text) }
+        _uiState.update { it.copy(firstWinInput = text, firstWinError = null) }
     }
 
-    fun saveFirstWin(text: String) {
+    fun saveFirstWin(text: String, onSuccess: (() -> Unit)? = null) {
+        val trimmed = text.trim()
+        if (trimmed.isEmpty()) return
+        if (_uiState.value.isSavingFirstWin) return
+
         viewModelScope.launch {
-            val result = createItemFromExternal(text)
+            _uiState.update { it.copy(isSavingFirstWin = true, firstWinError = null) }
+            val result = createItemFromExternal(trimmed)
             if (result.isSuccess) {
                 val item = result.getOrNull()
                 _uiState.update {
                     it.copy(
                         firstWinCreated = true,
+                        isSavingFirstWin = false,
                         createdItem = item,
-                        firstWinInput = text
+                        firstWinInput = text,
+                        firstWinError = null
+                    )
+                }
+                onSuccess?.invoke()
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isSavingFirstWin = false,
+                        firstWinError = result.exceptionOrNull()?.message ?: "Could not save task. Please try again."
                     )
                 }
             }

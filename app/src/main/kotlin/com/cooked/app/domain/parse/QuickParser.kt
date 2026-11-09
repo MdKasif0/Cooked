@@ -144,8 +144,8 @@ object QuickParser {
         var targetTime: LocalTime? = null
         var isAllDay = false
 
-        // Relative time: "in 20m", "+30m", "in 2h", "+1d", "in 3 days"
-        val relativeRegex = Regex("""(?i)(?:\bin|(?<=\s|^)\+)\s*(\d+)\s*(m(?:ins?)?|h(?:ours?)?|d(?:ays?)?)\b""")
+        // Relative time: "in 20m", "+30m", "in 2h", "+1d", "in 3 days", "in 20 minutes"
+        val relativeRegex = Regex("""(?i)(?:\bin|(?<=\s|^)\+)\s*(\d+)\s*(minutes?|mins?|m|hours?|hrs?|h|days?|d)\b""")
         val relativeMatch = relativeRegex.find(text)
         if (relativeMatch != null) {
             val amount = relativeMatch.groupValues[1].toLongOrNull() ?: 0L

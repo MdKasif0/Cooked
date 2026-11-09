@@ -1,0 +1,49 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="36"
+    android:viewportHeight="36">
+    <!-- Calendar with checkmark and subtle energy rays -->
+    <!-- Calendar Body Outline -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M7,9 L29,9 C30.66,9 32,10.34 32,12 L32,28 C32,29.66 30.66,31 29,31 L7,31 C5.34,31 4,29.66 4,28 L4,12 C4,10.34 5.34,9 7,9 Z" />
+    <!-- Header Divider -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M4,15 L32,15" />
+    <!-- Top Binders -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M11,5 L11,9" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M25,5 L25,9" />
+    <!-- Bold Checkmark inside Calendar -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M12,23 L16.5,27.5 L24,19" />
+    <!-- Little playful rays in top right -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M31,4 L33,2" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M34,8 L36,7" />
+</vector>

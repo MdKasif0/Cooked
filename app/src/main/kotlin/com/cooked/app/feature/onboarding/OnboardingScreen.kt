@@ -1,6 +1,10 @@
 package com.cooked.app.feature.onboarding
 
 import com.cooked.app.core.designsystem.components.softShadow
+import com.cooked.app.feature.onboarding.components.MakeItReliableContent
+import com.cooked.app.feature.onboarding.components.OnboardingProgressHeader
+import com.cooked.app.feature.onboarding.components.PickYourVibeContent
+import com.cooked.app.feature.onboarding.components.QuickCaptureContent
 
 import androidx.compose.ui.draw.drawBehind
 
@@ -46,9 +50,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -80,7 +81,6 @@ import com.cooked.app.core.designsystem.CookedTheme
 import com.cooked.app.core.designsystem.components.CookedCard
 import com.cooked.app.core.designsystem.components.SteamPuffCelebration
 import com.cooked.app.domain.model.Personality
-import com.cooked.app.feature.settings.components.PersonalityPreviewCard
 import kotlin.math.roundToInt
 
 @Composable
@@ -118,66 +118,39 @@ fun OnboardingScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = CookedTheme.colors.background,
         topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Progress dots
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    repeat(uiState.totalSteps) { index ->
-                        val isActive = index == uiState.currentStep
-                        Box(
-                            modifier = Modifier
-                                .height(6.dp)
-                                .width(if (isActive) 24.dp else 6.dp)
-                                .background(
-                                    if (isActive) CookedTheme.colors.primary else CookedTheme.colors.outlineVariant,
-                                    CircleShape
-                                )
-                        )
-                    }
-                }
-
-                // Skip CTA
-                if (!uiState.isLastStep) {
-                    TextButton(onClick = onSkip) {
-                        Text(
-                            text = "Skip",
-                            style = CookedTheme.typography.labelMedium,
-                            color = CookedTheme.colors.onSurfaceVariant
-                        )
-                    }
-                } else {
-                    Spacer(modifier = Modifier.width(48.dp))
-                }
-            }
+            OnboardingProgressHeader(
+                currentStep = uiState.currentStep,
+                totalSteps = uiState.totalSteps,
+                onSkip = onSkip,
+                showSkip = !uiState.isLastStep
+            )
         }
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 24.dp)
         ) {
             when (uiState.currentStep) {
-                0 -> HookStep(onNext = onNext)
+                0 -> Box(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)) {
+                    HookStep(onNext = onNext)
+                }
                 1 -> PersonalityStep(
                     selectedPersonality = uiState.selectedPersonality,
                     onSelect = onPersonalitySelected,
                     onNext = onNext
                 )
-                2 -> FirstWinStep(
+                2 -> QuickCaptureContent(
                     input = uiState.firstWinInput,
                     isCreated = uiState.firstWinCreated,
+                    isSaving = uiState.isSavingFirstWin,
+                    errorMessage = uiState.firstWinError,
                     onInputChanged = onFirstWinInputChanged,
-                    onSave = onSaveFirstWin,
-                    onNext = onNext
+                    onSaveAndNext = { text ->
+                        onSaveFirstWin(text)
+                        onNext()
+                    },
+                    onSkipLater = onNext
                 )
                 3 -> PermissionsStep(
                     notificationsGranted = uiState.notificationsGranted,
@@ -186,10 +159,12 @@ fun OnboardingScreen(
                     onRefreshPermissions = onRefreshPermissions,
                     onNext = onNext
                 )
-                4 -> PaywallSoftSellStep(
-                    onComplete = onNext,
-                    onMaybeLater = onSkip
-                )
+                4 -> Box(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)) {
+                    PaywallSoftSellStep(
+                        onComplete = onNext,
+                        onMaybeLater = onSkip
+                    )
+                }
             }
         }
     }
@@ -296,220 +271,13 @@ private fun PersonalityStep(
     onSelect: (Personality) -> Unit,
     onNext: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(
-                text = "Pick your vibe.",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = CookedTheme.colors.onBackground
-            )
-            Text(
-                text = "How do you want Cooked to talk to you when nagging?",
-                style = CookedTheme.typography.bodyLarge,
-                color = CookedTheme.colors.onSurfaceVariant
-            )
-
-            // Personality Picker Pills
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Personality.values().forEach { personality ->
-                    val isSelected = personality == selectedPersonality
-                    Surface(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(44.dp)
-                            .clickable { onSelect(personality) },
-                        shape = RoundedCornerShape(18.dp),
-                        color = if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.surfaceContainerHigh,
-                        border = androidx.compose.foundation.BorderStroke(
-                            1.dp,
-                            if (isSelected) CookedTheme.colors.primary else CookedTheme.colors.outlineVariant
-                        )
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = personality.name.lowercase().replaceFirstChar { it.uppercase() },
-                                style = CookedTheme.typography.labelLarge.copy(
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
-                                ),
-                                color = if (isSelected) CookedTheme.colors.onPrimary else CookedTheme.colors.onSurface
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Live Notification Preview Card
-            PersonalityPreviewCard(
-                personality = selectedPersonality,
-                sampleTitle = "Submit final project",
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
-
-        Button(
-            onClick = onNext,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CookedTheme.colors.primary,
-                contentColor = CookedTheme.colors.onPrimary
-            )
-        ) {
-            Text(
-                text = "Sounds like me →",
-                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-    }
-}
-
-// -----------------------------------------------------------------------------
-// STEP 3: FIRST WIN (Natural language inline add)
-// -----------------------------------------------------------------------------
-@Composable
-private fun FirstWinStep(
-    input: String,
-    isCreated: Boolean,
-    onInputChanged: (String) -> Unit,
-    onSave: (String) -> Unit,
-    onNext: () -> Unit
-) {
-    val samplePrompts = listOf(
-        "Submit assignment Friday 5pm",
-        "Pay rent 1st of month",
-        "Drink water in 20m"
+    PickYourVibeContent(
+        selectedPersonality = selectedPersonality,
+        onSelectPersonality = onSelect,
+        onNext = onNext
     )
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(
-                text = "What are you forgetting right now?",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = CookedTheme.colors.onBackground
-            )
-            Text(
-                text = "Type it naturally or tap an example below to lock in your first win.",
-                style = CookedTheme.typography.bodyLarge,
-                color = CookedTheme.colors.onSurfaceVariant
-            )
-
-            OutlinedTextField(
-                value = input,
-                onValueChange = onInputChanged,
-                placeholder = { Text("e.g. Call dentist tomorrow 11am") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { if (input.isNotBlank()) onSave(input) }),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = CookedTheme.colors.primary,
-                    unfocusedBorderColor = CookedTheme.colors.outlineVariant
-                )
-            )
-
-            // Suggestion chips
-            Text(
-                text = "Quick examples:",
-                style = CookedTheme.typography.labelSmall,
-                color = CookedTheme.colors.onSurfaceVariant
-            )
-
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                samplePrompts.forEach { prompt ->
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onInputChanged(prompt)
-                                onSave(prompt)
-                            },
-                        shape = RoundedCornerShape(18.dp),
-                        color = CookedTheme.colors.surfaceContainerLow,
-                        border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.outlineVariant)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_lightbulb_hint),
-                                contentDescription = null,
-                                tint = CookedTheme.colors.primary,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = prompt,
-                                style = CookedTheme.typography.bodyMedium,
-                                color = CookedTheme.colors.onSurface
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (isCreated) {
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(18.dp),
-                    color = CookedTheme.colors.surfaceContainerHigh,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, CookedTheme.colors.primary)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_sparkle_celebration),
-                            contentDescription = null,
-                            tint = CookedTheme.colors.primary,
-                            modifier = Modifier.size(22.dp)
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = "First win locked in! You're 1% less cooked.",
-                            style = CookedTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                            color = CookedTheme.colors.onSurface
-                        )
-                    }
-                }
-            }
-        }
-
-        Button(
-            onClick = {
-                if (!isCreated && input.isNotBlank()) {
-                    onSave(input)
-                }
-                onNext()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CookedTheme.colors.primary,
-                contentColor = CookedTheme.colors.onPrimary
-            )
-        ) {
-            Text(
-                text = if (isCreated) "Continue →" else if (input.isNotBlank()) "Lock it in" else "I'll add later →",
-                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-    }
 }
+
 
 // -----------------------------------------------------------------------------
 // STEP 4: MAKE IT RELIABLE (Permission explanations & requests)
@@ -522,155 +290,13 @@ private fun PermissionsStep(
     onRefreshPermissions: () -> Unit,
     onNext: () -> Unit
 ) {
-    val context = LocalContext.current
-
-    val notificationLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) {
-        onRefreshPermissions()
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text(
-                text = "Make it reliable.",
-                style = CookedTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = CookedTheme.colors.onBackground
-            )
-            Text(
-                text = "Android aggressively silences background apps. Here is why each permission matters:",
-                style = CookedTheme.typography.bodyLarge,
-                color = CookedTheme.colors.onSurfaceVariant
-            )
-
-            // Permission 1: Notifications
-            PermissionExplainRow(
-                title = "Notifications",
-                reason = "So Cooked can alert you with nag banners when it's time.",
-                isGranted = notificationsGranted,
-                actionLabel = "Allow",
-                onRequest = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    }
-                }
-            )
-
-            // Permission 2: Exact Alarms
-            PermissionExplainRow(
-                title = "Exact Alarms",
-                reason = "Fires on the exact minute, not whenever the OS feels like waking up.",
-                isGranted = exactAlarmsGranted,
-                actionLabel = "Enable",
-                onRequest = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        try {
-                            context.startActivity(
-                                Intent(
-                                    Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                                    Uri.parse("package:${context.packageName}")
-                                )
-                            )
-                        } catch (_: Exception) {}
-                    }
-                }
-            )
-
-            // Permission 3: Battery Optimization Exemption
-            PermissionExplainRow(
-                title = "Battery Unrestricted",
-                reason = "Stops aggressive battery savers from killing alarms while screen is off.",
-                isGranted = batteryUnrestricted,
-                actionLabel = "Set Unrestricted",
-                onRequest = {
-                    try {
-                        context.startActivity(
-                            Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.parse("package:${context.packageName}")
-                            )
-                        )
-                    } catch (_: Exception) {}
-                }
-            )
-        }
-
-        Button(
-            onClick = onNext,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CookedTheme.colors.primary,
-                contentColor = CookedTheme.colors.onPrimary
-            )
-        ) {
-            Text(
-                text = "Lock in reliability →",
-                style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-    }
-}
-
-@Composable
-private fun PermissionExplainRow(
-    title: String,
-    reason: String,
-    isGranted: Boolean,
-    actionLabel: String,
-    onRequest: () -> Unit
-) {
-    CookedCard(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = CookedTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = CookedTheme.colors.onSurface
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = reason,
-                    style = CookedTheme.typography.bodySmall,
-                    color = CookedTheme.colors.onSurfaceVariant
-                )
-            }
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            if (isGranted) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(CookedTheme.colors.surfaceContainerHigh, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Check,
-                        contentDescription = null,
-                        tint = CookedTheme.colors.primary,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-            } else {
-                OutlinedButton(
-                    onClick = onRequest,
-                    shape = RoundedCornerShape(14.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 6.dp)
-                ) {
-                    Text(text = actionLabel, fontSize = 12.sp)
-                }
-            }
-        }
-    }
+    MakeItReliableContent(
+        notificationsGranted = notificationsGranted,
+        exactAlarmsGranted = exactAlarmsGranted,
+        batteryUnrestricted = batteryUnrestricted,
+        onRefreshPermissions = onRefreshPermissions,
+        onNext = onNext
+    )
 }
 
 // -----------------------------------------------------------------------------

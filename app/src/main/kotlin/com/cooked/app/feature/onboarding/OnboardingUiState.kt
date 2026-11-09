@@ -9,6 +9,8 @@ data class OnboardingUiState(
     val selectedPersonality: Personality = Personality.SPICY,
     val firstWinInput: String = "",
     val firstWinCreated: Boolean = false,
+    val isSavingFirstWin: Boolean = false,
+    val firstWinError: String? = null,
     val createdItem: Item? = null,
     val notificationsGranted: Boolean = false,
     val exactAlarmsGranted: Boolean = false,

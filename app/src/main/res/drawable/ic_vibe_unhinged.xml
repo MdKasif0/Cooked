@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <!-- Unhinged Vibe Mascot: Dynamic, blazing flame with intense energy -->
+    <!-- Outer Blazing Flame Contour -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M16,3 C13.5,8 8,11.5 8,18.5 C8,24.3 11.6,29 16,29 C20.4,29 24,24.3 24,18.5 C24,11.5 18.5,8 16,3 Z" />
+    <!-- Inner Searing Core Tongue -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M16,13 C14.2,16.5 12,19.2 12,22.2 C12,25.4 13.8,27 16,27 C18.2,27 20,25.4 20,22.2 C20,19.2 17.8,16.5 16,13 Z" />
+    <!-- Spark / Ember Accent Left -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M6,13 C5.5,14 5.5,15 6,16" />
+    <!-- Spark / Ember Accent Right -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M26,11 C26.5,12 26.5,13 26,14" />
+</vector>
