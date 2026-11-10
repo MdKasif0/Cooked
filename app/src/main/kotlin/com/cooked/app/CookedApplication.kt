@@ -29,7 +29,7 @@ class CookedApplication : Application() {
     lateinit var entitlementRepository: dagger.Lazy<EntitlementRepository>
 
     @Inject
-    lateinit var adManager: com.cooked.app.core.ads.CookedAdManager
+    lateinit var adManager: dagger.Lazy<com.cooked.app.core.ads.CookedAdManager>
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -67,8 +67,14 @@ class CookedApplication : Application() {
         WeeklySnapshotWorker.schedule(this)
         WeeklyReportWorker.schedule(this)
 
-        // Initialize Google Mobile Ads SDK (AdMob)
-        adManager.initialize()
+        // Initialize Google Mobile Ads SDK asynchronously in background without blocking app startup
+        applicationScope.launch(Dispatchers.IO) {
+            runCatching {
+                adManager.get().initialize()
+            }.onFailure { t ->
+                android.util.Log.e("CookedApplication", "Ad initialization deferred", t)
+            }
+        }
 
         // Observe ItemChanged events to keep alarms, widgets, and dynamic shortcuts strictly synchronized with DB
         applicationScope.launch {

@@ -25,10 +25,16 @@
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.Cooked">
 
-        <!-- Google Mobile Ads SDK App ID -->
+        <!-- Google Mobile Ads SDK App ID & Startup Optimization -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6238466387091690~5314663479" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+            android:value="true" />
 
         <activity
             android:name=".MainActivity"

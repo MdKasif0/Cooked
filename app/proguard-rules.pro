@@ -65,3 +65,15 @@
 -keep class * extends dagger.hilt.internal.GeneratedComponent { *; }
 -keep class * implements dagger.hilt.internal.GeneratedComponent { *; }
 -keep class * implements dagger.hilt.internal.GeneratedComponentManager { *; }
+
+# 9. Google Mobile Ads SDK (AdMob) & Cooked Ads
+-keep public class com.google.android.gms.ads.** {
+    public *;
+}
+-keep public class com.google.ads.** {
+    public *;
+}
+-keep class com.google.android.gms.internal.ads.** { *; }
+-dontwarn com.google.android.gms.ads.**
+-dontwarn com.google.android.gms.internal.ads.**
+-keep class com.cooked.app.core.ads.** { *; }
