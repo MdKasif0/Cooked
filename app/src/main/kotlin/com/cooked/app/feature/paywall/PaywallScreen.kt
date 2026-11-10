@@ -285,13 +285,21 @@ fun PaywallScreen(
                             Box(
                                 modifier = Modifier
                                     .clip(CircleShape)
-                                    .background(CookedTheme.colors.primary)
+                                    .background(
+                                        if (uiState.isAdLoading) CookedTheme.colors.surfaceContainerHigh
+                                        else CookedTheme.colors.primary
+                                    )
                                     .padding(horizontal = 10.dp, vertical = 6.dp)
                             ) {
                                 Text(
-                                    text = "Watch Ad",
+                                    text = when {
+                                        uiState.isAdLoading -> "Loading..."
+                                        uiState.isAdReady -> "Watch Ad"
+                                        else -> "Watch Ad"
+                                    },
                                     style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                    color = CookedTheme.colors.onPrimary
+                                    color = if (uiState.isAdLoading) CookedTheme.colors.onSurfaceVariant
+                                    else CookedTheme.colors.onPrimary
                                 )
                             }
                         }

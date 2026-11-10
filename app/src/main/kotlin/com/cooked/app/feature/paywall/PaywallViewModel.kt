@@ -38,7 +38,21 @@ class PaywallViewModel @Inject constructor(
         telemetry.logPaywallView(entryPoint)
         initializeBenefits()
         observeEntitlements()
+        observeAdState()
         loadPlans()
+    }
+
+    private fun observeAdState() {
+        viewModelScope.launch {
+            adManager.isAdReady.collect { ready ->
+                _uiState.update { it.copy(isAdReady = ready) }
+            }
+        }
+        viewModelScope.launch {
+            adManager.isLoading.collect { loading ->
+                _uiState.update { it.copy(isAdLoading = loading) }
+            }
+        }
     }
 
     private fun initializeBenefits() {

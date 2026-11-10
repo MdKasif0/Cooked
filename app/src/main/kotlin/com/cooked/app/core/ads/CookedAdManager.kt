@@ -2,6 +2,8 @@ package com.cooked.app.core.ads
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
+import com.cooked.app.BuildConfig
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -23,16 +25,28 @@ import javax.inject.Singleton
  * Ad Type: Rewarded Interstitial
  * Placement: High-value natural app transitions (Unlocking Pro pass, Free Rescue Plan sessions, Extended Snooze)
  * App ID: ca-app-pub-6238466387091690~5314663479
- * Ad Unit ID: ca-app-pub-6238466387091690/3945741481
+ * Production Ad Unit ID: ca-app-pub-6238466387091690/3945741481
+ * Sample Test Ad Unit ID: ca-app-pub-3940256099942544/5354046379
  */
 @Singleton
 class CookedAdManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     companion object {
+        private const val TAG = "CookedAds"
+
         const val APPLICATION_ID = "ca-app-pub-6238466387091690~5314663479"
         const val REWARDED_INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-6238466387091690/3945741481"
+        // Official Google Sample Ad Unit ID for testing Rewarded Interstitials
+        const val TEST_REWARDED_INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/5354046379"
     }
+
+    val activeAdUnitId: String
+        get() = if (BuildConfig.DEBUG) {
+            TEST_REWARDED_INTERSTITIAL_AD_UNIT_ID
+        } else {
+            REWARDED_INTERSTITIAL_AD_UNIT_ID
+        }
 
     private var rewardedInterstitialAd: RewardedInterstitialAd? = null
     private val isInitialized = AtomicBoolean(false)
@@ -49,10 +63,14 @@ class CookedAdManager @Inject constructor(
     fun initialize() {
         if (isInitialized.compareAndSet(false, true)) {
             try {
-                MobileAds.initialize(context) {
+                Log.d(TAG, "Initializing Google Mobile Ads SDK (App ID: $APPLICATION_ID)...")
+                MobileAds.initialize(context) { status ->
+                    Log.d(TAG, "MobileAds initialization complete. Status: ${status.adapterStatusMap}")
                     loadRewardedInterstitial()
                 }
-            } catch (_: Exception) {}
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to initialize MobileAds", e)
+            }
         }
     }
 
@@ -60,16 +78,23 @@ class CookedAdManager @Inject constructor(
      * Preloads a Rewarded Interstitial ad into memory for zero-latency display.
      */
     fun loadRewardedInterstitial() {
-        if (_isLoading.value || rewardedInterstitialAd != null) return
+        if (_isLoading.value || rewardedInterstitialAd != null) {
+            Log.d(TAG, "loadRewardedInterstitial skipped: already loading or ad ready.")
+            return
+        }
         _isLoading.value = true
+
+        val unitId = activeAdUnitId
+        Log.d(TAG, "Loading Rewarded Interstitial with Ad Unit: $unitId (isDebug=${BuildConfig.DEBUG})")
 
         val adRequest = AdRequest.Builder().build()
         RewardedInterstitialAd.load(
             context,
-            REWARDED_INTERSTITIAL_AD_UNIT_ID,
+            unitId,
             adRequest,
             object : RewardedInterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: RewardedInterstitialAd) {
+                    Log.d(TAG, "Rewarded Interstitial ad loaded successfully!")
                     rewardedInterstitialAd = ad
                     _isAdReady.value = true
                     _isLoading.value = false
@@ -77,6 +102,11 @@ class CookedAdManager @Inject constructor(
                 }
 
                 override fun onAdFailedToLoad(error: LoadAdError) {
+                    Log.w(
+                        TAG,
+                        "Rewarded Interstitial failed to load: ${error.message} " +
+                            "(code=${error.code}, domain=${error.domain})"
+                    )
                     rewardedInterstitialAd = null
                     _isAdReady.value = false
                     _isLoading.value = false
@@ -88,16 +118,21 @@ class CookedAdManager @Inject constructor(
     private fun setupCallbacks(ad: RewardedInterstitialAd) {
         ad.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
+                Log.d(TAG, "Rewarded ad dismissed. Preloading next ad...")
                 rewardedInterstitialAd = null
                 _isAdReady.value = false
-                // Preload the next ad automatically
                 loadRewardedInterstitial()
             }
 
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                Log.w(TAG, "Rewarded ad failed to show: ${error.message} (code=${error.code})")
                 rewardedInterstitialAd = null
                 _isAdReady.value = false
                 loadRewardedInterstitial()
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                Log.d(TAG, "Rewarded ad showed fullscreen content.")
             }
         }
     }
@@ -117,13 +152,14 @@ class CookedAdManager @Inject constructor(
     ): Boolean {
         val ad = rewardedInterstitialAd
         if (ad == null) {
-            // If not ready, kick off a background load for next time
+            Log.w(TAG, "showRewardedInterstitial called but ad was null. Initiating reload...")
             loadRewardedInterstitial()
             return false
         }
 
         ad.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
+                Log.d(TAG, "Ad dismissed by user.")
                 rewardedInterstitialAd = null
                 _isAdReady.value = false
                 onAdDismissed()
@@ -131,14 +167,21 @@ class CookedAdManager @Inject constructor(
             }
 
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                Log.w(TAG, "Ad failed to show: ${error.message}")
                 rewardedInterstitialAd = null
                 _isAdReady.value = false
                 onAdDismissed()
                 loadRewardedInterstitial()
             }
+
+            override fun onAdShowedFullScreenContent() {
+                Log.d(TAG, "Ad displayed fullscreen.")
+            }
         }
 
-        ad.show(activity) { _ ->
+        Log.d(TAG, "Showing Rewarded Interstitial ad now...")
+        ad.show(activity) { rewardItem ->
+            Log.d(TAG, "User earned reward: ${rewardItem.amount} ${rewardItem.type}")
             onRewardEarned()
         }
         return true

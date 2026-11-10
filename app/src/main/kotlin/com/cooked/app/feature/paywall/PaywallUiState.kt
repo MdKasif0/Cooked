@@ -21,6 +21,8 @@ data class PaywallUiState(
     val isPurchasing: Boolean = false,
     val isRestoring: Boolean = false,
     val isPro: Boolean = false,
+    val isAdReady: Boolean = false,
+    val isAdLoading: Boolean = false,
     val errorMessage: String? = null,
     val successMessage: String? = null,
     val showTermsDialog: Boolean = false,
