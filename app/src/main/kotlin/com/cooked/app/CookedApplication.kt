@@ -28,6 +28,9 @@ class CookedApplication : Application() {
     @Inject
     lateinit var entitlementRepository: dagger.Lazy<EntitlementRepository>
 
+    @Inject
+    lateinit var adManager: com.cooked.app.core.ads.CookedAdManager
+
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {
@@ -63,6 +66,9 @@ class CookedApplication : Application() {
         SafetyNetWorker.enqueueDaily(this)
         WeeklySnapshotWorker.schedule(this)
         WeeklyReportWorker.schedule(this)
+
+        // Initialize Google Mobile Ads SDK (AdMob)
+        adManager.initialize()
 
         // Observe ItemChanged events to keep alarms, widgets, and dynamic shortcuts strictly synchronized with DB
         applicationScope.launch {

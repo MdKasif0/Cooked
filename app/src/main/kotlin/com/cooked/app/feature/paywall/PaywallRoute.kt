@@ -23,6 +23,7 @@ fun PaywallRoute(
         onClearMessages = viewModel::clearMessages,
         onSetTermsVisible = viewModel::setTermsDialogVisible,
         onSetPrivacyVisible = viewModel::setPrivacyDialogVisible,
+        onClaimRewardedProPass = viewModel::onClaimRewardedProPass,
         modifier = modifier
     )
 }

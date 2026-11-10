@@ -1,5 +1,6 @@
 package com.cooked.app.feature.paywall
 
+import com.cooked.app.R
 import com.cooked.app.core.designsystem.components.softShadow
 
 import android.app.Activity
@@ -66,6 +67,7 @@ fun PaywallScreen(
     onClearMessages: () -> Unit,
     onSetTermsVisible: (Boolean) -> Unit,
     onSetPrivacyVisible: (Boolean) -> Unit,
+    onClaimRewardedProPass: ((Activity) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -234,6 +236,67 @@ fun PaywallScreen(
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
+
+                    if (!uiState.isPro && onClaimRewardedProPass != null) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(CookedTheme.colors.surfaceContainer)
+                                .border(1.dp, CookedTheme.colors.outlineVariant, RoundedCornerShape(16.dp))
+                                .clickable { activity?.let { onClaimRewardedProPass(it) } }
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(CookedTheme.colors.surfaceContainerHigh),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_gift_box),
+                                        contentDescription = null,
+                                        tint = CookedTheme.colors.primary,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                                Column {
+                                    Text(
+                                        text = "Claim 24-Hour Pro Pass",
+                                        style = CookedTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = CookedTheme.colors.onSurface
+                                    )
+                                    Text(
+                                        text = "Watch a quick ad to unlock all Pro features free",
+                                        style = CookedTheme.typography.bodySmall,
+                                        color = CookedTheme.colors.onSurfaceVariant
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Box(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(CookedTheme.colors.primary)
+                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "Watch Ad",
+                                    style = CookedTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                    color = CookedTheme.colors.onPrimary
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(14.dp))
+                    }
 
                     Text(
                         text = "Cancel anytime in Google Play Subscriptions. No charge if canceled during trial.",

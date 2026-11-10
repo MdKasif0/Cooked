@@ -64,9 +64,9 @@ class QuickCaptureTest {
         val tomorrow = baseNow.plus(Duration.ofDays(1))
         val nextFriday = baseNow.plus(Duration.ofDays(4))
 
-        assertThat(formatParsedDateLabel(today, testZone)).isEqualTo("Today")
-        assertThat(formatParsedDateLabel(tomorrow, testZone)).isEqualTo("Tomorrow")
-        assertThat(formatParsedDateLabel(nextFriday, testZone)).isEqualTo("Friday")
+        assertThat(formatParsedDateLabel(today, testZone, baseNow)).isEqualTo("Today")
+        assertThat(formatParsedDateLabel(tomorrow, testZone, baseNow)).isEqualTo("Tomorrow")
+        assertThat(formatParsedDateLabel(nextFriday, testZone, baseNow)).isEqualTo("Friday")
     }
 
     @Test

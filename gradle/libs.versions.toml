@@ -17,6 +17,7 @@ workManager = "2.10.0"
 coreKtx = "1.15.0"
 splashscreen = "1.0.1"
 revenuecat = "8.12.2"
+playServicesAds = "23.6.0"
 mlkitTextRecognition = "19.0.1"
 firebaseBom = "33.7.0"
 playReview = "2.0.2"
@@ -76,6 +77,9 @@ vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", ve
 
 # RevenueCat
 revenuecat-purchases = { group = "com.revenuecat.purchases", name = "purchases", version.ref = "revenuecat" }
+
+# Google Mobile Ads (AdMob)
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 
 # ML Kit Text Recognition (On-device OCR)
 mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "mlkitTextRecognition" }

@@ -132,9 +132,11 @@ class PaywallViewModelTest {
         val handle = SavedStateHandle(
             mapOf("entryPoint" to entryPoint, "featureHint" to featureHint)
         )
+        val adManager = com.cooked.app.core.ads.CookedAdManager(context)
         return PaywallViewModel(
             billingManager = fakeBillingManager,
             entitlementRepository = entitlementRepository,
+            adManager = adManager,
             telemetry = fakeTelemetry,
             savedStateHandle = handle
         )

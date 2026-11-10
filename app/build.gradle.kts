@@ -135,6 +135,9 @@ dependencies {
     // RevenueCat
     implementation(libs.revenuecat.purchases)
 
+    // Google Mobile Ads (AdMob)
+    implementation(libs.play.services.ads)
+
     // ML Kit Text Recognition
     implementation(libs.mlkit.text.recognition)
 

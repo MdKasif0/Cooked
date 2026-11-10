@@ -119,9 +119,9 @@ val QUICK_SUGGESTIONS = listOf(
 // ─────────────────────────────────────────────────────────────────────────────
 // PARSING & DATE FORMATTING HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
-fun formatParsedDateLabel(dueAt: Instant, zone: ZoneId): String {
+fun formatParsedDateLabel(dueAt: Instant, zone: ZoneId, now: Instant = Instant.now()): String {
     val zdt = dueAt.atZone(zone)
-    val today = LocalDate.now(zone)
+    val today = now.atZone(zone).toLocalDate()
     val taskDate = zdt.toLocalDate()
     return when {
         taskDate == today -> "Today"

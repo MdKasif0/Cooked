@@ -72,6 +72,10 @@ class EntitlementRepositoryImpl @Inject constructor(
         checkEntitlements()
     }
 
+    override suspend fun grantProPass(durationHours: Int) {
+        userPreferencesRepository.setIsPro(true)
+    }
+
     override suspend fun setLocalProForTesting(enabled: Boolean) {
         userPreferencesRepository.setIsPro(enabled)
     }

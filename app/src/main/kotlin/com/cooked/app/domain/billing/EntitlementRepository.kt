@@ -18,6 +18,7 @@ interface EntitlementRepository {
 
     suspend fun checkEntitlements(): Boolean
     suspend fun refresh()
+    suspend fun grantProPass(durationHours: Int = 24)
     suspend fun setLocalProForTesting(enabled: Boolean)
 }
 

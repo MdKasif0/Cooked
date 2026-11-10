@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cooked.app.R
+import com.cooked.app.core.ads.CookedAdManager
 import com.cooked.app.core.telemetry.Telemetry
 import com.cooked.app.data.billing.RevenueCatBillingManager
 import com.cooked.app.domain.billing.BillingManager
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class PaywallViewModel @Inject constructor(
     private val billingManager: BillingManager,
     private val entitlementRepository: EntitlementRepository,
+    private val adManager: CookedAdManager,
     private val telemetry: Telemetry,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -160,5 +162,21 @@ class PaywallViewModel @Inject constructor(
 
     fun setPrivacyDialogVisible(visible: Boolean) {
         _uiState.update { it.copy(showPrivacyDialog = visible) }
+    }
+
+    fun onClaimRewardedProPass(activity: Activity) {
+        val shown = adManager.showRewardedInterstitial(
+            activity = activity,
+            onRewardEarned = {
+                viewModelScope.launch {
+                    entitlementRepository.grantProPass(24)
+                    _uiState.update { it.copy(successMessage = "24-Hour Pro Pass unlocked! All premium features active.") }
+                }
+            },
+            onAdDismissed = {}
+        )
+        if (!shown) {
+            _uiState.update { it.copy(errorMessage = "Rewarded ad is loading. Please try again in a moment.") }
+        }
     }
 }
